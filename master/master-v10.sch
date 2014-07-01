@@ -4048,6 +4048,11 @@ This is the simplified version of the FT232RL unit. Only what you need, nothing 
 <pinref part="U2" gate="G$1" pin="!RESET!"/>
 <junction x="157.48" y="215.9"/>
 </segment>
+<segment>
+<pinref part="J1" gate="G$1" pin="5"/>
+<wire x1="180.34" y1="27.94" x2="167.64" y2="27.94" width="0.1524" layer="91"/>
+<label x="167.64" y="27.94" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="N$3" class="0">
 <segment>
@@ -4245,13 +4250,6 @@ This is the simplified version of the FT232RL unit. Only what you need, nothing 
 <wire x1="198.12" y1="33.02" x2="208.28" y2="33.02" width="0.1524" layer="91"/>
 <wire x1="208.28" y1="33.02" x2="208.28" y2="45.72" width="0.1524" layer="91"/>
 <pinref part="SUPPLY6" gate="G$1" pin="3.3V"/>
-</segment>
-</net>
-<net name="RESET" class="0">
-<segment>
-<pinref part="J1" gate="G$1" pin="5"/>
-<wire x1="180.34" y1="27.94" x2="167.64" y2="27.94" width="0.1524" layer="91"/>
-<label x="167.64" y="27.94" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
