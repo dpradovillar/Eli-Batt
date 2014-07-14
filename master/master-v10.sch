@@ -12782,7 +12782,6 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <part name="RX_L" library="led" deviceset="LED" device="SML0805" value="Green"/>
 <part name="TX_L" library="led" deviceset="LED" device="SML0805" value="Red"/>
 <part name="SUPPLY7" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
-<part name="SUPPLY8" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="GND12" library="SparkFun" deviceset="GND" device=""/>
 <part name="SUPPLY9" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="GND13" library="SparkFun" deviceset="GND" device=""/>
@@ -12850,7 +12849,6 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <wire x1="411.48" y1="43.18" x2="281.94" y2="43.18" width="0.2032" layer="97"/>
 <wire x1="281.94" y1="43.18" x2="281.94" y2="114.3" width="0.2032" layer="97"/>
 <text x="360.68" y="45.72" size="3.81" layer="97">tarjeta MicroSD</text>
-<text x="30.48" y="185.42" size="3.81" layer="97">Revisar Self Powering mode  y R</text>
 <wire x1="281.94" y1="215.9" x2="411.48" y2="215.9" width="0.2032" layer="97"/>
 <wire x1="411.48" y1="215.9" x2="411.48" y2="162.56" width="0.2032" layer="97"/>
 <wire x1="411.48" y1="162.56" x2="281.94" y2="162.56" width="0.2032" layer="97"/>
@@ -12919,7 +12917,6 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <instance part="RX_L" gate="G$1" x="88.9" y="134.62" rot="R270"/>
 <instance part="TX_L" gate="G$1" x="91.44" y="144.78" rot="R270"/>
 <instance part="SUPPLY7" gate="G$1" x="111.76" y="149.86"/>
-<instance part="SUPPLY8" gate="G$1" x="30.48" y="172.72"/>
 <instance part="GND12" gate="1" x="91.44" y="152.4"/>
 <instance part="SUPPLY9" gate="G$1" x="160.02" y="116.84"/>
 <instance part="GND13" gate="1" x="160.02" y="88.9"/>
@@ -13404,17 +13401,6 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <wire x1="111.76" y1="134.62" x2="111.76" y2="144.78" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U3" gate="G$1" pin="VCC"/>
-<wire x1="48.26" y1="154.94" x2="38.1" y2="154.94" width="0.1524" layer="91"/>
-<pinref part="C8" gate="G$1" pin="1"/>
-<wire x1="38.1" y1="154.94" x2="30.48" y2="154.94" width="0.1524" layer="91"/>
-<wire x1="30.48" y1="154.94" x2="30.48" y2="147.32" width="0.1524" layer="91"/>
-<pinref part="C9" gate="G$1" pin="1"/>
-<wire x1="38.1" y1="154.94" x2="38.1" y2="147.32" width="0.1524" layer="91"/>
-<pinref part="SUPPLY8" gate="G$1" pin="3.3V"/>
-<wire x1="30.48" y1="172.72" x2="30.48" y2="154.94" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="U2" gate="G$1" pin="VCC@1"/>
 <wire x1="175.26" y1="124.46" x2="172.72" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="172.72" y1="124.46" x2="172.72" y2="121.92" width="0.1524" layer="91"/>
@@ -13705,6 +13691,29 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <pinref part="R11" gate="G$1" pin="2"/>
 <pinref part="LED4" gate="G$1" pin="A"/>
 <wire x1="302.26" y1="68.58" x2="302.26" y2="71.12" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$24" class="0">
+<segment>
+<pinref part="U3" gate="G$1" pin="VCC"/>
+<wire x1="48.26" y1="154.94" x2="38.1" y2="154.94" width="0.1524" layer="91"/>
+<pinref part="C8" gate="G$1" pin="1"/>
+<wire x1="38.1" y1="154.94" x2="30.48" y2="154.94" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="154.94" x2="30.48" y2="147.32" width="0.1524" layer="91"/>
+<pinref part="C9" gate="G$1" pin="1"/>
+<wire x1="38.1" y1="154.94" x2="38.1" y2="147.32" width="0.1524" layer="91"/>
+<pinref part="JP1" gate="G$1" pin="VBUS"/>
+<wire x1="30.48" y1="165.1" x2="30.48" y2="154.94" width="0.1524" layer="91"/>
+<wire x1="12.7" y1="165.1" x2="30.48" y2="165.1" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$25" class="0">
+<segment>
+<pinref part="U3" gate="G$1" pin="3V3OUT"/>
+<wire x1="48.26" y1="152.4" x2="45.72" y2="152.4" width="0.1524" layer="91"/>
+<wire x1="45.72" y1="152.4" x2="45.72" y2="149.86" width="0.1524" layer="91"/>
+<pinref part="U3" gate="G$1" pin="VCCIO"/>
+<wire x1="45.72" y1="149.86" x2="48.26" y2="149.86" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

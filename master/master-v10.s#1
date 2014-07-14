@@ -12856,7 +12856,7 @@ Basic schematic elements and footprints for 0603, 1206, and PTH resistors.</desc
 <wire x1="411.48" y1="162.56" x2="281.94" y2="162.56" width="0.2032" layer="97"/>
 <wire x1="281.94" y1="162.56" x2="281.94" y2="215.9" width="0.2032" layer="97"/>
 <text x="358.14" y="165.1" size="3.81" layer="97">RS485</text>
-<text x="292.1" y="210.82" size="1.778" layer="97">Hacer conexion a Atmega UART2</text>
+<text x="292.1" y="210.82" size="1.778" layer="97">Hacer conexion a Atmega UART2 y agregar terminal</text>
 </plain>
 <instances>
 <instance part="GND25" gate="1" x="43.18" y="236.22"/>

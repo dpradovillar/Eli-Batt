@@ -128,11 +128,8 @@
 <wire x1="47.93" y1="0" x2="47.93" y2="59.68" width="0" layer="20"/>
 <wire x1="47.93" y1="59.68" x2="0" y2="59.68" width="0" layer="20"/>
 <wire x1="0" y1="59.68" x2="0" y2="0" width="0" layer="20"/>
-<dimension x1="61.9" y1="0" x2="61.9" y2="59.68" x3="88.9" y3="29.84" textsize="1.778" textratio="15" layer="16"/>
-<dimension x1="61.9" y1="59.68" x2="0" y2="59.68" x3="30.95" y3="73.66" textsize="1.778" textratio="15" layer="16"/>
-<dimension x1="61.9" y1="0" x2="61.9" y2="59.68" x3="71.12" y3="29.84" textsize="1.778" textratio="15" layer="20"/>
-<dimension x1="61.9" y1="59.68" x2="0" y2="59.68" x3="30.95" y3="66.04" textsize="1.778" textratio="15" layer="20"/>
 <dimension x1="47.93" y1="59.68" x2="0" y2="59.68" x3="23.965" y3="62.23" textsize="1.778" textratio="15" layer="20"/>
+<dimension x1="47.93" y1="0" x2="47.93" y2="59.68" x3="69.85" y3="29.84" textsize="1.778" textratio="15" layer="20"/>
 </plain>
 <libraries>
 <library name="SparkFun">
