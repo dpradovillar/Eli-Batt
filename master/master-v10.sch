@@ -12610,6 +12610,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <part name="GND17" library="SparkFun" deviceset="GND" device=""/>
 <part name="V_OUT" library="holes" deviceset="MOUNT-PAD-ROUND" device="3.0"/>
 <part name="V_IN" library="holes" deviceset="MOUNT-PAD-ROUND" device="3.0"/>
+<part name="GND26" library="SparkFun" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -12753,6 +12754,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <instance part="GND17" gate="1" x="25.4" y="233.68"/>
 <instance part="V_OUT" gate="G$1" x="355.6" y="238.76"/>
 <instance part="V_IN" gate="G$1" x="355.6" y="269.24"/>
+<instance part="GND26" gate="1" x="50.8" y="48.26"/>
 </instances>
 <busses>
 </busses>
@@ -12949,6 +12951,34 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <pinref part="JP2" gate="G$1" pin="1"/>
 <wire x1="25.4" y1="251.46" x2="22.86" y2="251.46" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="RTC" gate="G$1" pin="NC7"/>
+<wire x1="40.64" y1="60.96" x2="43.18" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="60.96" x2="43.18" y2="58.42" width="0.1524" layer="91"/>
+<pinref part="RTC" gate="G$1" pin="NC6"/>
+<wire x1="43.18" y1="58.42" x2="40.64" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="58.42" x2="43.18" y2="55.88" width="0.1524" layer="91"/>
+<junction x="43.18" y="58.42"/>
+<pinref part="RTC" gate="G$1" pin="NC5"/>
+<wire x1="43.18" y1="55.88" x2="40.64" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="55.88" x2="43.18" y2="53.34" width="0.1524" layer="91"/>
+<junction x="43.18" y="55.88"/>
+<pinref part="RTC" gate="G$1" pin="NC4"/>
+<wire x1="43.18" y1="53.34" x2="40.64" y2="53.34" width="0.1524" layer="91"/>
+<pinref part="RTC" gate="G$1" pin="GND"/>
+<wire x1="40.64" y1="63.5" x2="43.18" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="63.5" x2="43.18" y2="60.96" width="0.1524" layer="91"/>
+<junction x="43.18" y="60.96"/>
+<pinref part="BAT" gate="G$1" pin="-"/>
+<wire x1="50.8" y1="50.8" x2="43.18" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="43.18" y1="50.8" x2="43.18" y2="53.34" width="0.1524" layer="91"/>
+<junction x="43.18" y="53.34"/>
+<pinref part="C6" gate="G$1" pin="2"/>
+<wire x1="66.04" y1="55.88" x2="66.04" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="50.8" x2="50.8" y2="50.8" width="0.1524" layer="91"/>
+<junction x="50.8" y="50.8"/>
+<pinref part="GND26" gate="1" pin="GND"/>
+</segment>
 </net>
 <net name="SCK" class="0">
 <segment>
@@ -13098,35 +13128,6 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <pinref part="R1" gate="G$1" pin="1"/>
 <pinref part="ATMEGA1280" gate="G$1" pin="(OC0A/OC1C/PCINT7)PB7"/>
 <wire x1="266.7" y1="218.44" x2="236.22" y2="218.44" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$9" class="0">
-<segment>
-<pinref part="RTC" gate="G$1" pin="NC7"/>
-<wire x1="40.64" y1="60.96" x2="43.18" y2="60.96" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="60.96" x2="43.18" y2="58.42" width="0.1524" layer="91"/>
-<pinref part="RTC" gate="G$1" pin="NC6"/>
-<wire x1="43.18" y1="58.42" x2="40.64" y2="58.42" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="58.42" x2="43.18" y2="55.88" width="0.1524" layer="91"/>
-<junction x="43.18" y="58.42"/>
-<pinref part="RTC" gate="G$1" pin="NC5"/>
-<wire x1="43.18" y1="55.88" x2="40.64" y2="55.88" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="55.88" x2="43.18" y2="53.34" width="0.1524" layer="91"/>
-<junction x="43.18" y="55.88"/>
-<pinref part="RTC" gate="G$1" pin="NC4"/>
-<wire x1="43.18" y1="53.34" x2="40.64" y2="53.34" width="0.1524" layer="91"/>
-<pinref part="RTC" gate="G$1" pin="GND"/>
-<wire x1="40.64" y1="63.5" x2="43.18" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="63.5" x2="43.18" y2="60.96" width="0.1524" layer="91"/>
-<junction x="43.18" y="60.96"/>
-<pinref part="BAT" gate="G$1" pin="-"/>
-<wire x1="50.8" y1="50.8" x2="43.18" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="43.18" y1="50.8" x2="43.18" y2="53.34" width="0.1524" layer="91"/>
-<junction x="43.18" y="53.34"/>
-<pinref part="C6" gate="G$1" pin="2"/>
-<wire x1="66.04" y1="55.88" x2="66.04" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="50.8" x2="50.8" y2="50.8" width="0.1524" layer="91"/>
-<junction x="50.8" y="50.8"/>
 </segment>
 </net>
 <net name="N$7" class="0">
