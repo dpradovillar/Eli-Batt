@@ -13450,14 +13450,14 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 </net>
 <net name="CS_SD" class="0">
 <segment>
-<pinref part="ATMEGA1280" gate="G$1" pin="(ADC2)PF2"/>
-<wire x1="236.22" y1="114.3" x2="241.3" y2="114.3" width="0.1524" layer="91"/>
-<label x="241.3" y="114.3" size="1.27" layer="95" xref="yes"/>
-</segment>
-<segment>
 <pinref part="MICROSD" gate="G$1" pin="CS"/>
 <wire x1="340.36" y1="93.98" x2="325.12" y2="93.98" width="0.1524" layer="91"/>
 <label x="325.12" y="93.98" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="ATMEGA1280" gate="G$1" pin="(T0)PD7"/>
+<wire x1="236.22" y1="172.72" x2="238.76" y2="172.72" width="0.1524" layer="91"/>
+<label x="238.76" y="172.72" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="RX_GPS" class="0">
