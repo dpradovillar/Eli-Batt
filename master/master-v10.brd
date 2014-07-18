@@ -130,18 +130,18 @@
 <wire x1="0" y1="59.68" x2="0" y2="0" width="0" layer="20"/>
 <dimension x1="47.93" y1="0" x2="47.93" y2="59.68" x3="69.85" y3="29.84" textsize="1.778" textratio="15" layer="20"/>
 <polygon width="0.127" layer="37">
-<vertex x="37" y="54.528"/>
+<vertex x="37.4" y="54.528"/>
 <vertex x="39.8" y="54.528"/>
 <vertex x="39.8" y="58.9"/>
 <vertex x="50.5" y="58.9"/>
 <vertex x="50.5" y="47.625"/>
-<vertex x="37" y="47.625"/>
+<vertex x="37.4" y="47.625"/>
 </polygon>
 <polygon width="0.127" layer="37">
-<vertex x="37" y="46.355"/>
+<vertex x="37.4" y="46.355"/>
 <vertex x="50.5" y="46.355"/>
 <vertex x="50.5" y="34.29"/>
-<vertex x="37" y="34.29"/>
+<vertex x="37.4" y="34.29"/>
 </polygon>
 <text x="40.132" y="1.524" size="1.778" layer="37">V1 1429</text>
 <hole x="3.81" y="46.32" drill="2.54"/>
