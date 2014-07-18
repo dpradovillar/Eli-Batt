@@ -12542,8 +12542,8 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <part name="GND8" library="SparkFun" deviceset="GND" device=""/>
 <part name="ATMEGA1280" library="atmel-avr" deviceset="ATMEGA640/1280/2560" device="-A"/>
 <part name="R4" library="rcl" deviceset="R-EU_" device="R0805" value="10K"/>
-<part name="LED1" library="adafruit" deviceset="LED" device="CHIPLED_0805"/>
-<part name="LED2" library="adafruit" deviceset="LED" device="CHIPLED_0805" value="RED"/>
+<part name="DBG_L" library="adafruit" deviceset="LED" device="CHIPLED_0805"/>
+<part name="PWR" library="adafruit" deviceset="LED" device="CHIPLED_0805" value="RED"/>
 <part name="BAT" library="battery" deviceset="CR1220" device=""/>
 <part name="C6" library="rcl" deviceset="C-EU" device="C0805K" value="0.1uF"/>
 <part name="GND1" library="SparkFun" deviceset="GND" device=""/>
@@ -12555,7 +12555,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <part name="ISP" library="SparkFun-Connectors" deviceset="AVR_SPI_PRG_6" device="PTH"/>
 <part name="GND7" library="SparkFun" deviceset="GND" device=""/>
 <part name="SUPPLY6" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
-<part name="FTDI" library="SparkFun-DigitalIC" deviceset="FT232RL-BASIC" device="SSOP"/>
+<part name="FT232RL" library="SparkFun-DigitalIC" deviceset="FT232RL-BASIC" device="SSOP"/>
 <part name="C8" library="rcl" deviceset="C-EU" device="C1206K" value="10uF"/>
 <part name="C9" library="rcl" deviceset="C-EU" device="C0805K" value="0.1uF"/>
 <part name="GND9" library="SparkFun" deviceset="GND" device=""/>
@@ -12582,10 +12582,10 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <part name="MICROSD" library="SparkFun-Connectors" deviceset="USD-SOCKET" device="NEW"/>
 <part name="SUPPLY13" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="R11" library="rcl" deviceset="R-EU_" device="R0805" value="1k"/>
-<part name="LED4" library="adafruit" deviceset="LED" device="CHIPLED_0805"/>
+<part name="SD_L" library="adafruit" deviceset="LED" device="CHIPLED_0805"/>
 <part name="GND20" library="SparkFun" deviceset="GND" device=""/>
 <part name="GND21" library="SparkFun" deviceset="GND" device=""/>
-<part name="R12" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="0.002"/>
+<part name="SHUNT" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="0.002"/>
 <part name="INA169" library="SparkFun-AnalogIC" deviceset="INA169" device=""/>
 <part name="R13" library="rcl" deviceset="R-EU_" device="R0805" value="82k"/>
 <part name="C7" library="rcl" deviceset="C-EU" device="C0805K" value="0.1uF"/>
@@ -12605,7 +12605,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <part name="BLE" library="Grove " deviceset="TWIG-2.0-DIP" device="D"/>
 <part name="GND16" library="SparkFun" deviceset="GND" device=""/>
 <part name="SUPPLY10" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
-<part name="U$1" library="resonador" deviceset="RESONATOR-" device="SMD"/>
+<part name="OSC" library="resonador" deviceset="RESONATOR-" device="SMD"/>
 <part name="JP2" library="SparkFun-Connectors" deviceset="M02" device="JST-PTH-2"/>
 <part name="GND17" library="SparkFun" deviceset="GND" device=""/>
 <part name="V_OUT" library="holes" deviceset="MOUNT-PAD-ROUND" device="3.0"/>
@@ -12682,8 +12682,8 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <instance part="GND8" gate="1" x="7.62" y="38.1"/>
 <instance part="ATMEGA1280" gate="G$1" x="205.74" y="167.64"/>
 <instance part="R4" gate="G$1" x="165.1" y="251.46" rot="R90"/>
-<instance part="LED1" gate="G$1" x="266.7" y="187.96"/>
-<instance part="LED2" gate="G$1" x="160.02" y="99.06"/>
+<instance part="DBG_L" gate="G$1" x="266.7" y="187.96"/>
+<instance part="PWR" gate="G$1" x="160.02" y="99.06"/>
 <instance part="BAT" gate="G$1" x="50.8" y="58.42" rot="R90"/>
 <instance part="C6" gate="G$1" x="66.04" y="60.96" smashed="yes">
 <attribute name="NAME" x="65.024" y="60.833" size="1.778" layer="95" rot="R180"/>
@@ -12698,7 +12698,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <instance part="ISP" gate="G$1" x="205.74" y="27.94"/>
 <instance part="GND7" gate="1" x="226.06" y="15.24"/>
 <instance part="SUPPLY6" gate="G$1" x="226.06" y="43.18"/>
-<instance part="FTDI" gate="G$1" x="63.5" y="149.86"/>
+<instance part="FT232RL" gate="G$1" x="63.5" y="149.86"/>
 <instance part="C8" gate="G$1" x="30.48" y="144.78"/>
 <instance part="C9" gate="G$1" x="38.1" y="144.78"/>
 <instance part="GND9" gate="1" x="38.1" y="132.08"/>
@@ -12726,10 +12726,10 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <instance part="MICROSD" gate="G$1" x="347.98" y="83.82"/>
 <instance part="SUPPLY13" gate="G$1" x="332.74" y="101.6"/>
 <instance part="R11" gate="G$1" x="302.26" y="76.2" rot="R270"/>
-<instance part="LED4" gate="G$1" x="302.26" y="66.04"/>
+<instance part="SD_L" gate="G$1" x="302.26" y="66.04"/>
 <instance part="GND20" gate="1" x="332.74" y="55.88"/>
 <instance part="GND21" gate="1" x="302.26" y="55.88"/>
-<instance part="R12" gate="G$1" x="355.6" y="251.46" rot="R90"/>
+<instance part="SHUNT" gate="G$1" x="355.6" y="251.46" rot="R90"/>
 <instance part="INA169" gate="G$1" x="322.58" y="246.38" rot="R270"/>
 <instance part="R13" gate="G$1" x="297.18" y="236.22"/>
 <instance part="C7" gate="G$1" x="299.72" y="228.6" rot="R270"/>
@@ -12749,7 +12749,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <instance part="BLE" gate="G$1" x="361.95" y="179.07"/>
 <instance part="GND16" gate="1" x="353.06" y="185.42" rot="R180"/>
 <instance part="SUPPLY10" gate="G$1" x="353.06" y="172.72" rot="R180"/>
-<instance part="U$1" gate="G$1" x="160.02" y="228.6" rot="R270"/>
+<instance part="OSC" gate="G$1" x="160.02" y="228.6" rot="R270"/>
 <instance part="JP2" gate="G$1" x="15.24" y="251.46"/>
 <instance part="GND17" gate="1" x="25.4" y="233.68"/>
 <instance part="V_OUT" gate="G$1" x="355.6" y="238.76"/>
@@ -12767,7 +12767,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <segment>
 <wire x1="266.7" y1="182.88" x2="266.7" y2="175.26" width="0.1524" layer="91"/>
 <pinref part="GND2" gate="1" pin="GND"/>
-<pinref part="LED1" gate="G$1" pin="C"/>
+<pinref part="DBG_L" gate="G$1" pin="C"/>
 </segment>
 <segment>
 <pinref part="C4" gate="G$1" pin="2"/>
@@ -12837,30 +12837,30 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <wire x1="30.48" y1="134.62" x2="30.48" y2="139.7" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="FTDI" gate="G$1" pin="GND3"/>
+<pinref part="FT232RL" gate="G$1" pin="GND3"/>
 <pinref part="GND11" gate="1" pin="GND"/>
 <wire x1="45.72" y1="132.08" x2="45.72" y2="134.62" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="134.62" x2="48.26" y2="134.62" width="0.1524" layer="91"/>
-<pinref part="FTDI" gate="G$1" pin="GND1"/>
+<pinref part="FT232RL" gate="G$1" pin="GND1"/>
 <wire x1="48.26" y1="139.7" x2="45.72" y2="139.7" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="139.7" x2="45.72" y2="137.16" width="0.1524" layer="91"/>
-<pinref part="FTDI" gate="G$1" pin="GND2"/>
+<pinref part="FT232RL" gate="G$1" pin="GND2"/>
 <wire x1="45.72" y1="137.16" x2="45.72" y2="134.62" width="0.1524" layer="91"/>
 <wire x1="48.26" y1="137.16" x2="45.72" y2="137.16" width="0.1524" layer="91"/>
-<pinref part="FTDI" gate="G$1" pin="AGND"/>
+<pinref part="FT232RL" gate="G$1" pin="AGND"/>
 <wire x1="48.26" y1="142.24" x2="45.72" y2="142.24" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="142.24" x2="45.72" y2="139.7" width="0.1524" layer="91"/>
-<pinref part="FTDI" gate="G$1" pin="TEST"/>
+<pinref part="FT232RL" gate="G$1" pin="TEST"/>
 <wire x1="48.26" y1="144.78" x2="45.72" y2="144.78" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="144.78" x2="45.72" y2="142.24" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="FTDI" gate="G$1" pin="CTS"/>
+<pinref part="FT232RL" gate="G$1" pin="CTS"/>
 <pinref part="GND12" gate="1" pin="GND"/>
 <wire x1="91.44" y1="154.94" x2="78.74" y2="154.94" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="LED2" gate="G$1" pin="C"/>
+<pinref part="PWR" gate="G$1" pin="C"/>
 <pinref part="GND13" gate="1" pin="GND"/>
 <wire x1="160.02" y1="91.44" x2="160.02" y2="93.98" width="0.1524" layer="91"/>
 </segment>
@@ -12874,7 +12874,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <pinref part="GND18" gate="1" pin="GND"/>
 <wire x1="152.4" y1="228.6" x2="147.32" y2="228.6" width="0.1524" layer="91"/>
 <wire x1="147.32" y1="228.6" x2="147.32" y2="218.44" width="0.1524" layer="91"/>
-<pinref part="U$1" gate="G$1" pin="2"/>
+<pinref part="OSC" gate="G$1" pin="2"/>
 </segment>
 <segment>
 <pinref part="MICROSD" gate="G$1" pin="GND"/>
@@ -12891,7 +12891,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <pinref part="GND20" gate="1" pin="GND"/>
 </segment>
 <segment>
-<pinref part="LED4" gate="G$1" pin="C"/>
+<pinref part="SD_L" gate="G$1" pin="C"/>
 <pinref part="GND21" gate="1" pin="GND"/>
 <wire x1="302.26" y1="60.96" x2="302.26" y2="58.42" width="0.1524" layer="91"/>
 </segment>
@@ -13091,7 +13091,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <pinref part="C2" gate="G$1" pin="2"/>
 </segment>
 <segment>
-<pinref part="FTDI" gate="G$1" pin="DTR"/>
+<pinref part="FT232RL" gate="G$1" pin="DTR"/>
 <wire x1="78.74" y1="149.86" x2="81.28" y2="149.86" width="0.1524" layer="91"/>
 <label x="81.28" y="149.86" size="1.27" layer="95" xref="yes"/>
 </segment>
@@ -13119,7 +13119,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <segment>
 <wire x1="266.7" y1="190.5" x2="266.7" y2="200.66" width="0.1524" layer="91"/>
 <pinref part="R1" gate="G$1" pin="2"/>
-<pinref part="LED1" gate="G$1" pin="A"/>
+<pinref part="DBG_L" gate="G$1" pin="A"/>
 </segment>
 </net>
 <net name="N$4" class="0">
@@ -13134,7 +13134,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <segment>
 <pinref part="R3" gate="G$1" pin="1"/>
 <wire x1="160.02" y1="101.6" x2="160.02" y2="104.14" width="0.1524" layer="91"/>
-<pinref part="LED2" gate="G$1" pin="A"/>
+<pinref part="PWR" gate="G$1" pin="A"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -13149,7 +13149,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <wire x1="342.9" y1="251.46" x2="350.52" y2="251.46" width="0.1524" layer="91"/>
 <wire x1="350.52" y1="251.46" x2="350.52" y2="256.54" width="0.1524" layer="91"/>
 <wire x1="350.52" y1="256.54" x2="353.06" y2="256.54" width="0.1524" layer="91"/>
-<pinref part="R12" gate="G$1" pin="2"/>
+<pinref part="SHUNT" gate="G$1" pin="2"/>
 <pinref part="INA169" gate="G$1" pin="VIN+"/>
 <pinref part="V_IN" gate="G$1" pin="MOUNT"/>
 <wire x1="353.06" y1="256.54" x2="355.6" y2="256.54" width="0.1524" layer="91"/>
@@ -13159,7 +13159,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <net name="VIN-" class="0">
 <segment>
 <wire x1="342.9" y1="246.38" x2="353.06" y2="246.38" width="0.1524" layer="91"/>
-<pinref part="R12" gate="G$1" pin="1"/>
+<pinref part="SHUNT" gate="G$1" pin="1"/>
 <pinref part="INA169" gate="G$1" pin="VIN-"/>
 <pinref part="V_OUT" gate="G$1" pin="MOUNT"/>
 <wire x1="353.06" y1="246.38" x2="355.6" y2="246.38" width="0.1524" layer="91"/>
@@ -13279,21 +13279,21 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 </net>
 <net name="N$6" class="0">
 <segment>
-<pinref part="FTDI" gate="G$1" pin="TXD"/>
+<pinref part="FT232RL" gate="G$1" pin="TXD"/>
 <pinref part="R2" gate="G$1" pin="1"/>
 <wire x1="83.82" y1="167.64" x2="78.74" y2="162.56" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$8" class="0">
 <segment>
-<pinref part="FTDI" gate="G$1" pin="RXD"/>
+<pinref part="FT232RL" gate="G$1" pin="RXD"/>
 <pinref part="R5" gate="G$1" pin="1"/>
 <wire x1="83.82" y1="160.02" x2="78.74" y2="160.02" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$10" class="0">
 <segment>
-<pinref part="FTDI" gate="G$1" pin="RXLED"/>
+<pinref part="FT232RL" gate="G$1" pin="RXLED"/>
 <pinref part="RX" gate="G$1" pin="C"/>
 <wire x1="83.82" y1="134.62" x2="78.74" y2="134.62" width="0.1524" layer="91"/>
 </segment>
@@ -13307,7 +13307,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 </net>
 <net name="N$12" class="0">
 <segment>
-<pinref part="FTDI" gate="G$1" pin="TXLED"/>
+<pinref part="FT232RL" gate="G$1" pin="TXLED"/>
 <pinref part="TX" gate="G$1" pin="C"/>
 <wire x1="86.36" y1="144.78" x2="78.74" y2="137.16" width="0.1524" layer="91"/>
 </segment>
@@ -13369,14 +13369,14 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 </net>
 <net name="N$5" class="0">
 <segment>
-<pinref part="FTDI" gate="G$1" pin="USBDP"/>
+<pinref part="FT232RL" gate="G$1" pin="USBDP"/>
 <pinref part="JP1" gate="G$1" pin="D+"/>
 <wire x1="48.26" y1="160.02" x2="12.7" y2="160.02" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$19" class="0">
 <segment>
-<pinref part="FTDI" gate="G$1" pin="USBDM"/>
+<pinref part="FT232RL" gate="G$1" pin="USBDM"/>
 <pinref part="JP1" gate="G$1" pin="D-"/>
 <wire x1="48.26" y1="162.56" x2="12.7" y2="162.56" width="0.1524" layer="91"/>
 </segment>
@@ -13390,13 +13390,13 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <net name="N$23" class="0">
 <segment>
 <pinref part="R11" gate="G$1" pin="2"/>
-<pinref part="LED4" gate="G$1" pin="A"/>
+<pinref part="SD_L" gate="G$1" pin="A"/>
 <wire x1="302.26" y1="68.58" x2="302.26" y2="71.12" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$24" class="0">
 <segment>
-<pinref part="FTDI" gate="G$1" pin="VCC"/>
+<pinref part="FT232RL" gate="G$1" pin="VCC"/>
 <wire x1="48.26" y1="154.94" x2="38.1" y2="154.94" width="0.1524" layer="91"/>
 <pinref part="C8" gate="G$1" pin="1"/>
 <wire x1="38.1" y1="154.94" x2="30.48" y2="154.94" width="0.1524" layer="91"/>
@@ -13410,10 +13410,10 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 </net>
 <net name="N$25" class="0">
 <segment>
-<pinref part="FTDI" gate="G$1" pin="3V3OUT"/>
+<pinref part="FT232RL" gate="G$1" pin="3V3OUT"/>
 <wire x1="48.26" y1="152.4" x2="45.72" y2="152.4" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="152.4" x2="45.72" y2="149.86" width="0.1524" layer="91"/>
-<pinref part="FTDI" gate="G$1" pin="VCCIO"/>
+<pinref part="FT232RL" gate="G$1" pin="VCCIO"/>
 <wire x1="45.72" y1="149.86" x2="48.26" y2="149.86" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -13512,7 +13512,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <net name="N$2" class="0">
 <segment>
 <wire x1="160.02" y1="233.68" x2="160.02" y2="231.14" width="0.1524" layer="91"/>
-<pinref part="U$1" gate="G$1" pin="1"/>
+<pinref part="OSC" gate="G$1" pin="1"/>
 <pinref part="ATMEGA1280" gate="G$1" pin="XTAL1"/>
 <wire x1="160.02" y1="233.68" x2="175.26" y2="233.68" width="0.1524" layer="91"/>
 </segment>
@@ -13521,7 +13521,7 @@ Small SMD resonator. This is the itty bitty 10/20MHz resonators with built in ca
 <segment>
 <pinref part="ATMEGA1280" gate="G$1" pin="XTAL2"/>
 <wire x1="175.26" y1="223.52" x2="160.02" y2="223.52" width="0.1524" layer="91"/>
-<pinref part="U$1" gate="G$1" pin="3"/>
+<pinref part="OSC" gate="G$1" pin="3"/>
 <wire x1="160.02" y1="223.52" x2="160.02" y2="226.06" width="0.1524" layer="91"/>
 </segment>
 </net>
