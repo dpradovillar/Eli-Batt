@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.0.0">
+<eagle version="6.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -10932,7 +10932,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <part name="GND3" library="SparkFun" deviceset="GND" device=""/>
 <part name="GND6" library="SparkFun" deviceset="GND" device=""/>
 <part name="R3" library="rcl" deviceset="R-EU_" device="R0805" value="1K"/>
-<part name="RTC" library="adafruit" deviceset="DS3231" device="/SO"/>
+<part name="DS3231" library="adafruit" deviceset="DS3231" device="/SO"/>
 <part name="GND8" library="SparkFun" deviceset="GND" device=""/>
 <part name="ATMEGA1280" library="atmel-avr" deviceset="ATMEGA640/1280/2560" device="-A"/>
 <part name="DBG_L" library="adafruit" deviceset="LED" device="CHIPLED_0805" value="BLUE"/>
@@ -10964,7 +10964,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <part name="JP1" library="SparkFun-Connectors" deviceset="USB" device="-MB-H"/>
 <part name="GND14" library="SparkFun" deviceset="GND" device=""/>
 <part name="FRAME1" library="SparkFun-Aesthetics" deviceset="FRAME-LEDGER" device=""/>
-<part name="3V3" library="v-reg" deviceset="AP1117" device="E"/>
+<part name="AP1117" library="v-reg" deviceset="AP1117" device="E"/>
 <part name="GND18" library="SparkFun" deviceset="GND" device=""/>
 <part name="R10" library="rcl" deviceset="R-EU_" device="R0805" value="10k"/>
 <part name="GND19" library="SparkFun" deviceset="GND" device=""/>
@@ -11004,7 +11004,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <part name="TX" library="adafruit" deviceset="LED" device="CHIPLED_0805" value="RED"/>
 <part name="RX" library="adafruit" deviceset="LED" device="CHIPLED_0805" value="GREEN"/>
 <part name="R8" library="rcl" deviceset="R-EU_" device="R0805" value="10k"/>
-<part name="U$3" library="ACS711" deviceset="ACS711" device=""/>
+<part name="ACS711" library="ACS711" deviceset="ACS711" device=""/>
 <part name="GND4" library="SparkFun" deviceset="GND" device=""/>
 <part name="SUPPLY11" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="J1" library="con-molex" deviceset="22-?-02" device="05-7028"/>
@@ -11079,7 +11079,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <instance part="GND3" gate="1" x="45.72" y="238.76"/>
 <instance part="GND6" gate="1" x="55.88" y="238.76"/>
 <instance part="R3" gate="G$1" x="160.02" y="109.22" rot="R90"/>
-<instance part="RTC" gate="G$1" x="25.4" y="60.96"/>
+<instance part="DS3231" gate="G$1" x="25.4" y="60.96"/>
 <instance part="GND8" gate="1" x="7.62" y="38.1"/>
 <instance part="ATMEGA1280" gate="G$1" x="205.74" y="167.64"/>
 <instance part="DBG_L" gate="G$1" x="266.7" y="187.96"/>
@@ -11115,7 +11115,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <instance part="GND14" gate="1" x="17.78" y="154.94"/>
 <instance part="FRAME1" gate="G$1" x="0" y="0"/>
 <instance part="FRAME1" gate="G$2" x="330.2" y="0"/>
-<instance part="3V3" gate="G$1" x="55.88" y="254"/>
+<instance part="AP1117" gate="G$1" x="55.88" y="254"/>
 <instance part="GND18" gate="1" x="162.56" y="215.9"/>
 <instance part="R10" gate="G$1" x="299.72" y="152.4"/>
 <instance part="GND19" gate="1" x="312.42" y="127"/>
@@ -11160,7 +11160,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <instance part="TX" gate="G$1" x="91.44" y="144.78" rot="R270"/>
 <instance part="RX" gate="G$1" x="88.9" y="134.62" rot="R270"/>
 <instance part="R8" gate="G$1" x="154.94" y="248.92" rot="R90"/>
-<instance part="U$3" gate="G$1" x="309.88" y="254"/>
+<instance part="ACS711" gate="G$1" x="309.88" y="254"/>
 <instance part="GND4" gate="1" x="347.98" y="243.84"/>
 <instance part="SUPPLY11" gate="G$1" x="332.74" y="241.3" rot="R180"/>
 <instance part="J1" gate="-1" x="20.32" y="251.46" rot="R180"/>
@@ -11186,18 +11186,18 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <segment>
 <pinref part="GND6" gate="1" pin="GND"/>
 <wire x1="55.88" y1="241.3" x2="55.88" y2="246.38" width="0.1524" layer="91"/>
-<pinref part="3V3" gate="G$1" pin="GND"/>
+<pinref part="AP1117" gate="G$1" pin="GND"/>
 </segment>
 <segment>
-<pinref part="RTC" gate="G$1" pin="NC1"/>
+<pinref part="DS3231" gate="G$1" pin="NC1"/>
 <wire x1="10.16" y1="58.42" x2="7.62" y2="58.42" width="0.1524" layer="91"/>
 <wire x1="7.62" y1="58.42" x2="7.62" y2="55.88" width="0.1524" layer="91"/>
-<pinref part="RTC" gate="G$1" pin="NC3"/>
+<pinref part="DS3231" gate="G$1" pin="NC3"/>
 <wire x1="7.62" y1="55.88" x2="7.62" y2="53.34" width="0.1524" layer="91"/>
-<pinref part="RTC" gate="G$1" pin="NC2"/>
+<pinref part="DS3231" gate="G$1" pin="NC2"/>
 <wire x1="10.16" y1="55.88" x2="7.62" y2="55.88" width="0.1524" layer="91"/>
 <junction x="7.62" y="55.88"/>
-<pinref part="RTC" gate="G$1" pin="NC"/>
+<pinref part="DS3231" gate="G$1" pin="NC"/>
 <wire x1="10.16" y1="60.96" x2="7.62" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="7.62" y1="60.96" x2="7.62" y2="58.42" width="0.1524" layer="91"/>
 <junction x="7.62" y="58.42"/>
@@ -11349,20 +11349,20 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <pinref part="J1" gate="-1" pin="S"/>
 </segment>
 <segment>
-<pinref part="RTC" gate="G$1" pin="NC7"/>
+<pinref part="DS3231" gate="G$1" pin="NC7"/>
 <wire x1="40.64" y1="60.96" x2="43.18" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="60.96" x2="43.18" y2="58.42" width="0.1524" layer="91"/>
-<pinref part="RTC" gate="G$1" pin="NC6"/>
+<pinref part="DS3231" gate="G$1" pin="NC6"/>
 <wire x1="43.18" y1="58.42" x2="40.64" y2="58.42" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="58.42" x2="43.18" y2="55.88" width="0.1524" layer="91"/>
 <junction x="43.18" y="58.42"/>
-<pinref part="RTC" gate="G$1" pin="NC5"/>
+<pinref part="DS3231" gate="G$1" pin="NC5"/>
 <wire x1="43.18" y1="55.88" x2="40.64" y2="55.88" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="55.88" x2="43.18" y2="53.34" width="0.1524" layer="91"/>
 <junction x="43.18" y="55.88"/>
-<pinref part="RTC" gate="G$1" pin="NC4"/>
+<pinref part="DS3231" gate="G$1" pin="NC4"/>
 <wire x1="43.18" y1="53.34" x2="40.64" y2="53.34" width="0.1524" layer="91"/>
-<pinref part="RTC" gate="G$1" pin="GND"/>
+<pinref part="DS3231" gate="G$1" pin="GND"/>
 <wire x1="40.64" y1="63.5" x2="43.18" y2="63.5" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="63.5" x2="43.18" y2="60.96" width="0.1524" layer="91"/>
 <junction x="43.18" y="60.96"/>
@@ -11393,7 +11393,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 </segment>
 <segment>
 <pinref part="GND1" gate="1" pin="GND"/>
-<pinref part="U$3" gate="G$1" pin="GND"/>
+<pinref part="ACS711" gate="G$1" pin="GND"/>
 <wire x1="325.12" y1="246.38" x2="325.12" y2="251.46" width="0.1524" layer="91"/>
 <wire x1="325.12" y1="251.46" x2="322.58" y2="251.46" width="0.1524" layer="91"/>
 </segment>
@@ -11431,7 +11431,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <label x="297.18" y="139.7" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<pinref part="RTC" gate="G$1" pin="SCL"/>
+<pinref part="DS3231" gate="G$1" pin="SCL"/>
 <wire x1="40.64" y1="71.12" x2="45.72" y2="71.12" width="0.1524" layer="91"/>
 <label x="43.18" y="71.12" size="1.778" layer="95"/>
 </segment>
@@ -11479,7 +11479,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <label x="297.18" y="142.24" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<pinref part="RTC" gate="G$1" pin="SDA"/>
+<pinref part="DS3231" gate="G$1" pin="SDA"/>
 <wire x1="40.64" y1="68.58" x2="45.72" y2="68.58" width="0.1524" layer="91"/>
 <label x="43.18" y="68.58" size="1.778" layer="95"/>
 </segment>
@@ -11492,7 +11492,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <wire x1="45.72" y1="254" x2="48.26" y2="254" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="248.92" x2="45.72" y2="254" width="0.1524" layer="91"/>
 <junction x="45.72" y="254"/>
-<pinref part="3V3" gate="G$1" pin="IN"/>
+<pinref part="AP1117" gate="G$1" pin="IN"/>
 <pinref part="J1" gate="-2" pin="S"/>
 </segment>
 <segment>
@@ -11564,7 +11564,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 </net>
 <net name="N$1" class="0">
 <segment>
-<pinref part="RTC" gate="G$1" pin="VBAT"/>
+<pinref part="DS3231" gate="G$1" pin="VBAT"/>
 <pinref part="BAT" gate="G$1" pin="+"/>
 <wire x1="40.64" y1="66.04" x2="50.8" y2="66.04" width="0.1524" layer="91"/>
 </segment>
@@ -11578,7 +11578,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <wire x1="71.12" y1="254" x2="63.5" y2="254" width="0.1524" layer="91"/>
 <junction x="71.12" y="254"/>
 <pinref part="SUPPLY1" gate="G$1" pin="3.3V"/>
-<pinref part="3V3" gate="G$1" pin="OUT"/>
+<pinref part="AP1117" gate="G$1" pin="OUT"/>
 </segment>
 <segment>
 <pinref part="SUPPLY2" gate="G$1" pin="3.3V"/>
@@ -11586,7 +11586,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <pinref part="R8" gate="G$1" pin="2"/>
 </segment>
 <segment>
-<pinref part="RTC" gate="G$1" pin="VCC"/>
+<pinref part="DS3231" gate="G$1" pin="VCC"/>
 <wire x1="10.16" y1="68.58" x2="7.62" y2="68.58" width="0.1524" layer="91"/>
 <wire x1="7.62" y1="68.58" x2="7.62" y2="78.74" width="0.1524" layer="91"/>
 <pinref part="C6" gate="G$1" pin="1"/>
@@ -11680,7 +11680,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <label x="307.34" y="180.34" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<pinref part="U$3" gate="G$1" pin="VCC"/>
+<pinref part="ACS711" gate="G$1" pin="VCC"/>
 <pinref part="SUPPLY5" gate="G$1" pin="3.3V"/>
 <wire x1="347.98" y1="259.08" x2="322.58" y2="259.08" width="0.1524" layer="91"/>
 <pinref part="C7" gate="G$1" pin="1"/>
@@ -11841,7 +11841,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 </segment>
 <segment>
 <label x="340.36" y="256.54" size="1.27" layer="95" rot="R270" xref="yes"/>
-<pinref part="U$3" gate="G$1" pin="VOUT"/>
+<pinref part="ACS711" gate="G$1" pin="VOUT"/>
 <wire x1="322.58" y1="256.54" x2="340.36" y2="256.54" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -11962,29 +11962,29 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 </net>
 <net name="N$69" class="0">
 <segment>
-<pinref part="U$3" gate="G$1" pin="FAULT"/>
+<pinref part="ACS711" gate="G$1" pin="FAULT"/>
 <wire x1="322.58" y1="254" x2="332.74" y2="254" width="0.1524" layer="91"/>
 <pinref part="R13" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="N$71" class="0">
 <segment>
-<pinref part="U$3" gate="G$1" pin="IP+@2"/>
+<pinref part="ACS711" gate="G$1" pin="IP+@2"/>
 <wire x1="287.02" y1="269.24" x2="287.02" y2="259.08" width="0.1524" layer="91"/>
 <wire x1="287.02" y1="259.08" x2="287.02" y2="256.54" width="0.1524" layer="91"/>
 <wire x1="287.02" y1="256.54" x2="294.64" y2="256.54" width="0.1524" layer="91"/>
-<pinref part="U$3" gate="G$1" pin="IP+@1"/>
+<pinref part="ACS711" gate="G$1" pin="IP+@1"/>
 <wire x1="294.64" y1="259.08" x2="287.02" y2="259.08" width="0.1524" layer="91"/>
 <pinref part="V_IN" gate="G$1" pin="MOUNT"/>
 </segment>
 </net>
 <net name="N$72" class="0">
 <segment>
-<pinref part="U$3" gate="G$1" pin="IP-@3"/>
+<pinref part="ACS711" gate="G$1" pin="IP-@3"/>
 <wire x1="287.02" y1="241.3" x2="287.02" y2="251.46" width="0.1524" layer="91"/>
 <wire x1="287.02" y1="251.46" x2="287.02" y2="254" width="0.1524" layer="91"/>
 <wire x1="287.02" y1="254" x2="294.64" y2="254" width="0.1524" layer="91"/>
-<pinref part="U$3" gate="G$1" pin="IP-@4"/>
+<pinref part="ACS711" gate="G$1" pin="IP-@4"/>
 <wire x1="294.64" y1="251.46" x2="287.02" y2="251.46" width="0.1524" layer="91"/>
 <pinref part="V_OUT" gate="G$1" pin="MOUNT"/>
 </segment>
