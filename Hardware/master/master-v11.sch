@@ -10975,7 +10975,7 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <part name="SD_L" library="adafruit" deviceset="LED" device="CHIPLED_0805" value="BLUE"/>
 <part name="GND20" library="SparkFun" deviceset="GND" device=""/>
 <part name="GND21" library="SparkFun" deviceset="GND" device=""/>
-<part name="R13" library="rcl" deviceset="R-EU_" device="R0805" value="1k"/>
+<part name="R13" library="rcl" deviceset="R-EU_" device="R0805" value="10k"/>
 <part name="C7" library="rcl" deviceset="C-EU" device="C0805K" value="0.1uF"/>
 <part name="R14" library="rcl" deviceset="R-EU_" device="R0805" value="10k"/>
 <part name="R15" library="rcl" deviceset="R-EU_" device="R0805" value="3.3k"/>
