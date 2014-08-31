@@ -1,6 +1,4 @@
-#include "SimpleCrc.h"
-
-#if ENABLED_SIMPLE_CRC
+#include <SimpleCrc/SimpleCrc.h>
 
 SimpleCrc::SimpleCrc(const String &source) :
 	m_source(source)
@@ -50,6 +48,3 @@ uint16_t SimpleCrc::fletcher16(const String &data) {
 	sum2 = (sum2 & 0xff) + (sum2 >> 8);
 	return sum2 << 8 | sum1;
 }
-
-#endif // ENABLED_SIMPLE_CRC
-

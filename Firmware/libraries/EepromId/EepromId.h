@@ -1,9 +1,7 @@
 #ifndef __EEPROM_ID_H__
 #define __EEPROM_ID_H__
 
-#include "ElibattFramework.h"
-
-#if ENABLED_EEPROM_ID
+#include "Arduino.h"
 
 /**
  * Allows any application to retrieve, set and update an unique serial number into the Arduino's
@@ -52,5 +50,4 @@ public:
 	bool update(const String &newId);
 };
 
-#endif // ENABLED_EEPROM_ID
 #endif // __EEPROM_ID_H__

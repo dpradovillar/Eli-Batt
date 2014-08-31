@@ -1,9 +1,7 @@
 #ifndef __SAMPLE_COLLECTOR_H__
 #define __SAMPLE_COLLECTOR_H__
 
-#include "ElibattFramework.h"
-
-#if ENABLED_SAMPLE_COLLECTOR
+#include "Arduino.h"
 
 /**
  * Defines an interface to  define a method to be executed whenever the SampleClock determines a
@@ -32,6 +30,28 @@ public:
 };
 
 /**
+ * Convenient class, to make a LED blink at regular intervals;
+ */
+class LedBlinkCallback : public SampleCallback {
+private:
+	int m_pin;
+	int m_state;
+
+public:
+	/**
+	 * Empty constructor, make sure to call the setup method.
+	 */
+	LedBlinkCallback();
+	
+	/**
+	 * Initializes this object, make sure to call this method once, in the main setup method.
+	 */
+	void setup(int pin);
+
+	void eventDetected(uint32_t current_usecs);
+};
+
+/**
  * Keeps track of frequency and current time, to schedule the execution of actions at regular
  * intervals.
  * <p/>
@@ -49,15 +69,19 @@ private:
 	uint32_t m_period;
 
 	/** Time of the last action triggerd by this object. */
-	uint16_t m_lastloop;
+	uint32_t m_lastloop;
 
 	/** Object that will get its eventDetected() method called when the period time has elapsed. */
-	SampleCallback m_callback;
+	SampleCallback *m_callback;
 
 public:
+	/**
+	 * Convenient empty constructor to define global variables.
+	 */
+	SampleClock();
 
 	/**
-	 * Constructs a SampleClock with a given frequency (speed rate at which an action will be
+	 * Initializes a SampleClock with a given frequency (speed rate at which an action will be
 	 * executed) and a callback, that defines a custom action to be executed.
 	 * <p/>
 	 * For fs (the sampling frequency), make sure to chose any of the following frequencies:
@@ -99,10 +123,10 @@ public:
 	 * Chosing a different frequency will imply an erratic behaviour, as the internal clock can't
 	 * handle other timing resolutions.
 	 * <p/>
-	 * For frequencies like 0.1Hz, 0.2Hz or any other fractionary value, please refer to the
-	 * method setPeriod(uint32_t).
+	 * For frequencies like 0.1Hz, 0.2Hz or any other fractionary value, please refer to the method
+	 * setPeriod(uint32_t).
 	 */
-	SampleClock(uint32_t fs, const SampleCallback &callback, bool useFrequency);
+	void setup(uint32_t fs, SampleCallback *callback);
 
 	/**
 	* Sets the period to be elapsed between successive callback action calls.
@@ -164,5 +188,4 @@ public:
 	void loop(uint32_t current_usecs);
 };
 
-#endif // ENABLED_SAMPLE_COLLECTOR
 #endif // __SAMPLE_COLLECTOR_H__

@@ -1,9 +1,7 @@
 #ifndef __SIMPLE_CRC_H__
 #define __SIMPLE_CRC_H__
 
-#include "ElibattFramework.h"
-
-#if ENABLED_SIMPLE_CRC
+#include "Arduino.h"
 
 /**
  * Provides easy-to-use utilitary functions for checksum calculation.
@@ -40,5 +38,4 @@ public:
 	static uint16_t fletcher16(const String &data);
 };
 
-#endif // ENABLED_SIMPLE_CRC
 #endif // __SIMPLE_CRC_H__

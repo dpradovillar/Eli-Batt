@@ -1,6 +1,4 @@
-#include "EepromId.h"
-
-#if ENABLED_EEPROM_ID
+#include <EepromId/EepromId.h>
 
 EepromId::EepromId() {
 }
@@ -22,13 +20,11 @@ String EepromId::read() {
 	result = result.substring(0, len);
 
 	// Only check checksum, if the crc module is enabled.
-#if ENABLED_SIMPLE_CRC
 	byte buffer[2];
 	SimpleCrc(result).getCrc16(buffer);
 	if (buffer[0]!=hiCrc || buffer[1]!=loCrc) {
 		return ID_UNKNOWN;
 	}
-#endif
 	return result;
 }
 
@@ -72,6 +68,3 @@ bool EepromId::update(const String &newId) {
 		write(toWrite);
 	}
 }
-
-#endif // ENABLED_EEPROM_ID
-
