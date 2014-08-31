@@ -24,11 +24,11 @@ test del led 13 de arduino, habría que crear el archivo Firmware/pruebas/led13/
 y dentro acceder a la librería LedTester de la siguiente forma (la librería es ficticia,
 para propósitos educativos):
 
-  #include ".../.../libraries/LedTester/led_tester.h"
+  #include "../../libraries/LedTester/led_tester.h"
   LedTester lt;
   void setup() {
     lt.preparePin(13);
   }
   void loop() {
-    lt.test();
+    lt.loop();
   }
