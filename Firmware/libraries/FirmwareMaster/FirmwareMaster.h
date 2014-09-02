@@ -4,8 +4,8 @@
 class FirmwareMaster {
 public:
     FirmwareMaster();
-	void setup();
-	void loop();
+    void setup();
+    void loop();
 };
 
 #endif // __FIRMWARE_MASTER_H_

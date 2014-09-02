@@ -2,7 +2,7 @@
 #define response_length 80
 #include "arduino.h"
 #include "Message.h"
-#include "SoftwareSerial.h"
+#include <SoftwareSerial.h>
 
 #define COMM_HARDWARE_0 1
 #define COMM_HARDWARE_1 2

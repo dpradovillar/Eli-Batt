@@ -1,10 +1,11 @@
-#include <FirmwareMaster.h>
+#include <ArduinoSoftwareSerial.h>
+#include <Endpoint.h>
 
-FirmwareMaster f;
+//SerialEndpoint se;
 
 void setup() {
-  f.setup();
+    //se.setup(0, 1, 9600);
 }
 void loop() {
-  f.loop();
+    
 }

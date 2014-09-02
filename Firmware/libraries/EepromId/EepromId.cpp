@@ -1,70 +1,64 @@
-#include <EepromId/EepromId.h>
+#include <EepromId.h>
 
-EepromId::EepromId() {
+void EepromId::read(byte *buff) {
+    byte addr = ID_EEPROM_OFFSET;
+    byte hiCrc = EEPROM.read(addr++);
+    byte loCrc = EEPROM.read(addr++);
+    uint16_t eepromCrc = Utils::toShort(hiCrc, loCrc);
+
+    for(byte i = 0; i < ID_LENGTH; i++){
+        buff[i] = EEPROM.read(addr++);
+    }
+
+    uint16_t crc = SimpleCrc::crc16(buff, ID_LENGTH);
+    if (crc != eepromCrc) {
+        Utils::copyArray(ID_UNKNOWN, buff, ID_LENGTH);
+        return;
+    }
 }
 
-String EepromId::read() {
-	byte addr = ID_EEPROM_OFFSET;
-	byte hiCrc = EEPROM.read(addr++);
-	byte loCrc = EEPROM.read(addr++);
+bool EepromId::write(byte *newId) {
+    byte addr = ID_EEPROM_OFFSET;
+    // Calculate the checksum for the id being written
+    uint16_t crcToWrite = SimpleCrc::crc16(newId, ID_LENGTH);
+    byte hi, lo;
+    Utils::toByte(crcToWrite, &hi, &lo);
 
-	byte len   = EEPROM.read(addr++);
-	if (len > 12){
-		return ID_UNKNOWN;
-	}
-	String result;
-	result.reserve(len);
-	for(int i = 0; i < len; i++){
-		result.setCharAt(i, EEPROM.read(addr++);
-	}
-	result = result.substring(0, len);
+    // Write into first 2 bytes of the EEPROM, the 2 bytes of the crc
+    EEPROM.write(addr++, hi);
+    EEPROM.write(addr++, lo);
 
-	// Only check checksum, if the crc module is enabled.
-	byte buffer[2];
-	SimpleCrc(result).getCrc16(buffer);
-	if (buffer[0]!=hiCrc || buffer[1]!=loCrc) {
-		return ID_UNKNOWN;
-	}
-	return result;
+    // write the ID_LENGTH bytes of the id.
+    for(int i = 0; i < ID_LENGTH; i++) {
+        EEPROM.write(addr++, newId[i]);
+    }
+    return true;
 }
 
-bool EepromId::write(const String &newId) {
-	// Make a serial of the form '0000000...000'
-	String toWrite;
-	toWrite.reserve(ID_LENGTH);
-
-	// Put the first ID_LENGTH or less characters of newId into toWrite, aligned to the right. For
-	// example, if newId is "13b4", then, the resulting toWrite will be "??...??13B4"
-	int len = min(ID_LENGTH, newId.length());
-	int toPad = ID_LENGTH-len; // Number of trailing zeros at the left.
-	for (int i = 0; i < len; i++){
-		toWrite.setCharAt(toPad+i, toUpper(newId[i]));
-	}
-	// Replace the first characters with zeros.
-	for(int i = 0; i < toPad; i++) {
-		toWrite.setCharAt(i, '0');
-	}
-
-	byte addr = ID_EEPROM_OFFSET;
-	// Calculate the checksum for the id being written
-	byte buffer[2];
-	SimpleCrc(toWrite).getCrc16(buffer);
-
-	// Write into first 3 bytes of the EEPROM, the 2 bytes of the crc
-	EEPROM.write(addr++, buffer[0]);
-	EEPROM.write(addr++, buffer[1]);
-	// and the length of the id
-	EEPROM.write(addr++, (byte)ID_LENGTH);
-
-	// write the ID_LENGTH bytes of the id.
-	for(int i = 0; i < ID_LENGTH; i++) {
-		EEPROM.write(addr++, toWrite[i]);
-	}
+bool EepromId::update(byte *newId) {
+    byte eId[ID_LENGTH];
+    for(byte i = 0; i < ID_LENGTH; i++){
+        eId[i] = EEPROM.read(ID_EEPROM_OFFSET+2+i);
+        Serial.print("read from eeprom:");
+        Serial.println(eId[i], DEC);
+    }
+    Serial.println("Checking unequality");
+    if (!Utils::arrayEquals(eId, newId, ID_LENGTH)) {
+    	Serial.println("not equals!");
+        //return write(newId);
+    } else {
+    	Serial.println("equals!");
+    }
+    return false;
 }
 
-bool EepromId::update(const String &newId) {
-	String toWrite = newId.length()>ID_LENGTH ? newId.substring(0, ID_LENGTH) : newId;
-	if (read() != toWrite) {
-		write(toWrite);
-	}
+bool EepromId::writeId(uint32_t id) {
+    byte buffer[4];
+    Utils::toByte(id, buffer);
+    return update(buffer);
+}
+uint32_t EepromId::readId() {
+    byte buffer[4];
+    //read(buffer);
+    return Utils::toInt32(buffer);
 }

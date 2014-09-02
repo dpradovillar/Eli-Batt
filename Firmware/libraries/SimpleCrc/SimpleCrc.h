@@ -7,35 +7,18 @@
  * Provides easy-to-use utilitary functions for checksum calculation.
  */
 class SimpleCrc {
-private:
-	/**
-	 * Content that will be reduced to a checksum.
-	 */
-	String m_source;
-
 public:
-	/**
-	 * Builds an object with the given content for the checksum calculation, by any algorithm.
-	 */
-	SimpleCrc(const String &source);
+    /**
+     * Taken from: http://stackoverflow.com/a/23726131, slightly modified to operate on Arduino's
+     * builtin datatypes.
+     */
+    static uint16_t crc16(byte *inputBuffer, size_t len);
 
-	/** Implementation of the crc16 CCITT algorithm. */
-	void getCrc16(byte buffer[2]);
-
-	/** Implementation of Fletcher's algorithm. */
-	void getFletcher16(byte buffer[2]);
-
-	/**
-	 * Taken from: http://stackoverflow.com/a/23726131, slightly modified to operate on Arduino's
-	 * builtin datatypes.
-	 */
-	static uint16_t crc16(const String &data);
-
-	/**
-	 * Taken from: http://en.wikipedia.org/wiki/Fletcher's_checksum, slightly modified to operate on
-	 * Arduino's builtin datatypes.
-	 */
-	static uint16_t fletcher16(const String &data);
+    /**
+     * Taken from: http://en.wikipedia.org/wiki/Fletcher's_checksum, slightly modified to operate on
+     * Arduino's builtin datatypes.
+     */
+    static uint16_t fletcher16(byte *inputBuffer, size_t len);
 };
 
 #endif // __SIMPLE_CRC_H__

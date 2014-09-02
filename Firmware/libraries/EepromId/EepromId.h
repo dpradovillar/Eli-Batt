@@ -3,6 +3,15 @@
 
 #include "Arduino.h"
 
+#include <SimpleCrc.h>
+#include <EEPROM.h>
+#include <Utils.h>
+
+// This should'n be bigger than 8 or 12 bytes as the EEPROM is very small!
+#define ID_LENGTH         4
+#define ID_UNKNOWN        "\0\0\0\0"
+#define ID_EEPROM_OFFSET  0
+
 /**
  * Allows any application to retrieve, set and update an unique serial number into the Arduino's
  * builtin EEPROM memory.
@@ -15,39 +24,30 @@
  * only at the setup) and using delays to avoid overloading the memory access).
  */
 class EepromId {
-private:
-	static char toUpper(char c);
-
 public:
-	/**
-	 * Creates an object that can read, write and update the internal EEPROM memory, with a value
-	 * for the unique serial number for a microcontroller.
-	 * <p/>
-	 * By default uses a length of 8  hexadecimal ascii characters. See the top of this file for
-	 * other parameters.
-	 */
-	EepromId();
+    /**
+     * Reads the serial number from EEPROM and returns it. In case of any error, checksum invalid,
+     * can't read, etc, ID_UNKNOW is returned instead.
+     */
+    void read(byte *buff);
 
-	/**
-	 * Reads the serial number from EEPROM and returns it. In case of any error, checksum invalid,
-	 * can't read, etc, ID_UNKNOW is returned instead.
-	 */
-	String read();
+    /**
+     * Writes the serial number to the EEPROM and returns true if everything went ok. The first
+     * ID_LENGTH or fewer characters are taken.
+     * <p/>
+     * Returns true if the value was written correctly, otherwise false.
+     */
+    bool write(byte *newId);
 
-	/**
-	 * Writes the serial number to the EEPROM and returns true if everything went ok. The first
-	 * ID_LENGTH or fewer characters are taken.
-	 * <p/>
-	 * Returns true if the value was written correctly, otherwise false.
-	 */
-	bool write(const String &newId);
+    /**
+     * Updates the serial number in the EEPROM by first looking at its value, and performing the
+     * write operation only if the value is different. This is the recommended way of writing values
+     * to the EEPROM memory.
+     */
+    bool update(byte *newId);
 
-	/**
-	 * Updates the serial number in the EEPROM by first looking at its value, and performing the
-	 * write operation only if the value is different. This is the recommended way of writing values
-	 * to the EEPROM memory.
-	 */
-	bool update(const String &newId);
+    bool writeId(uint32_t id);
+    uint32_t readId();
 };
 
 #endif // __EEPROM_ID_H__

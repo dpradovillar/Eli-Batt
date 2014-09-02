@@ -105,11 +105,11 @@ DateTime::DateTime (const char* date, const char* time)
     {
     case 'J':
         if ( date[1] == 'a' )
-	    m = 1;
-	else if ( date[2] == 'n' )
-	    m = 6;
-	else
-	    m = 7;
+        m = 1;
+    else if ( date[2] == 'n' )
+        m = 6;
+    else
+        m = 7;
         break;
     case 'F':
         m = 2;
