@@ -1,5 +1,9 @@
 #include <SampleCollector.h>
 
+SampleCallback::~SampleCallback() {
+
+}
+
 void SampleCallback::eventDetected(uint32_t current_usecs) {
     // This method is intended to be overriden!
 }
@@ -18,12 +22,12 @@ void SerialCallback::eventDetected(uint32_t current_usecs) {
     Serial.println();
 }
 
-LedBlinkCallback::LedBlinkCallback() {
+LedBlinkCallback::LedBlinkCallback() :
+    m_pin(0), m_state(LOW) {
 }
 
 void LedBlinkCallback::setup(int pin) {
-	m_state = LOW;
-	m_pin = pin;
+    m_pin = pin;
     pinMode(m_pin, OUTPUT);
 }
 
@@ -32,8 +36,11 @@ void LedBlinkCallback::eventDetected(uint32_t current_usecs) {
     digitalWrite(m_pin, m_state);
 }
 
-SampleClock::SampleClock() {
-}
+SampleClock::SampleClock() :
+    m_period(0),
+    m_lastloop(0),
+    m_callback(NULL)
+{}
 
 void SampleClock::setup(uint32_t fs, SampleCallback *callback) {
     m_period = 1000000/fs;

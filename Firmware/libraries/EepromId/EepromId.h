@@ -46,7 +46,14 @@ public:
      */
     bool update(byte *newId);
 
+    /**
+     *
+     */
     bool writeId(uint32_t id);
+
+    /**
+     *
+     */
     uint32_t readId();
 };
 

@@ -43,3 +43,17 @@ bool Utils::arrayEquals(byte *src1, byte *src2, size_t len) {
     }
     return true;
 }
+
+bool Utils::arrayEquals(const char *src1, byte *src2, size_t len) {
+    return arrayEquals(src2, src1, len);
+}
+bool Utils::arrayEquals(byte *src2, const char *src1, size_t len) {
+    return arrayEquals(src2, (byte*)src1, len);
+}
+
+void Utils::toHex(char *buffer, byte value) {
+    byte lo = value % 16;
+    byte hi = value / 16;
+    buffer[0] = (lo < 10 ? '0'+lo : 'A'+(lo-10));
+    buffer[1] = (hi < 10 ? '0'+hi : 'A'+(hi-10));
+}

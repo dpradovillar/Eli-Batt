@@ -14,6 +14,8 @@
  */
 class SampleCallback {
 public:
+    virtual ~SampleCallback();
+
     /**
     * Method that gets called when the period of time has elapsed (for the given frequency).
     */

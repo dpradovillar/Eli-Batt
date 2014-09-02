@@ -2,6 +2,9 @@
 
 // TODO(rtapiapincheira): add timeout mechanism.
 
+DataObject::~DataObject() {
+}
+
 void DataStreamWriter::setup(Endpoint *endpoint) {
     m_endpoint = endpoint;
 }

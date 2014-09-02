@@ -13,11 +13,11 @@ class DataStreamReader;
  * by separating the data (re)construction from the sending mechanism.
  */
 class DataObject {
-private:
 public:
-    virtual size_t writeTo(DataStreamWriter *dsw);
-    virtual size_t readFrom(DataStreamReader *dsr);
-    virtual uint16_t getCrc();
+    virtual ~DataObject();
+    virtual size_t writeTo(DataStreamWriter *dsw) = 0;
+    virtual size_t readFrom(DataStreamReader *dsr) = 0;
+    virtual uint16_t calculateCrc() = 0;
 };
 
 /**

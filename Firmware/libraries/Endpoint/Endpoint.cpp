@@ -1,5 +1,8 @@
 #include <Endpoint.h>
 
+Endpoint::~Endpoint() {
+}
+
 size_t Endpoint::write(byte *arr, size_t len) {
     write(arr, 0, len);
 }
@@ -98,16 +101,16 @@ size_t SerialEndpoint::write(byte b) {
     if (m_hardwareSerialIndex >= 0) {
 #ifdef __AVR_ATmega1280__
         switch(m_hardwareSerialIndex) {
-        case 0: return Serial.print(b);
-        case 1: return Serial1.print(b);
-        case 2: return Serial2.print(b);
-        case 3: return Serial3.print(b);
+        case 0: return Serial.write(&b, 1);
+        case 1: return Serial1.write(&b, 1);
+        case 2: return Serial2.write(&b, 1);
+        case 3: return Serial3.write(&b, 1);
         }
 #else
-        return Serial.print(b);
+        return Serial.write(&b, 1);
 #endif
     } else {
-        return m_softwareSerial.print(b);
+    	return m_softwareSerial.write(&b, 1);
     }
 }
 
@@ -216,31 +219,24 @@ size_t SerialEndpoint::print(char *s, int len) {
     return counter;
 }
 
-size_t SerialEndpoint::print(const char *s, int x) {
-    return print(s) + print(x);
-}
-
 size_t SerialEndpoint::println() {
-    return print("\n");
+    return print(CR_LF);
 }
 
 size_t SerialEndpoint::println(int x) {
-    return print(x) + print("\n");
+    return print(x) + print(CR_LF);
 }
 
 size_t SerialEndpoint::println(char c) {
-    return print(c) + print("\n");
+    return print(c) + print(CR_LF);
 }
 
 size_t SerialEndpoint::println(const char *s) {
-    return print(s) + print("\n");
+    return print(s) + print(CR_LF);
 }
 
 size_t SerialEndpoint::println(char *s, int len) {
-    return print(s, len) + print("\n");
+    return print(s, len) + print(CR_LF);
 }
 
-size_t SerialEndpoint::println(const char *s, int x) {
-    return print(s, x) + print("\n");
-}
 

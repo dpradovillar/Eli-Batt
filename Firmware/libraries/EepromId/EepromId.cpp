@@ -11,6 +11,7 @@ void EepromId::read(byte *buff) {
     }
 
     uint16_t crc = SimpleCrc::crc16(buff, ID_LENGTH);
+
     if (crc != eepromCrc) {
         Utils::copyArray(ID_UNKNOWN, buff, ID_LENGTH);
         return;
@@ -21,6 +22,7 @@ bool EepromId::write(byte *newId) {
     byte addr = ID_EEPROM_OFFSET;
     // Calculate the checksum for the id being written
     uint16_t crcToWrite = SimpleCrc::crc16(newId, ID_LENGTH);
+
     byte hi, lo;
     Utils::toByte(crcToWrite, &hi, &lo);
 
@@ -39,15 +41,9 @@ bool EepromId::update(byte *newId) {
     byte eId[ID_LENGTH];
     for(byte i = 0; i < ID_LENGTH; i++){
         eId[i] = EEPROM.read(ID_EEPROM_OFFSET+2+i);
-        Serial.print("read from eeprom:");
-        Serial.println(eId[i], DEC);
     }
-    Serial.println("Checking unequality");
     if (!Utils::arrayEquals(eId, newId, ID_LENGTH)) {
-    	Serial.println("not equals!");
-        //return write(newId);
-    } else {
-    	Serial.println("equals!");
+        return write(newId);
     }
     return false;
 }
@@ -59,6 +55,6 @@ bool EepromId::writeId(uint32_t id) {
 }
 uint32_t EepromId::readId() {
     byte buffer[4];
-    //read(buffer);
+    read(buffer);
     return Utils::toInt32(buffer);
 }

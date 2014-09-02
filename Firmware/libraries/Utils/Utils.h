@@ -18,6 +18,10 @@ public:
     static void toByte(uint32_t x, byte *buff);
 
     static bool arrayEquals(byte *src1, byte *src2, size_t len);
+    static bool arrayEquals(const char *src1, byte *src2, size_t len);
+    static bool arrayEquals(byte *src2, const char *src1, size_t len);
+
+    static void toHex(char *buffer, byte value);
 };
 
 #endif // __H_UTILS_
