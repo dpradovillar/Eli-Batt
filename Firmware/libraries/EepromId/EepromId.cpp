@@ -23,12 +23,12 @@ bool EepromId::write(byte *newId) {
     // Calculate the checksum for the id being written
     uint16_t crcToWrite = SimpleCrc::crc16(newId, ID_LENGTH);
 
-    byte hi, lo;
-    Utils::toByte(crcToWrite, &hi, &lo);
+    byte buff[2];
+    Utils::toByte(crcToWrite, buff);
 
     // Write into first 2 bytes of the EEPROM, the 2 bytes of the crc
-    EEPROM.write(addr++, hi);
-    EEPROM.write(addr++, lo);
+    EEPROM.write(addr++, buff[0]);
+    EEPROM.write(addr++, buff[1]);
 
     // write the ID_LENGTH bytes of the id.
     for(int i = 0; i < ID_LENGTH; i++) {

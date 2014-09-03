@@ -12,7 +12,7 @@ public:
     static void copyArray(const char *src, byte *dst, size_t len);
 
     static uint16_t toShort(byte hi, byte lo);
-    static void toByte(uint16_t x, byte *hi, byte *lo);
+    static void toByte(uint16_t x, byte *buffer);
 
     static uint32_t toInt32(byte *buff);
     static void toByte(uint32_t x, byte *buff);

@@ -54,6 +54,7 @@ public:
 };
 
 class SerialOutputHandler : public Handler {
+public:
     bool handleMessage(Message *message);
 };
 

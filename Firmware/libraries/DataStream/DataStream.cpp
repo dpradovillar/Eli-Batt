@@ -18,9 +18,12 @@ size_t DataStreamWriter::writeByte(byte b) {
 }
 
 size_t DataStreamWriter::writeShort(short s) {
-     byte hi = (byte)(s >> 8);
-     byte lo = (byte)(s >> 0);
-     return m_endpoint->write(hi) + m_endpoint->write(lo);
+    byte hi = (byte)(s >> 8);
+    byte lo = (byte)(s >> 0);
+    size_t r = 0;
+    r += m_endpoint->write(hi);
+    r += m_endpoint->write(lo);
+    return r;
 }
 
 size_t DataStreamWriter::writeString(const String &s) {
@@ -54,13 +57,13 @@ byte DataStreamReader::readByte(bool *ok) {
 }
 
 short DataStreamReader::readShort(bool *ok) {
-    while(!m_endpoint->available() < 2);
+    while(m_endpoint->available() < 2);
     int16_t hi = m_endpoint->read();
     int16_t lo = m_endpoint->read();
     if (ok && (hi < 0 || lo < 0)) {
         *ok = false;
     }
-    return (hi << 8 | lo << 0) & 0xFFFF;
+    return (short)(hi << 8 | lo << 0);
 }
 
 int32_t DataStreamReader::readInt(bool *ok) {
@@ -69,37 +72,26 @@ int32_t DataStreamReader::readInt(bool *ok) {
     if (ok && !*ok) {
         return 0;
     }
-    return (hi << 16 | lo << 0) & 0xFFFFFFFF;
+    return (int32_t)(hi << 16 | lo << 0);
 }
 
 void DataStreamReader::readFully(byte *buff, size_t len, bool *ok) {
     size_t i = 0;
     while(i < len) {
-        int av = m_endpoint->available();
-        av = min(len, av);
-        m_endpoint->read(buff, i, len-i);
-        i += av;
+        if (m_endpoint->available()){
+            int16_t code = m_endpoint->read();
+            if (code == -1) {
+                if(ok) {
+                    *ok = false;
+                }
+                return;
+            }
+            buff[i] = (byte)code;
+            i++;
+        }
     }
 }
 
-String DataStreamReader::readString(bool *ok) {
-	uint16_t num = readShort(ok);
-    if (ok && !*ok) {
-        return String();
-    }
-    String res;
-    res.reserve(num);
-    size_t i = 0;
-    while(i<num) {
-        if (m_endpoint->available()) {
-            res[i++] = readByte(ok);
-            if (ok && !*ok) {
-                return String();
-            }
-        }
-    }
-    return res;
-}
 /*
 float DataStreamReader::readFloat(bool *ok) {
     // TODO(rtapiapincheira): maybe flip back the bytes, because of the endianess

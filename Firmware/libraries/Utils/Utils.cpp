@@ -15,9 +15,9 @@ void Utils::copyArray(const char *src, byte *dst, size_t len) {
 uint16_t Utils::toShort(byte hi, byte lo) {
     return (uint16_t)(((((uint16_t)hi) << 8) | (((uint16_t)lo) << 0)) & 0xFFFF);
 }
-void Utils::toByte(uint16_t x, byte *hi, byte *lo) {
-    *lo = (byte)((x >> 0) & 0xFF);
-    *hi = (byte)((x >> 8) & 0xFF);
+void Utils::toByte(uint16_t x, byte *buffer) {
+    buffer[0] = (byte)(x >> 8);
+    buffer[1] = (byte)(x >> 0);
 }
 
 uint32_t Utils::toInt32(byte *buff) {
@@ -29,15 +29,15 @@ uint32_t Utils::toInt32(byte *buff) {
 }
 
 void Utils::toByte(uint32_t x, byte *buff) {
-    buff[0] = (byte)(x >> 24) & 0xFF;
-    buff[1] = (byte)(x >> 16) & 0xFF;
-    buff[2] = (byte)(x >> 8) & 0xFF;
-    buff[3] = (byte)(x >> 0) & 0xFF;
+    buff[0] = (byte)(x >> 24);
+    buff[1] = (byte)(x >> 16);
+    buff[2] = (byte)(x >> 8);
+    buff[3] = (byte)(x >> 0);
 }
 
 bool Utils::arrayEquals(byte *src1, byte *src2, size_t len) {
     for(size_t i = 0; i < len; i++) {
-        if (src1[1] != src2[2]) {
+        if (src1[i] != src2[i]) {
             return false;
         }
     }
@@ -52,8 +52,8 @@ bool Utils::arrayEquals(byte *src2, const char *src1, size_t len) {
 }
 
 void Utils::toHex(char *buffer, byte value) {
-    byte lo = value % 16;
     byte hi = value / 16;
-    buffer[0] = (lo < 10 ? '0'+lo : 'A'+(lo-10));
-    buffer[1] = (hi < 10 ? '0'+hi : 'A'+(hi-10));
+    byte lo = value % 16;
+    buffer[0] = (hi < 10 ? '0'+hi : 'A'+(hi-10));
+    buffer[1] = (lo < 10 ? '0'+lo : 'A'+(lo-10));
 }

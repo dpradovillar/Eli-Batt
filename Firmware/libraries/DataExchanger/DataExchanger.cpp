@@ -20,6 +20,7 @@ size_t Message::writeTo(DataStreamWriter *dsw) {
 
 size_t Message::readFrom(DataStreamReader *dsr) {
     bool ok = true;
+
     m_crc = dsr->readShort(&ok);
     size_t r = 2;
     if (!ok) return -1;
@@ -51,15 +52,13 @@ size_t Message::readFrom(DataStreamReader *dsr) {
 }
 
 uint16_t Message::calculateCrc() {
-    byte buffer[MESSAGE_SIZE];
-    buffer[0] = (byte)(m_crc >> 8);
-    buffer[1] = (byte)(m_crc >> 0);
-    buffer[2] = m_type;
-    buffer[3] = m_status;
-    Utils::copyArray(m_fromId, buffer+4, ID_DATA_LENGTH);
-    Utils::copyArray(m_targetId, buffer+4+ID_DATA_LENGTH, ID_DATA_LENGTH);
-    Utils::copyArray(m_data, buffer+4+2*ID_DATA_LENGTH, CUSTOM_MESSAGE_DATA_LENGTH);
-    return SimpleCrc::crc16(buffer, MESSAGE_SIZE);
+    byte buffer[MESSAGE_SIZE-2];
+    buffer[0] = m_type;
+    buffer[1] = m_status;
+    Utils::copyArray(m_fromId, buffer+2, ID_DATA_LENGTH);
+    Utils::copyArray(m_targetId, buffer+2+ID_DATA_LENGTH, ID_DATA_LENGTH);
+    Utils::copyArray(m_data, buffer+2+2*ID_DATA_LENGTH, CUSTOM_MESSAGE_DATA_LENGTH);
+    return SimpleCrc::crc16(buffer, MESSAGE_SIZE-2);
 }
 
 void Message::swapIds() {
@@ -74,30 +73,30 @@ Handler::~Handler() {
 }
 
 bool SerialOutputHandler::handleMessage(Message *message) {
-    Serial.print("crc16\t:"); Serial.println(message->m_crc);
+    Serial.print("crc16\t:");
+    byte buff[2];
+    Utils::toByte(message->m_crc, buff);
+    Serial.print("byte1="); Serial.print((int)buff[0]);
+    Serial.print(" byte2="); Serial.print((int)buff[1]);
+    Serial.println();
     Serial.print("type\t:");  Serial.println(message->m_type);
     Serial.print("status\t:");Serial.println(message->m_status);
     Serial.print("fromId\t:");
-    char buff[2];
     for(size_t i = 0; i < ID_DATA_LENGTH; i++) {
-        Utils::toHex(buff, message->m_fromId[i]);
         Serial.print(" ");
-        Serial.print(buff[0]);
-        Serial.print(buff[2]);
+        Serial.print((char)(message->m_fromId[i]));
     }
     Serial.println();
+    Serial.print("targetId:");
     for(size_t i = 0; i < ID_DATA_LENGTH; i++) {
-        Utils::toHex(buff, message->m_targetId[i]);
         Serial.print(" ");
-        Serial.print(buff[0]);
-        Serial.print(buff[2]);
+        Serial.print((char)(message->m_targetId[i]));
     }
     Serial.println();
-    for(size_t i = 0; i < ID_DATA_LENGTH; i++) {
-        Utils::toHex(buff, message->m_data[i]);
+    Serial.print("data\t:");
+    for(size_t i = 0; i < CUSTOM_MESSAGE_DATA_LENGTH; i++) {
         Serial.print(" ");
-        Serial.print(buff[0]);
-        Serial.print(buff[2]);
+        Serial.print((char)(message->m_data[i]));
     }
     Serial.println();
     return false; // This message is consumed, and does not generate a response.
