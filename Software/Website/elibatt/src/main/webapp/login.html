@@ -1,0 +1,104 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Elibatt :: internal site</title>
+
+    <!-- CSS -->
+    <link href="style/css/transdmin.css" rel="stylesheet" type="text/css" media="screen"/>
+    <!--[if IE 6]>
+    <link rel="stylesheet" type="text/css" media="screen" href="style/css/ie6.css"/><![endif]-->
+    <!--[if IE 7]>
+    <link rel="stylesheet" type="text/css" media="screen" href="style/css/ie7.css"/><![endif]-->
+
+    <!-- JavaScripts-->
+    <script type="text/javascript" src="style/js/jquery.js"></script>
+    <script type="text/javascript" src="style/js/jNice.js"></script>
+</head>
+
+<body>
+<div id="wrapper">
+
+    <!-- h1 tag stays for the logo, you can use the a tag for linking the index page -->
+
+    <div class="welcome">&nbsp;</div>
+
+    <br clear="right"/>
+
+    <!-- You can name the links with lowercase, they will be transformed to uppercase by CSS, we prefered to name them with uppercase to have the same effect with disabled stylesheet -->
+    <ul id="mainNav">
+    </ul>
+
+    <!-- // #end mainNav -->
+
+    <div id="containerHolder">
+        <div id="container">
+
+            <div id="sidebar">
+                <ul class="sideNav">
+                </ul>
+                <!-- // .sideNav -->
+            </div>
+            <!-- // #sidebar -->
+
+
+            <!-- h2 stays for breadcrumbs -->
+            <h2><a href=".">Elibatt</a> &raquo; <a href="login.html" class="active">Login</a></h2>
+
+            <div id="main">
+
+
+
+                <h3>Access login</h3>
+
+                <fieldset>
+                    <form name="f" action="loginProcess" method="post" class="jNice">
+
+                        <span id="error-msg"></span>
+
+                        <p>
+                            <label for="j_username">Usuario:</label>
+                            <input type="text" id="j_username" name="j_username" value="1"/>
+                        </p>
+
+                        <p>
+                            <label for="j_password">Password :</label>
+                            <input type="password" id="j_password" name="j_password" value="1"/>
+                        </p>
+
+                        <p>
+                            <label for="CAPTCHA_CODE">Code :</label>
+                            <img id="captcha" width="100" height="35" src="images/captcha" alt="Code" title="Code"/><br/><br/>
+                            <input id="CAPTCHA_CODE" name="CAPTCHA_CODE" value=""/>
+                        </p>
+
+                        <p>
+                            <input name="submit" class="button" type="submit" value="Enter"/>
+                        </p>
+
+                    </form>
+                </fieldset>
+            </div>
+            <!-- // #main -->
+
+
+
+            <div class="clear"></div>
+        </div>
+        <!-- // #container -->
+    </div>
+    <!-- // #containerHolder -->
+
+
+</div>
+<!-- end of wrapper -->
+
+<p id="footer">Elibatt internal site <a href="http://www.renetapia.cl" target="_blank">by renetapia</a> :: design <a href="https://github.com/zapnap/transdmin" target="_blank">by zapnap</a></p>
+
+
+</div>
+<!-- // #wrapper -->
+
+</body>
+</html>
