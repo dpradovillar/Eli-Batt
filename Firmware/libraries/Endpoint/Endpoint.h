@@ -24,6 +24,17 @@ public:
 
     virtual size_t write(byte *arr, size_t start, size_t len) = 0;
 	virtual size_t read(byte *arr, size_t start, size_t len) = 0;
+	
+    virtual size_t print(int x) = 0;
+    virtual size_t print(char c) = 0;
+    virtual size_t print(const char *s) = 0;
+    virtual size_t print(char *s, int len) = 0;
+
+    virtual size_t println() = 0;
+    virtual size_t println(int x) = 0;
+    virtual size_t println(char x) = 0;
+    virtual size_t println(const char *s) = 0;
+    virtual size_t println(char *s, int len) = 0;
 };
 
 /**

@@ -92,27 +92,6 @@ void DataStreamReader::readFully(byte *buff, size_t len, bool *ok) {
     }
 }
 
-/*
-float DataStreamReader::readFloat(bool *ok) {
-    // TODO(rtapiapincheira): maybe flip back the bytes, because of the endianess
-    char buff[4];
-    readFully(buff, 4, ok);
-    if (ok && !*ok) {
-        return 0.0f;
-    }
-    return *((float*)buff);
-}
-
-double DataStreamReader::readDouble(bool *ok) {
-    // TODO(rtapiapincheira): maybe flip back the bytes, because of the endianess
-    char buff[8];
-    readFully(buff, 8, ok);
-    if (ok && !*ok) {
-        return 0.0f;
-    }
-    return *((double*)buff);
-}
-*/
 void DataStreamReader::readObject(DataObject *obj, bool *ok) {
     size_t s = obj->readFrom(this);
     // We're using 2^16-1 as indicator of failure with unsigned ints.

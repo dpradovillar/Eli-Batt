@@ -55,26 +55,6 @@ public:
     short readShort(bool *ok=NULL);
     int32_t readInt(bool *ok=NULL);
     void readFully(byte *buff, size_t len, bool *ok=NULL);
-	String readString(bool* ok = NULL) {
-		uint16_t num = readShort(ok);
-		if (ok && !*ok) {
-			return String();
-		}
-		String res;
-		res.reserve(num);
-		size_t i = 0;
-		while (i < num) {
-			if (m_endpoint->available()) {
-				res[i++] = readByte(ok);
-				if (ok && !*ok) {
-					return String();
-				}
-			}
-		}
-		return res;
-	}
-    float readFloat(bool *ok=NULL);
-    double readDouble(bool *ok=NULL);
     void readObject(DataObject *obj, bool *ok=NULL);
 };
 
