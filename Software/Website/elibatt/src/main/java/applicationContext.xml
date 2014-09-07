@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:s="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <aop:config/>
+    <aop:aspectj-autoproxy/>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <context:annotation-config/>
+
+    <context:component-scan base-package="cl.renetapia.embeddedcontrol.*"/>
+
+    <!-- ########################################## Data Sources ########################################## -->
+
+    <context:property-placeholder location="classpath*:application-db.properties"/>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${database.driver}"/>
+        <property name="url" value="${database.url}"/>
+        <property name="username" value="${database.username}"/>
+        <property name="password" value="${database.password}"/>
+    </bean>
+
+    <!-- ####################################### Session Factories ########################################## -->
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="cl.renetapia.embeddedcontrol.ares.entity"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">${database.hbm2ddl.auto}</prop>
+                <prop key="hibernate.dialect">${database.dialect}</prop>
+                <prop key="connection.autocommit">${database.connection.autocommit}</prop>
+                <prop key="hibernate.show_sql">${database.show_sql}</prop>
+                <prop key="hibernate.format_sql">${database.format_sql}</prop>
+                <prop key="hibernate.c3p0.minPoolSize">${database.c3p0.minPoolSize}</prop>
+                <prop key="hibernate.c3p0.maxPoolSize">${database.c3p0.maxPoolSize}</prop>
+                <prop key="hibernate.c3p0.timeout">${database.c3p0.timeout}</prop>
+                <prop key="hibernate.c3p0.max_statement">${database.c3p0.max_statement}</prop>
+                <prop key="hibernate.c3p0.testConnectionOnCheckout">${database.c3p0.testConnectionOnCheckout}</prop>
+
+            </props>
+        </property>
+    </bean>
+
+    <!-- #################################### Transaction Manager ######################################### -->
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!-- #################################### Spring Security ############################################# -->
+
+    <!-- Recursos que pueden ser accesados sin autenticacion -->
+    <s:http pattern="/style/**" security="none"/>
+    <s:http pattern="/images/**" security="none"/>
+
+    <s:http pattern="/login.html" security="none"/>
+    <s:http pattern="/403.html" security="none"/>
+    <s:http pattern="/404.html" security="none"/>
+
+    <s:http
+            auto-config="false"
+            use-expressions="true"
+            access-denied-page="/403.html"
+            entry-point-ref="loginUrlAuthenticationEntryPoint">
+
+        <s:custom-filter ref="usernamePasswordAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
+
+        <s:logout logout-url="/logout" logout-success-url="/login.html"/>
+
+        <s:intercept-url pattern="/**" access="isAuthenticated()"/>
+
+        <s:session-management session-fixation-protection="newSession"/>
+
+    </s:http>
+
+    <bean id="loginUrlAuthenticationEntryPoint"
+          class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <property name="loginFormUrl" value="/login.html"/>
+    </bean>
+
+    <bean id="usernamePasswordAuthenticationFilter"
+          class="cl.renetapia.embeddedcontrol.ares.business.application.ExUsernamePasswordAuthenticationFilter">
+        <property name="filterProcessesUrl" value="/loginProcess"/>
+        <property name="authenticationSuccessHandler" ref="customAuthenticationSuccessHandler"/>
+        <property name="authenticationFailureHandler" ref="customAuthenticationFailureHandler"/>
+        <property name="authenticationManager" ref="theAuthenticationManager"/>
+    </bean>
+
+    <!-- bean 2: set the default failure url here -->
+    <bean id="customAuthenticationFailureHandler"
+          class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+        <property name="defaultFailureUrl" value="/login.html?error=true"/>
+    </bean>
+
+    <!-- bean 3: set the default target url here -->
+    <bean id="customAuthenticationSuccessHandler"
+          class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
+        <property name="defaultTargetUrl" value="/app/main/index.html"/>
+    </bean>
+
+    <s:authentication-manager alias="theAuthenticationManager">
+        <s:authentication-provider user-service-ref="securityUserDetailsService"/>
+    </s:authentication-manager>
+
+    <!-- #################################### DB bootstrap ############################################# -->
+
+    <!-- Listener para datos iniciales -->
+    <bean id="eventListenerBean"
+          class="cl.renetapia.embeddedcontrol.ares.business.application.ApplicationListenerBean"/>
+
+</beans>

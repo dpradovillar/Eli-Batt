@@ -1,0 +1,1 @@
+<p id="footer">Elibatt internal site <a href="http://www.renetapia.cl" target="_blank">by renetapia</a> :: design <a href="https://github.com/zapnap/transdmin" target="_blank">by zapnap</a></p>
