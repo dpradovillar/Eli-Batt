@@ -16,6 +16,7 @@ class DataObject {
 public:
     virtual ~DataObject();
     virtual size_t writeTo(DataStreamWriter *dsw) = 0;
+    virtual size_t writeAsciiTo(DataStreamWriter *dsw) = 0;
     virtual size_t readFrom(DataStreamReader *dsr) = 0;
     virtual uint16_t calculateCrc() = 0;
 };

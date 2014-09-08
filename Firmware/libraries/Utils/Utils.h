@@ -15,13 +15,15 @@ public:
     static void toByte(uint16_t x, byte *buffer);
 
     static uint32_t toInt32(byte *buff);
-    static void toByte(uint32_t x, byte *buff);
+    static void toByte(uint32_t x, byte *buffer4bytes);
 
     static bool arrayEquals(byte *src1, byte *src2, size_t len);
     static bool arrayEquals(const char *src1, byte *src2, size_t len);
     static bool arrayEquals(byte *src2, const char *src1, size_t len);
 
-    static void toHex(char *buffer, byte value);
+    static void toHex(char *buffer2bytes, byte value);
+    static void toHex(char *buffer4bytes, uint16_t value);
+    static void toHex(char *buffer8bytes, uint32_t value);
 };
 
 #endif // __H_UTILS_

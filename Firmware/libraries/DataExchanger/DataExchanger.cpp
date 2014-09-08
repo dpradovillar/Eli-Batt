@@ -151,8 +151,8 @@ void DataExchanger::process(
      * ids. Generally, the fromId field is the master id, and the targetId is a slave device id.
      * When the device sends a response back, those ids should be swapped. Depending on the content
      * of the message, the slave device may or may not send back a response (generally, commands do
-     * not require a response, while a get request will require). See the class Handler for details
-     * on how to process messages and stuff.
+     * not require a response, while a get request will require it). See the class Handler for
+     * details on how processing messages and stuff.
      */
     case TYPE_DATA:
         // If data message is addressed to me, process and maybe send response back to same

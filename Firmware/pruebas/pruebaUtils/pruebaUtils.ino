@@ -22,6 +22,13 @@ void setup() {
   Serial.print("Hex:");
   Serial.println(buffer);
   
+  uint32_t x = 315442569;
+  
+  char buffer2[9];
+  Utils::toHex(buffer2, x);
+  buffer2[8] = 0;
+  Serial.print("Hex2:");
+  Serial.println(buffer2);
 }
 
 void loop() {}

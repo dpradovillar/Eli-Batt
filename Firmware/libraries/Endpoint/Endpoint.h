@@ -62,12 +62,14 @@ public:
     size_t read(byte *arr, size_t start, size_t len);
 
     size_t print(int x);
+    size_t print(uint32_t x);
     size_t print(char c);
     size_t print(const char *s);
     size_t print(char *s, int len);
 
     size_t println();
     size_t println(int x);
+    size_t println(uint32_t x);
     size_t println(char x);
     size_t println(const char *s);
     size_t println(char *s, int len);

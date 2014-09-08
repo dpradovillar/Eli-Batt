@@ -44,6 +44,7 @@ public:
     size_t writeTo(DataStreamWriter *dsw);
     size_t readFrom(DataStreamReader *dsr);
     uint16_t calculateCrc();
+    size_t writeAsciiTo(DataStreamWriter *dsw);
     void swapIds();
 }; // 18bytes in total
 

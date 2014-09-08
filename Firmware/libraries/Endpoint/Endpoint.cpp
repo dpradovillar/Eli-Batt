@@ -182,6 +182,23 @@ size_t SerialEndpoint::print(int x) {
     }
 }
 
+size_t SerialEndpoint::print(uint32_t x) {
+    if (m_hardwareSerialIndex >= 0) {
+#ifdef __AVR_ATmega1280__
+        switch(m_hardwareSerialIndex) {
+        case 0: return Serial.print((unsigned long)x);
+        case 1: return Serial1.print((unsigned long)x);
+        case 2: return Serial2.print((unsigned long)x);
+        case 3: return Serial3.print((unsigned long)x);
+        }
+#else
+        return Serial.print((unsigned long)x);
+#endif
+    } else {
+        return m_softwareSerial.print((unsigned long)x);
+    }
+}
+
 size_t SerialEndpoint::print(char x) {
     if (m_hardwareSerialIndex >= 0) {
 #ifdef __AVR_ATmega1280__
@@ -224,6 +241,10 @@ size_t SerialEndpoint::println() {
 }
 
 size_t SerialEndpoint::println(int x) {
+    return print(x) + print(CR_LF);
+}
+
+size_t SerialEndpoint::println(uint32_t x) {
     return print(x) + print(CR_LF);
 }
 
