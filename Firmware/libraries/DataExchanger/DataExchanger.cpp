@@ -61,6 +61,10 @@ uint16_t Message::calculateCrc() {
     return SimpleCrc::crc16(buffer, MESSAGE_SIZE-2);
 }
 
+size_t Message::writeAsciiTo(DataStreamWriter *dsw) {
+    return 0;
+}
+
 void Message::swapIds() {
     // Swap fromId and targetId arrays.
     byte buffer[ID_DATA_LENGTH];
@@ -207,8 +211,7 @@ void DataExchanger::loop() {
         if (ok) {
             process(&m, m_hardwareWriter, m_softwareWriter);
         } else {
-            // TODO(rtapiapincheira): handle this error!
-            // do nothing...
+        	d.println("ERROR while reading from hardware connection (comm A)");
         }
     }
     if (m_softwareReader && m_softwareReader->available() >= MESSAGE_SIZE) {
@@ -216,8 +219,7 @@ void DataExchanger::loop() {
         if (ok) {
             process(&m, m_softwareWriter, m_hardwareWriter);
         } else {
-            // TODO(rtapiapincheira): handle this error!
-            // do nothing...
+            d.println("ERROR while reading from software connection (comm B)");
         }
     }
 }

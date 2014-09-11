@@ -4,6 +4,9 @@
 #include "Arduino.h"
 #include <Adafruit_MCP9808.h>
 
+#define SDA_PIN A4
+#define SCL_PIN A5
+
 /**
  * This class needs a lot of device specific logic, use it only as a model.
  */

@@ -3,6 +3,7 @@
 
 #include <Endpoint.h>
 #include <DataStream.h>
+#include <Debugger.h>
 #include <SimpleCrc.h>
 #include <Utils.h>
 #include "Arduino.h"
@@ -72,11 +73,15 @@ private:
     byte m_id[ID_DATA_LENGTH];
     Handler *m_handler;
 
+    /** Endpoint for debugging and error messages.*/
+    Debugger d;
+
     void process(Message *message, DataStreamWriter *readFromLine, DataStreamWriter *opposingLine);
     void transmit(DataStreamWriter *dsw, Message *message);
 
 public:
     DataExchanger();
+
     void setup(byte *id, Handler *handler);
     void setupHardware(DataStreamReader *dsr, DataStreamWriter *dsw);
     void setupSoftware(DataStreamReader *dsr, DataStreamWriter *dsw);

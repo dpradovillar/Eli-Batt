@@ -1,7 +1,7 @@
 #include <EEPROM.h>
 #include <Utils.h>
 #include <SimpleCrc.h>
-#include <EepromId.h>
+#include <EepromWriter.h>
 
 /**
 * A simple program to write a 4-byte id into the arduino eeprom, and to read it back.
@@ -18,7 +18,7 @@
 * the eeprom.
 */
 
-EepromId eepromId;
+EepromWriter eepromWriter;
 
 void setup() {
   Serial.begin(9600);
@@ -44,10 +44,10 @@ void loop() {
       id = Utils::toInt32(buff);
       Serial.println(id, DEC);
       
-      eepromId.writeId(id);
+      eepromWriter.writeId(id);
     } else if (c == 'r') {
       Serial.println("Reading id from eeprom.");
-      id = eepromId.readId();
+      id = eepromWriter.readId();
       Serial.print("Read back: ");
       Serial.println(id, DEC);
     }

@@ -4,7 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     include($$QTSERIALPORT_PROJECT_ROOT/src/serialport/qt4support/serialport.prf)
 }
 
-TARGET = blockingmaster
+TARGET = elibatt
 TEMPLATE = app
 
 HEADERS += \

@@ -40,180 +40,143 @@ void SerialEndpoint::setup(int rxPin, int txPin, uint32_t baud) {
         m_hardwareSerialIndex = 3;
         Serial3.begin(baud);
     }
-#else
+#endif
     // SoftwareSerial
-    else {
+    else if (rxPin > 0 || txPin > 1) {
+        m_hardwareSerialIndex = -1;
         m_softwareSerial.setup(rxPin, txPin);
         m_softwareSerial.begin(baud);
+    } else {
+    	m_hardwareSerialIndex = -2; // No Serial nor SoftwareSerial
     }
-#endif
 }
 
 void SerialEndpoint::flush() {
-    if (m_hardwareSerialIndex >= 0) {
+	switch(m_hardwareSerialIndex) {
+	case -1: m_softwareSerial.flush(); return;
+	case 0: Serial.flush(); return;
 #ifdef __AVR_ATmega1280__
-        switch(m_hardwareSerialIndex) {
-        case 0: Serial.flush(); return;
-        case 1: Serial1.flush(); return;
-        case 2: Serial2.flush(); return;
-        case 3: Serial3.flush(); return;
-        }
-#else
-        Serial.flush();
+	case 1: Serial1.flush(); return;
+	case 2: Serial2.flush(); return;
+	case 3: Serial3.flush(); return;
 #endif
-    } else {
-        m_softwareSerial.flush();
     }
 }
 
 int SerialEndpoint::available() {
-    if (m_hardwareSerialIndex >= 0) {
+	switch(m_hardwareSerialIndex) {
+	case -1: return m_softwareSerial.available();
+	case 0: return Serial.available();
 #ifdef __AVR_ATmega1280__
-        switch(m_hardwareSerialIndex) {
-        case 0: return Serial.available();
-        case 1: return Serial1.available();
-        case 2: return Serial2.available();
-        case 3: return Serial3.available();
-        }
-#else
-        return Serial.available();
+	case 1: return Serial1.available();
+	case 2: return Serial2.available();
+	case 3: return Serial3.available();
 #endif
     }
-    return m_softwareSerial.available();
 }
 
 void SerialEndpoint::waitForConnection() {
-    if (m_hardwareSerialIndex >= 0) {
+	switch(m_hardwareSerialIndex) {
+	case -1: while(!Serial); return;
+	case 0: while(!Serial); return;
 #ifdef __AVR_ATmega1280__
-        switch(m_hardwareSerialIndex) {
-        case 0: while(!Serial); return;
-        case 1: while(!Serial1); return;
-        case 2: while(!Serial2); return;
-        case 3: while(!Serial3); return;
-        }
-#else
-        while(!Serial);
+	case 1: while(!Serial1); return;
+	case 2: while(!Serial2); return;
+	case 3: while(!Serial3); return;
 #endif
-    }
+	}
 }
 
 size_t SerialEndpoint::write(byte b) {
-    if (m_hardwareSerialIndex >= 0) {
+	switch(m_hardwareSerialIndex) {
+	case -1: return Serial.write(&b, 1);
+	case 0: return Serial.write(&b, 1);
 #ifdef __AVR_ATmega1280__
-        switch(m_hardwareSerialIndex) {
-        case 0: return Serial.write(&b, 1);
-        case 1: return Serial1.write(&b, 1);
-        case 2: return Serial2.write(&b, 1);
-        case 3: return Serial3.write(&b, 1);
-        }
-#else
-        return Serial.write(&b, 1);
+	case 1: return Serial1.write(&b, 1);
+	case 2: return Serial2.write(&b, 1);
+	case 3: return Serial3.write(&b, 1);
 #endif
-    } else {
-    	return m_softwareSerial.write(&b, 1);
-    }
+	}
+	return 0;
+	// TODO(rene): define better what would happen if returns 0 or 1
 }
 
 int SerialEndpoint::read() {
-    if (m_hardwareSerialIndex >= 0) {
+	switch(m_hardwareSerialIndex) {
+	case -1: return m_softwareSerial.read();
+	case 0: return Serial.read();
 #ifdef __AVR_ATmega1280__
-        switch(m_hardwareSerialIndex) {
-        case 0: return Serial.read();
-        case 1: return Serial1.read();
-        case 2: return Serial2.read();
-        case 3: return Serial3.read();
-        }
-#else
-        return Serial.read();
+	case 1: return Serial1.read();
+	case 2: return Serial2.read();
+	case 3: return Serial3.read();
 #endif
-    } else {
-        return m_softwareSerial.read();
-    }
+	}
+	return -1;
 }
 
 size_t SerialEndpoint::write(byte *arr, size_t start, size_t len) {
-    if (m_hardwareSerialIndex >= 0) {
+	switch(m_hardwareSerialIndex) {
+	case -1: return m_softwareSerial.write(arr+start, len);
+	case 0: return Serial.write(arr+start, len);
 #ifdef __AVR_ATmega1280__
-        switch(m_hardwareSerialIndex) {
-        case 0: return Serial.write(arr+start, len);
-        case 1: return Serial1.write(arr+start, len);
-        case 2: return Serial2.write(arr+start, len);
-        case 3: return Serial3.write(arr+start, len);
-        }
-#else
-        return Serial.write(arr+start, len);
+	case 1: return Serial1.write(arr+start, len);
+	case 2: return Serial2.write(arr+start, len);
+	case 3: return Serial3.write(arr+start, len);
 #endif
-    } else {
-        return m_softwareSerial.write(arr+start, len);
-    }
+	}
+	return 0; // TODO(rene): define better what would happen if returns 0 or 1
 }
 
 size_t SerialEndpoint::read(byte *arr, size_t start, size_t len) {
-    if (m_hardwareSerialIndex >= 0) {
+	switch(m_hardwareSerialIndex) {
+	case -1: return m_softwareSerial.readBytes((char*)arr+start, len);
+	case 0: return Serial.readBytes((char*)arr+start, len);
 #ifdef __AVR_ATmega1280__
-        switch(m_hardwareSerialIndex) {
-        case 0: return Serial.readBytes((char*)arr+start, len);
-        case 1: return Serial1.readBytes((char*)arr+start, len);
-        case 2: return Serial2.readBytes((char*)arr+start, len);
-        case 3: return Serial3.readBytes((char*)arr+start, len);
-        }
-#else
-        return Serial.readBytes((char*)arr+start, len);
+	case 1: return Serial1.readBytes((char*)arr+start, len);
+	case 2: return Serial2.readBytes((char*)arr+start, len);
+	case 3: return Serial3.readBytes((char*)arr+start, len);
 #endif
-    } else {
-        return m_softwareSerial.readBytes((char*)arr+start, len);
-    }
+	}
+    return -1;
 }
 
 size_t SerialEndpoint::print(int x) {
-    if (m_hardwareSerialIndex >= 0) {
+	switch(m_hardwareSerialIndex) {
+	case -1: return m_softwareSerial.print(x);
+	case 0: return Serial.print(x);
 #ifdef __AVR_ATmega1280__
-        switch(m_hardwareSerialIndex) {
-        case 0: return Serial.print(x);
-        case 1: return Serial1.print(x);
-        case 2: return Serial2.print(x);
-        case 3: return Serial3.print(x);
-        }
-#else
-        return Serial.print(x);
+	case 1: return Serial1.print(x);
+	case 2: return Serial2.print(x);
+	case 3: return Serial3.print(x);
 #endif
-    } else {
-        return m_softwareSerial.print(x);
     }
+	return 0;
 }
 
 size_t SerialEndpoint::print(uint32_t x) {
-    if (m_hardwareSerialIndex >= 0) {
+	switch(m_hardwareSerialIndex) {
+	case -1: return m_softwareSerial.print((unsigned long)x);
+	case 0: return Serial.print((unsigned long)x);
 #ifdef __AVR_ATmega1280__
-        switch(m_hardwareSerialIndex) {
-        case 0: return Serial.print((unsigned long)x);
-        case 1: return Serial1.print((unsigned long)x);
-        case 2: return Serial2.print((unsigned long)x);
-        case 3: return Serial3.print((unsigned long)x);
-        }
-#else
-        return Serial.print((unsigned long)x);
+	case 1: return Serial1.print((unsigned long)x);
+	case 2: return Serial2.print((unsigned long)x);
+	case 3: return Serial3.print((unsigned long)x);
 #endif
-    } else {
-        return m_softwareSerial.print((unsigned long)x);
     }
+	return 0;
 }
 
 size_t SerialEndpoint::print(char x) {
-    if (m_hardwareSerialIndex >= 0) {
+	switch(m_hardwareSerialIndex) {
+	case -1: return m_softwareSerial.print(x);
+	case 0: return Serial.print(x);
 #ifdef __AVR_ATmega1280__
-        switch(m_hardwareSerialIndex) {
-        case 0: return Serial.print(x);
-        case 1: return Serial1.print(x);
-        case 2: return Serial2.print(x);
-        case 3: return Serial3.print(x);
-        }
-#else
-        return Serial.print(x);
+	case 1: return Serial1.print(x);
+	case 2: return Serial2.print(x);
+	case 3: return Serial3.print(x);
 #endif
-    } else {
-        return m_softwareSerial.print(x);
     }
+	return 0;
 }
 
 size_t SerialEndpoint::print(const char *s) {
@@ -259,5 +222,4 @@ size_t SerialEndpoint::println(const char *s) {
 size_t SerialEndpoint::println(char *s, int len) {
     return print(s, len) + print(CR_LF);
 }
-
 

@@ -18,9 +18,13 @@ private:
     Ui::UiDialog *ui;
     QTimer aTimer;
 
+    void lockUi();
+    void unlockUi();
+
 private slots:
     void processTimeout();
     void cleanUi();
+    void checkSerialPorts();
     void sendDatetime();
 };
 
