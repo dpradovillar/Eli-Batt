@@ -3,9 +3,7 @@
 
 #include "Arduino.h"
 #include <Adafruit_MCP9808.h>
-
-#define SDA_PIN A4
-#define SCL_PIN A5
+#include <Wire.h>
 
 /**
  * This class needs a lot of device specific logic, use it only as a model.
@@ -35,6 +33,10 @@ public:
     void setup();
     float readCelsius();
     float readFahrenheit();
+
+    uint16_t readDigital();
+
+    bool isAllSetUp();
 };
 
 #endif // __I2C_INPUT_H_

@@ -50,6 +50,13 @@ void loop() {
       id = eepromWriter.readId();
       Serial.print("Read back: ");
       Serial.println(id, DEC);
+      
+      byte buffid[4];
+      Utils::toByte(id, buffid);
+      Serial.print((char)*buffid);
+      Serial.print((char)*(buffid+1));
+      Serial.print((char)*(buffid+2));
+      Serial.print((char)*(buffid+3));
     }
   }
 }

@@ -153,6 +153,19 @@ size_t SerialEndpoint::print(int x) {
 	return 0;
 }
 
+size_t SerialEndpoint::print(uint16_t x) {
+	switch(m_hardwareSerialIndex) {
+	case -1: return m_softwareSerial.print((unsigned int)x);
+	case 0: return Serial.print((unsigned long)x);
+#ifdef __AVR_ATmega1280__
+	case 1: return Serial1.print((unsigned int)x);
+	case 2: return Serial2.print((unsigned int)x);
+	case 3: return Serial3.print((unsigned int)x);
+#endif
+    }
+	return 0;
+}
+
 size_t SerialEndpoint::print(uint32_t x) {
 	switch(m_hardwareSerialIndex) {
 	case -1: return m_softwareSerial.print((unsigned long)x);

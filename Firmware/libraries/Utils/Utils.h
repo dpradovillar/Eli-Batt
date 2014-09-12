@@ -24,6 +24,12 @@ public:
     static void toHex(char *buffer2bytes, byte value);
     static void toHex(char *buffer4bytes, uint16_t value);
     static void toHex(char *buffer8bytes, uint32_t value);
+
+    /**
+     * Put at the given address in the given memory pointer, the bytes representation of a given
+     * value (by the data type of the value).
+     * */
+    static void putInMemory(byte *mem, byte address, uint16_t value);
 };
 
 #endif // __H_UTILS_

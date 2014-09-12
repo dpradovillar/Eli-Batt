@@ -18,8 +18,10 @@
 #define STATUS_ACKNOWLEDGED  2
 #define STATUS_UNDELIVERABLE 4
 
-#define TYPE_DATA  8
-#define TYPE_SCAN  16
+#define TYPE_GET_DATA  8
+#define TYPE_SCAN     16
+#define TYPE_SET_ID   32
+#define TYPE_GET_ID   64
 
 /**
  * Base class for all the different kind of messages sent between any pair of boards. It has a basic

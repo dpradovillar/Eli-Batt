@@ -83,7 +83,14 @@ bool SerialOutputHandler::handleMessage(Message *message) {
     Serial.print("byte1="); Serial.print((int)buff[0]);
     Serial.print(" byte2="); Serial.print((int)buff[1]);
     Serial.println();
-    Serial.print("type\t:");  Serial.println(message->m_type);
+    Serial.print("type\t:");
+    // Decode the integer value!
+    switch (message->m_type) {
+    case TYPE_GET_DATA: Serial.println("TYPE_GET_DATA"); break;
+    case TYPE_SCAN: Serial.println("TYPE_SCAN"); break;
+    case TYPE_SET_ID: Serial.println("TYPE_SET_ID"); break;
+    case TYPE_GET_ID: Serial.println("TYPE_GET_ID"); break;
+    }
     Serial.print("status\t:");Serial.println(message->m_status);
     Serial.print("fromId\t:");
     for(size_t i = 0; i < ID_DATA_LENGTH; i++) {
@@ -158,12 +165,12 @@ void DataExchanger::process(
      * not require a response, while a get request will require it). See the class Handler for
      * details on how processing messages and stuff.
      */
-    case TYPE_DATA:
+    case TYPE_GET_DATA:
         // If data message is addressed to me, process and maybe send response back to same
-        // communication line where I received the message.
+        // communication line where I received the message. The handler should explicitely swap the
+        // sender and receiver ids in the message by calling message->swapIds().
         if (Utils::arrayEquals(message->m_targetId, m_id, ID_DATA_LENGTH)) {
             if(m_handler->handleMessage(message)) {
-                message->swapIds();
                 transmit(readFromLine, message);
             }
         }

@@ -36,7 +36,9 @@ size_t DataStreamWriter::writeArray(byte *s, size_t n) {
 }
 
 size_t DataStreamWriter::writeObject(DataObject *obj) {
-    return obj->writeTo(this);
+    size_t s = obj->writeTo(this);
+    flush();
+    return s;
 }
 
 void DataStreamReader::setup(Endpoint *endpoint) {

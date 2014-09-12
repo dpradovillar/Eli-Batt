@@ -1,6 +1,7 @@
 #include <AnalogInput.h>
 
-AnalogInput::AnalogInput() {
+AnalogInput::AnalogInput()
+    : m_pin(-1) {
 }
 
 AnalogInput::~AnalogInput() {

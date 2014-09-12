@@ -31,7 +31,10 @@ private:
     /** For processing and forward/reply messages. */
     DataExchanger m_dex;
 
+    Message m_the_message;
+SerialOutputHandler m_soh;
     Debugger d;
+
 public:
     FirmwareMaster();
 
@@ -41,7 +44,10 @@ public:
 
     bool handleMessage(Message *message);
 
-    void process(int next);
+    void process(int next, Endpoint *endpoint);
+    void requestWriteId(byte *targetId, byte *newId);
+    void requestReadId(byte *targetId);
+    void requestData(byte *targetId);
 };
 
 #endif // __FIRMWARE_MASTER_H_

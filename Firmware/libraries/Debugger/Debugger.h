@@ -25,6 +25,7 @@ public:
     Debugger& write(byte *arr, size_t start, size_t len);
 
     Debugger& print(int x);
+    Debugger& print(uint16_t x);
     Debugger& print(uint32_t x);
     Debugger& print(char c);
     Debugger& print(const char *s);

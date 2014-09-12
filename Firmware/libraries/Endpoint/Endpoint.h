@@ -27,6 +27,7 @@ public:
 	virtual size_t read(byte *arr, size_t start, size_t len) = 0;
 	
     virtual size_t print(int x) = 0;
+    virtual size_t print(uint16_t x) = 0;
     virtual size_t print(uint32_t x) = 0;
     virtual size_t print(char c) = 0;
     virtual size_t print(const char *s) = 0;
@@ -65,6 +66,7 @@ public:
     size_t read(byte *arr, size_t start, size_t len);
 
     size_t print(int x);
+    size_t print(uint16_t x);
     size_t print(uint32_t x);
     size_t print(char c);
     size_t print(const char *s);

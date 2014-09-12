@@ -21,8 +21,9 @@ void setup() {
 }
 
 void loop() {
+  // TODO(rtapiapincheira): convert this serial comm into a SampleCollector (periodic task).
   if (pcComm.available()) {
-    firmwareMaster.process(pcComm.read());
+    firmwareMaster.process(pcComm.read(), &pcComm);
   }
   firmwareMaster.loop();
 }

@@ -34,6 +34,12 @@ Debugger& Debugger::print(int x) {
     }
     return *this;
 }
+Debugger& Debugger::print(uint16_t x) {
+    if (m_endpoint) {
+        m_endpoint->print(x);
+    }
+    return *this;
+}
 Debugger& Debugger::print(uint32_t x) {
     if (m_endpoint) {
         m_endpoint->print(x);

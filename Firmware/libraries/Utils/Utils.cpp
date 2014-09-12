@@ -73,3 +73,8 @@ void Utils::toHex(char *buffer8bytes, uint32_t value) {
     toHex(buffer8bytes+4, (byte)(value >>  8));
     toHex(buffer8bytes+6, (byte)(value >>  0));
 }
+
+void Utils::putInMemory(byte *mem, byte address, uint16_t value) {
+    toByte(value, mem+address);
+}
+
