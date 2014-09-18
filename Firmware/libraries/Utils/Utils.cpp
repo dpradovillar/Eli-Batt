@@ -20,17 +20,17 @@ uint16_t Utils::toShort(byte hi, byte lo) {
     return (uint16_t)(((((uint16_t)hi) << 8) | (((uint16_t)lo) << 0)) & 0xFFFF);
 }
 
-void Utils::toByte(uint16_t x, byte *buffer) {
-    buffer[0] = (byte)(x >> 8);
-    buffer[1] = (byte)(x >> 0);
+void Utils::toByte(uint16_t x, byte *buffer2bytes) {
+	buffer2bytes[0] = (byte)(x >> 8);
+	buffer2bytes[1] = (byte)(x >> 0);
 }
 
-uint32_t Utils::toInt32(byte *buff) {
+uint32_t Utils::toInt32(byte *buffer4bytes) {
     return (uint32_t)(
-    ((uint32_t)buff[0]) << 24 |
-    ((uint32_t)buff[1]) << 16 |
-    ((uint32_t)buff[2]) << 8 |
-    ((uint32_t)buff[3]) << 0);
+    ((uint32_t)buffer4bytes[0]) << 24 |
+    ((uint32_t)buffer4bytes[1]) << 16 |
+    ((uint32_t)buffer4bytes[2]) << 8 |
+    ((uint32_t)buffer4bytes[3]) << 0);
 }
 
 void Utils::toByte(uint32_t x, byte *buffer4bytes) {
@@ -63,7 +63,7 @@ void Utils::toHex(char *buffer2bytes, byte value) {
 }
 
 void Utils::toHex(char *buffer4bytes, uint16_t value) {
-    toHex(buffer4bytes, (byte)(value >>  8));
+    toHex(buffer4bytes,   (byte)(value >>  8));
     toHex(buffer4bytes+2, (byte)(value >>  0));
 }
 
@@ -74,7 +74,7 @@ void Utils::toHex(char *buffer8bytes, uint32_t value) {
     toHex(buffer8bytes+6, (byte)(value >>  0));
 }
 
-void Utils::putInMemory(byte *mem, byte address, uint16_t value) {
+void Utils::putInMemory(byte *mem, uint16_t address, uint16_t value) {
     toByte(value, mem+address);
 }
 

@@ -29,7 +29,7 @@ public:
      * Put at the given address in the given memory pointer, the bytes representation of a given
      * value (by the data type of the value).
      * */
-    static void putInMemory(byte *mem, byte address, uint16_t value);
+    static void putInMemory(byte *mem, uint16_t address, uint16_t value);
 };
 
 #endif // __H_UTILS_

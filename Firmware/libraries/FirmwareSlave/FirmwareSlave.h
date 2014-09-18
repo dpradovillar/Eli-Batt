@@ -18,8 +18,8 @@
 
 class FirmwareSlave : public Handler {
 private:
-	/** For retrieving the ID of the master burned in the EEPROM memory. */
-	EepromWriter m_eeprom_writer;
+    /** For retrieving the ID of the master burned in the EEPROM memory. */
+    EepromWriter m_eeprom_writer;
     byte m_id[4];
 
     /** Previous device in the series. */
@@ -35,7 +35,7 @@ private:
     /** For processing and forward/reply messages. */
     DataExchanger m_dex;
 
-    /** Sensors .*/
+    /** Sensors. */
     Mcp9808Sensor m_temp_sensor; /** Uses sda=A4, scl=A5 on UNO. */
     AnalogInput m_current_sensor;
     AnalogInput m_voltage_sensor;
