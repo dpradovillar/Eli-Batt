@@ -13,7 +13,7 @@
 // MEGA					18			19
 // DUE						18			19
 #else 
-	#define BLEMINI Serial1
+	#define BLEMINI Serial3
 #endif
 
 void BLEMini_begin(unsigned long bound)
