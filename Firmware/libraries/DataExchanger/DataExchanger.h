@@ -34,7 +34,7 @@
  * In cases where the delivery is done successfully, the message is marked as acknowledged, and is
  * sent back to the emitter.
  */
-class Message : public DataObject {
+class Message /* : public DataObject*/ {
 public:
     uint16_t m_crc;
     byte m_type;

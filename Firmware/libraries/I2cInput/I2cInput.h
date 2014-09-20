@@ -30,7 +30,7 @@ private:
     byte m_ok;
     Adafruit_MCP9808 m_ada;
 public:
-    void setup();
+    bool setup();
     float readCelsius();
     float readFahrenheit();
 

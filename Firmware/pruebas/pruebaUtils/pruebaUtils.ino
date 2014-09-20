@@ -4,6 +4,12 @@ void setup() {
   Serial.begin(9600);
   while(!Serial);
   
+  test2();  
+}
+
+void test1() {
+
+  
   uint16_t crc = 12345;
   Serial.print("crc:");
   Serial.println(crc);
@@ -29,6 +35,25 @@ void setup() {
   buffer2[8] = 0;
   Serial.print("Hex2:");
   Serial.println(buffer2);
+}
+
+void printPadded(uint32_t val, int len, char toPad) {
+  char buff[32];
+  Utils::leftPad(val, buff, len, toPad);
+  buff[len] = 0;
+  Serial.println(buff);
+}
+
+void test2() {
+  printPadded(1, 2, '.');
+  printPadded(1, 3, '.');
+  printPadded(1, 4, '.');
+  
+  printPadded(123, 4, '.');
+  printPadded(123, 8, '.');
+  
+  printPadded(1234, 4, '.');
+  printPadded(12345, 4, '.');
 }
 
 void loop() {}

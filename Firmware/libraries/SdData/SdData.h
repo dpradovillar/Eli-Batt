@@ -2,11 +2,11 @@
 #define __SD_DATA_H_
 
 #include <DataStream.h>
-#include <Sd.h>
+#include <Debugger.h>
+#include <SD.h>
 #include <Utils.h>
 
-#define MAX_SLAVES      10
-#define BYTES_PER_SLAVE  6 // 2bytes
+#include <elibatt_config.h>
 
 /**
  * Builds a filename using a numeric sequence. Given that the filename format is pretty limited, it
@@ -25,6 +25,11 @@ public:
      * consumed completely, after the 'FFFF' filename, will overflow to the '0000' filename.
      */
     void next(char *buff12bytes);
+
+    /**
+     * Sets the index of the next name in the sequence.
+     */
+    void setStart(uint16_t start);
 };
 
 /**
@@ -37,23 +42,17 @@ private:
     bool m_open;
     File m_file;
     SdNameSequencer m_sequence;
-    Endpoint *m_debug_endpoint;
+    Debugger d;
 
 public:
     SdWriter();
-
-    /**
-     * Sets an optional stream to print error messages, as incorrect setup parameters or exceptions
-     * while performing actions like setup, file openings and file closings.
-     */
-    void setDebugEndpoint(Endpoint *debugEndpoint);
 
     /**
      * Specifies the pin used for selecting the sd card, as it uses the SPI interface and many other
      * devices may share the same SPI data bus. Returns true if the object is set up correctly so is
      * possible to write on the sd card.
      */
-    bool setup(int chipSelectPin);
+    bool setup(int chipSelectPin, SerialEndpoint *debugEndpoint=NULL);
 
     /**
      * Opens a file to write in the sd card with next name in a sequence. If a file was previously
@@ -63,6 +62,8 @@ public:
      * couldn't open the new file.
      */
     bool open();
+
+    bool isOpen();
 
     /**
      * Flushes the data of any open file and closes it (if any is open). Returns true if the file
@@ -76,17 +77,17 @@ public:
      */
     size_t write(char *s, size_t n);
 
-    /**
-     * Writes a binary serialized object to the sd card. Don't mix calls of this method with the
-     * writeAsciiObject() method.
-     */
-    void writeObject(DataObject *obj);
+    size_t writeInt32(uint32_t id);
 
     /**
-     * Writes an ascii representation of the object to the sdcard. This is specially suitable to
-     * write CSV files. Don't mix calls of this method with the writeObject() method.
+     * Returns the count of files in the SD.
      */
-    void writeAsciiObject(DataObject *obj);
+    uint16_t countFilesInSd();
+
+    void writeHeader(uint32_t *ids, byte len);
+    void writeDatetime(uint16_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t minute, uint8_t sec);
+    void writeTuple(uint16_t temp, uint16_t current, uint16_t voltage);
+    void writeNewline();
 };
 
 #endif // __SD_DATA_H_

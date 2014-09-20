@@ -1,6 +1,12 @@
 #ifndef __FIRMWARE_SLAVE_H_
 #define __FIRMWARE_SLAVE_H_
 
+#define TARGET_BOARD    BOARD_MEGA
+#define TARGET_FIRMWARE FIRMWARE_SLAVE
+#define TARGET_DEBUG    true
+
+#include <elibatt_config.h>
+
 #include "Arduino.h"
 
 #include <Adafruit_MCP9808.h>
@@ -43,13 +49,14 @@ private:
     /** For message verification. */
     SimpleCrc m_simple_crc;
 
+    /** Debugging endpoint. */
     Debugger d;
 
 public:
     FirmwareSlave();
 
-    void setup(int rx1, int tx1, int rx2, int tx2, int currentSensorPin, int voltageSensorPin,
-            int bauds, Endpoint *debuggerEndpoint);
+    void setup(int rx1, int tx1, int bauds1, int rx2, int tx2, int bauds2, int currentSensorPin,
+            int voltageSensorPin, SerialEndpoint *debuggerEndpoint=NULL);
 
     void loop();
 

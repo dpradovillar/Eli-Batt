@@ -184,7 +184,8 @@ void DataExchanger::process(
 }
 
 void DataExchanger::transmit(DataStreamWriter *dsw, Message *message) {
-    dsw->writeObject(message);
+	message->writeTo(dsw);
+	dsw->flush();
 }
 
 DataExchanger::DataExchanger() :
@@ -211,22 +212,19 @@ void DataExchanger::setupSoftware(DataStreamReader *dsr, DataStreamWriter *dsw) 
 }
 
 void DataExchanger::loop() {
-    bool ok = true;
     Message m;
     if (m_hardwareReader && m_hardwareReader->available() >= MESSAGE_SIZE) {
-        m_hardwareReader->readObject(&m, &ok);
-        if (ok) {
-            process(&m, m_hardwareWriter, m_softwareWriter);
-        } else {
+        if (m.readFrom(m_hardwareReader) == -1) {
         	d.println("ERROR while reading from hardware connection (comm A)");
+        } else {
+        	process(&m, m_hardwareWriter, m_softwareWriter);
         }
     }
     if (m_softwareReader && m_softwareReader->available() >= MESSAGE_SIZE) {
-        m_softwareReader->readObject(&m, &ok);
-        if (ok) {
-            process(&m, m_softwareWriter, m_hardwareWriter);
+        if (m.readFrom(m_softwareReader) == -1) {
+        	d.println("ERROR while reading from software connection (comm B)");
         } else {
-            d.println("ERROR while reading from software connection (comm B)");
+        	process(&m, m_softwareWriter, m_hardwareWriter);
         }
     }
 }

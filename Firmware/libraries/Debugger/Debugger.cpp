@@ -5,7 +5,7 @@ Debugger::Debugger() :
 {
 }
 
-void Debugger::setup(Endpoint *endpoint) {
+void Debugger::setup(SerialEndpoint *endpoint) {
     m_endpoint = endpoint;
 }
 
@@ -17,7 +17,7 @@ Debugger& Debugger::write(byte b) {
 }
 Debugger& Debugger::write(byte *arr, size_t len) {
     if (m_endpoint) {
-        m_endpoint->write(arr, len);
+        m_endpoint->write(arr, 0, len);
     }
     return *this;
 }
@@ -104,8 +104,20 @@ Debugger& Debugger::println(char *s, int len) {
 
 Debugger& Debugger::printInt(byte *buff4bytes) {
     if (m_endpoint) {
-    	uint32_t val = Utils::toInt32(buff4bytes);
+        uint32_t val = Utils::toInt32(buff4bytes);
         m_endpoint->print(val);
+    }
+    return *this;
+}
+
+Debugger& Debugger::printHexInt(byte *buff4bytes) {
+    if (m_endpoint) {
+        uint32_t val = Utils::toInt32(buff4bytes);
+        char buffer[10];
+        Utils::toHex(buffer+2, val);
+        buffer[0] = '0';
+        buffer[1] = 'x';
+        m_endpoint->print(buffer, 10);
     }
     return *this;
 }

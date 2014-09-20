@@ -14,6 +14,7 @@ public:
     static uint16_t toShort(byte hi, byte lo);
     static void toByte(uint16_t x, byte *buffer);
 
+    static uint32_t toInt32(const char *buffer4bytes);
     static uint32_t toInt32(byte *buff);
     static void toByte(uint32_t x, byte *buffer4bytes);
 
@@ -30,6 +31,14 @@ public:
      * value (by the data type of the value).
      * */
     static void putInMemory(byte *mem, uint16_t address, uint16_t value);
+
+    /**
+     * Stops the firmware execution and starts an LED error sequence (SOS).
+     */
+    static void onFailure(const char *err, bool doLog=false);
+
+    static void leftPad(uint32_t value, char *buffLenBytes, int len, char toPad = '0');
+
 };
 
 #endif // __H_UTILS_

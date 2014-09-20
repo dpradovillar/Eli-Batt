@@ -10,6 +10,7 @@
 /**
  * Interface to write/read bytes from a common endpoint.
  */
+/*
 class Endpoint {
 public:
     virtual ~Endpoint();
@@ -40,13 +41,13 @@ public:
     virtual size_t println(const char *s) = 0;
     virtual size_t println(char *s, int len) = 0;
 };
-
+*/
 /**
  * Specialization of the Endpoint class, that supports communication from a Serial connection.
  * Automatically detects if it's a hardware or software serial connection by looking at the pins
  * used to initialize the object.
  */
-class SerialEndpoint : public Endpoint {
+class SerialEndpoint /*: public Endpoint*/ {
 private:
     int8_t m_hardwareSerialIndex;
     SoftwareSerial m_softwareSerial;

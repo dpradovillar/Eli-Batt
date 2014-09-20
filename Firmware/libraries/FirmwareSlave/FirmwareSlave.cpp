@@ -3,34 +3,54 @@
 FirmwareSlave::FirmwareSlave() {
 }
 
-void FirmwareSlave::setup(int rx1, int tx1, int rx2, int tx2, int currentSensorPin,
-        int voltageSensorPin, int bauds, Endpoint *debuggerEndpoint) {
+void FirmwareSlave::setup(int rx1, int tx1, int bauds1, int rx2, int tx2, int bauds2,
+        int currentSensorPin, int voltageSensorPin, SerialEndpoint *debuggerEndpoint) {
     d.setup(debuggerEndpoint);
 
-    d.println("Reading ID from EEPROM");
-    m_eeprom_writer.read(m_id);
-    d.print("ID read from EEPROM:").printInt(m_id).println();
+    pinMode(13, OUTPUT);
 
-    d.println("Setting First communication channel");
+    d.print("Reading ID from EEPROM:");
+    m_eeprom_writer.read(m_id);
+    d.printInt(m_id).print("/").printHexInt(m_id).println();
+
+    d.print("Setting Current Sensor:");
+    m_current_sensor.setup(currentSensorPin);
+    d.println("Ok");
+
+    d.print("Setting Voltage Sensor:");
+    m_voltage_sensor.setup(voltageSensorPin);
+    d.println("Ok");
+
+    d.print("Setting Temperature Sensor:");
+#define SKIP_TEMP 0
+    if (SKIP_TEMP || m_temp_sensor.setup()) {
+        d.println("Ok");
+    } else {
+        d.println("Error");
+        Utils::onFailure("Temperature sensor can't setup");
+    }
+
+    d.print("Setting First communication channel:");
     m_dsr_a.setup(&m_comm_a);
     m_dsw_a.setup(&m_comm_a);
-    m_comm_a.setup(rx1, tx1, bauds);
+    m_comm_a.setup(rx1, tx1, bauds1);
     m_comm_a.waitForConnection();
+    d.println("Ok");
 
-    d.println("Setting Second communication channel");
+    d.println("Setting Second communication channel:");
     m_dsr_b.setup(&m_comm_b);
     m_dsw_b.setup(&m_comm_b);
-    m_comm_b.setup(rx2, tx2, bauds);
+    m_comm_b.setup(rx2, tx2, bauds2);
     m_comm_b.waitForConnection();
+    d.println("Ok");
 
-    d.println("Communications OK");
-
-    d.println("Setting up communications");
+    d.print("Setting up communications:");
     m_dex.setup(m_id, this);
     m_dex.setupHardware(&m_dsr_a, &m_dsw_a);
     m_dex.setupSoftware(&m_dsr_b, &m_dsw_b);
+    d.println("Ok");
 
-    d.println("Starting SLAVE tasks");
+    d.println("Starting SLAVE main loop");
 }
 
 void FirmwareSlave::loop() {

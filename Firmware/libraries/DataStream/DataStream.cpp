@@ -1,11 +1,11 @@
 #include <DataStream.h>
 
 // TODO(rtapiapincheira): add timeout mechanism.
-
+/*
 DataObject::~DataObject() {
-}
+}*/
 
-void DataStreamWriter::setup(Endpoint *endpoint) {
+void DataStreamWriter::setup(SerialEndpoint *endpoint) {
     m_endpoint = endpoint;
 }
 
@@ -32,16 +32,16 @@ size_t DataStreamWriter::writeString(const String &s) {
 }
 
 size_t DataStreamWriter::writeArray(byte *s, size_t n) {
-    return m_endpoint->write(s, n);
+    return m_endpoint->write(s, 0, n);
 }
-
+/*
 size_t DataStreamWriter::writeObject(DataObject *obj) {
     size_t s = obj->writeTo(this);
     flush();
     return s;
-}
+}*/
 
-void DataStreamReader::setup(Endpoint *endpoint) {
+void DataStreamReader::setup(SerialEndpoint *endpoint) {
     m_endpoint = endpoint;
 }
 
@@ -93,7 +93,7 @@ void DataStreamReader::readFully(byte *buff, size_t len, bool *ok) {
         }
     }
 }
-
+/*
 void DataStreamReader::readObject(DataObject *obj, bool *ok) {
     size_t s = obj->readFrom(this);
     // We're using 2^16-1 as indicator of failure with unsigned ints.
@@ -103,3 +103,4 @@ void DataStreamReader::readObject(DataObject *obj, bool *ok) {
         *ok = false;
     }
 }
+*/

@@ -8,6 +8,7 @@ void SampleCallback::eventDetected(uint32_t current_usecs) {
     // This method is intended to be overriden!
 }
 
+#if EXAMPLE_CALLBACKS
 void SerialCallback::eventDetected(uint32_t current_usecs) {
     Serial.print("Micros:");
     Serial.print(current_usecs);
@@ -35,7 +36,7 @@ void LedBlinkCallback::eventDetected(uint32_t current_usecs) {
     m_state = !m_state;
     digitalWrite(m_pin, m_state);
 }
-
+#endif
 SampleClock::SampleClock() :
     m_period(0),
     m_lastloop(0),

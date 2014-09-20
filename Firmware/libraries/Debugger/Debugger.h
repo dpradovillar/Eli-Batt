@@ -14,11 +14,11 @@
  */
 class Debugger {
 private:
-    Endpoint *m_endpoint;
+    SerialEndpoint *m_endpoint;
 public:
     Debugger();
 
-    void setup(Endpoint *endpoint);
+    void setup(SerialEndpoint *endpoint);
 
     Debugger& write(byte b);
     Debugger& write(byte *arr, size_t len);
@@ -39,6 +39,7 @@ public:
     Debugger& println(char *s, int len);
 
     Debugger& printInt(byte *buff4bytes);
+    Debugger& printHexInt(byte *buff4bytes);
 };
 
 #endif // __DEBUGGER_H_
