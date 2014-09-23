@@ -3,6 +3,7 @@
 
 #include <Endpoint.h>
 #include <DataStream.h>
+#include <Debugger.h>
 #include <SimpleCrc.h>
 #include <Utils.h>
 #include "Arduino.h"
@@ -17,8 +18,10 @@
 #define STATUS_ACKNOWLEDGED  2
 #define STATUS_UNDELIVERABLE 4
 
-#define TYPE_DATA  8
-#define TYPE_SCAN  16
+#define TYPE_GET_DATA  8
+#define TYPE_SCAN     16
+#define TYPE_SET_ID   32
+#define TYPE_GET_ID   64
 
 /**
  * Base class for all the different kind of messages sent between any pair of boards. It has a basic
@@ -31,7 +34,7 @@
  * In cases where the delivery is done successfully, the message is marked as acknowledged, and is
  * sent back to the emitter.
  */
-class Message : public DataObject {
+class Message /* : public DataObject*/ {
 public:
     uint16_t m_crc;
     byte m_type;
@@ -44,6 +47,7 @@ public:
     size_t writeTo(DataStreamWriter *dsw);
     size_t readFrom(DataStreamReader *dsr);
     uint16_t calculateCrc();
+    size_t writeAsciiTo(DataStreamWriter *dsw);
     void swapIds();
 }; // 18bytes in total
 
@@ -71,11 +75,15 @@ private:
     byte m_id[ID_DATA_LENGTH];
     Handler *m_handler;
 
+    /** Endpoint for debugging and error messages.*/
+    Debugger d;
+
     void process(Message *message, DataStreamWriter *readFromLine, DataStreamWriter *opposingLine);
     void transmit(DataStreamWriter *dsw, Message *message);
 
 public:
     DataExchanger();
+
     void setup(byte *id, Handler *handler);
     void setupHardware(DataStreamReader *dsr, DataStreamWriter *dsw);
     void setupSoftware(DataStreamReader *dsr, DataStreamWriter *dsw);

@@ -2,12 +2,12 @@
 #include <ArduinoSoftwareSerial.h>
 #include <DataStream.h>
 #include <DataExchanger.h>
-#include <EepromId.h>
+#include <EepromWriter.h>
 #include <Endpoint.h>
 #include <SimpleCrc.h>
 #include <Utils.h>
 
-EepromId eepromId;
+EepromWriter eepromWriter;
 byte myId[4];
 
 // previous in devices chain
@@ -47,7 +47,7 @@ void setup() {
   pinMode(13, OUTPUT);
   
   // first thing, read id from eeprom
-  uint32_t numId = eepromId.readId();
+  uint32_t numId = eepromWriter.readId();
   Utils::toByte(numId, myId);
   
   // setup data exchanger only with references

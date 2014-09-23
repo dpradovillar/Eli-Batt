@@ -61,6 +61,10 @@ uint16_t Message::calculateCrc() {
     return SimpleCrc::crc16(buffer, MESSAGE_SIZE-2);
 }
 
+size_t Message::writeAsciiTo(DataStreamWriter *dsw) {
+    return 0;
+}
+
 void Message::swapIds() {
     // Swap fromId and targetId arrays.
     byte buffer[ID_DATA_LENGTH];
@@ -79,7 +83,14 @@ bool SerialOutputHandler::handleMessage(Message *message) {
     Serial.print("byte1="); Serial.print((int)buff[0]);
     Serial.print(" byte2="); Serial.print((int)buff[1]);
     Serial.println();
-    Serial.print("type\t:");  Serial.println(message->m_type);
+    Serial.print("type\t:");
+    // Decode the integer value!
+    switch (message->m_type) {
+    case TYPE_GET_DATA: Serial.println("TYPE_GET_DATA"); break;
+    case TYPE_SCAN: Serial.println("TYPE_SCAN"); break;
+    case TYPE_SET_ID: Serial.println("TYPE_SET_ID"); break;
+    case TYPE_GET_ID: Serial.println("TYPE_GET_ID"); break;
+    }
     Serial.print("status\t:");Serial.println(message->m_status);
     Serial.print("fromId\t:");
     for(size_t i = 0; i < ID_DATA_LENGTH; i++) {
@@ -151,15 +162,15 @@ void DataExchanger::process(
      * ids. Generally, the fromId field is the master id, and the targetId is a slave device id.
      * When the device sends a response back, those ids should be swapped. Depending on the content
      * of the message, the slave device may or may not send back a response (generally, commands do
-     * not require a response, while a get request will require). See the class Handler for details
-     * on how to process messages and stuff.
+     * not require a response, while a get request will require it). See the class Handler for
+     * details on how processing messages and stuff.
      */
-    case TYPE_DATA:
+    case TYPE_GET_DATA:
         // If data message is addressed to me, process and maybe send response back to same
-        // communication line where I received the message.
+        // communication line where I received the message. The handler should explicitely swap the
+        // sender and receiver ids in the message by calling message->swapIds().
         if (Utils::arrayEquals(message->m_targetId, m_id, ID_DATA_LENGTH)) {
             if(m_handler->handleMessage(message)) {
-                message->swapIds();
                 transmit(readFromLine, message);
             }
         }
@@ -173,7 +184,8 @@ void DataExchanger::process(
 }
 
 void DataExchanger::transmit(DataStreamWriter *dsw, Message *message) {
-    dsw->writeObject(message);
+	message->writeTo(dsw);
+	dsw->flush();
 }
 
 DataExchanger::DataExchanger() :
@@ -200,24 +212,19 @@ void DataExchanger::setupSoftware(DataStreamReader *dsr, DataStreamWriter *dsw) 
 }
 
 void DataExchanger::loop() {
-    bool ok = true;
     Message m;
     if (m_hardwareReader && m_hardwareReader->available() >= MESSAGE_SIZE) {
-        m_hardwareReader->readObject(&m, &ok);
-        if (ok) {
-            process(&m, m_hardwareWriter, m_softwareWriter);
+        if (m.readFrom(m_hardwareReader) == -1) {
+        	d.println("ERROR while reading from hardware connection (comm A)");
         } else {
-            // TODO(rtapiapincheira): handle this error!
-            // do nothing...
+        	process(&m, m_hardwareWriter, m_softwareWriter);
         }
     }
     if (m_softwareReader && m_softwareReader->available() >= MESSAGE_SIZE) {
-        m_softwareReader->readObject(&m, &ok);
-        if (ok) {
-            process(&m, m_softwareWriter, m_hardwareWriter);
+        if (m.readFrom(m_softwareReader) == -1) {
+        	d.println("ERROR while reading from software connection (comm B)");
         } else {
-            // TODO(rtapiapincheira): handle this error!
-            // do nothing...
+        	process(&m, m_softwareWriter, m_hardwareWriter);
         }
     }
 }

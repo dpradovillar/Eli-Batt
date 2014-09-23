@@ -239,3 +239,9 @@ pip-log.txt
 *.b#5
 *.b#6
 *.b#7
+
+# Qt Auto Generated Project Files
+Software/Elibatt-Qt/Makefile
+Software/Elibatt-Qt/Makefile.Debug
+Software/Elibatt-Qt/Makefile.Release
+Software/Elibatt-Qt/ui_uidialog.h

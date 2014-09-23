@@ -12,13 +12,14 @@ class DataStreamReader;
  * and knows how to read itself back. This way we can achieve general purpose transport mechanisms
  * by separating the data (re)construction from the sending mechanism.
  */
-class DataObject {
+/*class DataObject {
 public:
     virtual ~DataObject();
     virtual size_t writeTo(DataStreamWriter *dsw) = 0;
+    virtual size_t writeAsciiTo(DataStreamWriter *dsw) = 0;
     virtual size_t readFrom(DataStreamReader *dsr) = 0;
     virtual uint16_t calculateCrc() = 0;
-};
+};*/
 
 /**
  * Wraper for an endpoint, to write abstract datatypes. This class is in charge of the serialization
@@ -27,16 +28,16 @@ public:
  */
 class DataStreamWriter {
 private:
-    Endpoint *m_endpoint;
+    SerialEndpoint *m_endpoint;
 public:
-    void setup(Endpoint *endpoint);
+    void setup(SerialEndpoint *endpoint);
     void flush();
 
     size_t writeByte(byte b);
     size_t writeShort(short s);
     size_t writeString(const String &s);
     size_t writeArray(byte *s, size_t n);
-    size_t writeObject(DataObject *obj);
+    //size_t writeObject(DataObject *obj);
 };
 
 /**
@@ -46,36 +47,16 @@ public:
  */
 class DataStreamReader {
 private:
-    Endpoint *m_endpoint;
+    SerialEndpoint *m_endpoint;
 public:
-    void setup(Endpoint *endpoint);
+    void setup(SerialEndpoint *endpoint);
     int available();
 
     byte readByte(bool *ok=NULL);
     short readShort(bool *ok=NULL);
     int32_t readInt(bool *ok=NULL);
     void readFully(byte *buff, size_t len, bool *ok=NULL);
-	String readString(bool* ok = NULL) {
-		uint16_t num = readShort(ok);
-		if (ok && !*ok) {
-			return String();
-		}
-		String res;
-		res.reserve(num);
-		size_t i = 0;
-		while (i < num) {
-			if (m_endpoint->available()) {
-				res[i++] = readByte(ok);
-				if (ok && !*ok) {
-					return String();
-				}
-			}
-		}
-		return res;
-	}
-    float readFloat(bool *ok=NULL);
-    double readDouble(bool *ok=NULL);
-    void readObject(DataObject *obj, bool *ok=NULL);
+    //void readObject(DataObject *obj, bool *ok=NULL);
 };
 
 #endif // __DATA_STREAM_H__

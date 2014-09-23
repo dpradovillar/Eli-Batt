@@ -1,27 +1,26 @@
 #ifndef UIDIALOG_H
 #define UIDIALOG_H
 
+#include <QDateTime>
+#include <QDebug>
 #include <QDialog>
+#include <QList>
 #include <QTimer>
+#include <QSerialPortInfo>
 
 #include "ui_uidialog.h"
+#include "uicontroller.h"
 
 class UiDialog : public QDialog
 {
     Q_OBJECT
+private:
+    Ui::UiDialog *ui;
+    UiController m_uiController;
 
 public:
     explicit UiDialog(QWidget *parent = 0);
     ~UiDialog();
-
-private:
-    Ui::UiDialog *ui;
-    QTimer aTimer;
-
-private slots:
-    void processTimeout();
-    void cleanUi();
-    void sendDatetime();
 };
 
 #endif // UIDIALOG_H
