@@ -42,7 +42,7 @@ void setup()
   Serial.println("Try it out some UNIX-like commands: ls, mv, rm, cat, touch");
 }
 
-void ls() {
+void ls(bool removeIt=false) {
   File root = SD.open("/");
   root.rewindDirectory();
   while(true) {
@@ -50,15 +50,28 @@ void ls() {
     if (! entry) {
       break;
     }
-    if (entry.isDirectory()) {
-      Serial.print("- ");
-    }else{
-      Serial.print(entry.size());
-      Serial.print(' ');
+    if (removeIt) {
+       if (!entry.isDirectory()) {
+         Serial.print("Removing (");
+         Serial.print(entry.name());
+         Serial.print("): ");
+       }
+    } else {
+      if (entry.isDirectory()) {
+        Serial.print("D ");
+      }else{
+        Serial.print(entry.size());
+        Serial.print(' ');
+      }
+      Serial.print(entry.name());
+      Serial.println();
     }
-    Serial.print(entry.name());
-    Serial.println();
-  
+
+    // If remove it, remove it
+    if (removeIt) {
+      Serial.println(SD.remove(entry.name()) ? "OK" : "ERROR");
+    }
+    
     entry.close();
   }
   root.close();
@@ -92,6 +105,12 @@ void mv(char *filename1, char *filename2) {
 }
 
 void rm(char *filename) {
+  
+  if (equals(filename, 1, "*", 1)) {
+    Serial.println("Removing everything!");
+    ls(1);
+    return;
+  }  
   File dataFile = SD.open(filename);
   if (dataFile) {
     dataFile.close();

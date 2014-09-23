@@ -70,7 +70,10 @@
 
 // Number of rows of each file (duration in seconds)
 //#define FILE_DURATION 21600 // 6hrs
-#define FILE_DURATION 10 // 6hrs
+#define FILE_DURATION 120 // 2 min
+
+// Delay for master sample clock in microseconds
+#define MASTER_CLOCK_DELAY 1000000 // 1 sec
 
 #define COMM1_SPEED 9600  // Hardware-output
 #define COMM2_SPEED 9600  // Software-output

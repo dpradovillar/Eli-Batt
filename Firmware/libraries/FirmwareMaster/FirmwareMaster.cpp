@@ -16,7 +16,7 @@ void FirmwareMaster::setup(int rx2, int tx2, int bauds2, int currentSensorPin, i
     d.println("Setting Bank Data (card and registered slaves):");
     if (m_bank_data.setup(sdCsPin, fileDuration, dbgEndpoint)) {
     	// TODO(rtapiapincheira): discover new slaves and update eeprom list
-    	m_bank_data.registerId(Utils::toInt32("0001"));
+    	m_bank_data.registerId(Utils::toInt32(m_id));
     	//m_bank_data.registerId(Utils::toInt32("0002"));
     	//m_bank_data.registerId(Utils::toInt32("0003"));
         d.println("Ok");
@@ -112,17 +112,18 @@ void FirmwareMaster::process(int next, SerialEndpoint *endpoint) {
 
     case 's':
 
-        d.println("Received master serial output data command, reading next 4 bytes for an id:");
+        d.println("Received master serial output data command");
 
-        while(endpoint->available() < 4);
-        endpoint->read(targetId, 0, 4);
-        id = Utils::toInt32(targetId);
+        //while(endpoint->available() < 4);
+        //endpoint->read(targetId, 0, 4);
+        //id = Utils::toInt32(targetId);
+        id = Utils::toInt32(m_id);
 
         m_bank_data.setTime(2014, 9, 20, 22, 15, 10);
 
-        tempVal = 1;//m_temp_sensor.readDigital();
-        currentVal = 2;//m_current_sensor.read();
-        voltageVal = 3;//m_voltage_sensor.read();
+        tempVal = m_temp_sensor.readDigital();
+        currentVal = m_current_sensor.read();
+        voltageVal = m_voltage_sensor.read();
 
         m_bank_data.addData(id, tempVal, currentVal, voltageVal);
 
