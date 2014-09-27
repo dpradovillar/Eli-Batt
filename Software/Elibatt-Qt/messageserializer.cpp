@@ -5,7 +5,6 @@ MessageSerializer::MessageSerializer()
 }
 
 MessageSerializer::~MessageSerializer() {
-
 }
 
 void Message::serializeTo(uchar *buff20bytes) {

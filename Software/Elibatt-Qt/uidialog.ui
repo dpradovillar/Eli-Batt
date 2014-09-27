@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
+    <width>550</width>
     <height>550</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>450</width>
+    <width>550</width>
     <height>550</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>450</width>
-    <height>550</height>
+    <width>550</width>
+    <height>618</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -1041,6 +1041,9 @@
        </item>
        <item>
         <widget class="QGroupBox" name="register_slave_groupbox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="title">
           <string>Registered Slave IDs</string>
          </property>
@@ -1255,7 +1258,7 @@
         <rect>
          <x>50</x>
          <y>40</y>
-         <width>75</width>
+         <width>101</width>
          <height>23</height>
         </rect>
        </property>

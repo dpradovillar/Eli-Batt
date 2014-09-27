@@ -14,11 +14,9 @@ class Message;
 class MessageSerializer : public QObject
 {
     Q_OBJECT
-
 public:
     explicit MessageSerializer();
     virtual ~MessageSerializer();
-
 };
 
 class Message {

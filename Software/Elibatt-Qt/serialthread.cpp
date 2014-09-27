@@ -58,7 +58,7 @@ void SerialThread::run() {
                 hasNext = true;
             }
         }
-
+#ifdef ENABLE_SERIAL_COMM
         qDebug() << "Scheduling sending of a new message?" << hasNext;
 
         qDebug() << "Waiting a bit for any incoming message...";
@@ -83,8 +83,6 @@ void SerialThread::run() {
                 emit newResponse(m);
             }
         } else {
-            /*emit timeout(tr("Wait read response timeout %1")
-                         .arg(QTime::currentTime().toString()));*/
             qDebug() << "TIMEOUT while receiving new packages";
 
             if (hasNext) {
@@ -107,6 +105,11 @@ void SerialThread::run() {
                 qDebug() << "All bytes of the scheduled message were sent!";
             }
         }
+#else
+        qDebug() << "Skipping serial comm handling";
+        // No packages are coming, simulate a timed out read.
+        msleep(WAIT_SWITCH_TIMEOUT);
+#endif
     }
 
     m_serialPort->close();
