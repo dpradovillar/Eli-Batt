@@ -15,7 +15,8 @@ int I2cInput::read() {
 }
 */
 bool Mcp9808Sensor::setup() {
-    return m_ok = m_ada.begin();
+    return m_ok = true;
+    //return m_ok = m_ada.begin();
 }
 
 float Mcp9808Sensor::readCelsius() {

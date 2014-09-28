@@ -1,17 +1,12 @@
-#ifndef __FIRMWARE_SLAVE_H_
-#define __FIRMWARE_SLAVE_H_
-
-#define TARGET_BOARD    BOARD_MEGA
-#define TARGET_FIRMWARE FIRMWARE_SLAVE
-#define TARGET_DEBUG    true
-
-#include <elibatt_config.h>
+#ifndef __FIRMWARE_MASTER_H_
+#define __FIRMWARE_MASTER_H_
 
 #include "Arduino.h"
 
 #include <Adafruit_MCP9808.h>
 #include <AnalogInput.h>
 #include <ArduinoSoftwareSerial.h>
+#include <BankData.h>
 #include <DataStream.h>
 #include <DataExchanger.h>
 #include <Debugger.h>
@@ -19,12 +14,14 @@
 #include <EepromWriter.h>
 #include <Endpoint.h>
 #include <I2cInput.h>
+#include <SD.h>
+#include <SdData.h>
 #include <SimpleCrc.h>
 #include <Utils.h>
+#include <Wire.h>
 
-class FirmwareSlave : public Handler {
-private:
-    /** For retrieving the ID of the master burned in the EEPROM memory. */
+class Firmware : public Handler {
+protected:
     EepromWriter m_eeprom_writer;
     byte m_id[4];
 
@@ -42,29 +39,31 @@ private:
     DataExchanger m_dex;
 
     /** Sensors. */
-    Mcp9808Sensor m_temp_sensor; /** Uses sda=A4, scl=A5 on UNO. */
+    Mcp9808Sensor m_temp_sensor; /** UNO uses sda=A4, scl=A5. */
     AnalogInput m_current_sensor;
     AnalogInput m_voltage_sensor;
-
-    /** For message verification. */
-    SimpleCrc m_simple_crc;
 
     /** Debugging endpoint. */
     Debugger d;
 
-public:
-    FirmwareSlave();
+    Message m_the_message;
 
-    void setup(int rx1, int tx1, int bauds1, int rx2, int tx2, int bauds2, int currentSensorPin,
-            int voltageSensorPin, SerialEndpoint *debuggerEndpoint=NULL);
+    void propagateMessage();
+
+public:
+    Firmware();
+    virtual ~Firmware();
+
+    void setup(
+        int rx1, int tx1, int bauds1,
+        int rx2, int tx2, int bauds2,
+        int currentSensorPin, int voltageSensorPin,
+        int debugPin, SerialEndpoint *dbgEndpoint
+    );
 
     void loop();
 
-    virtual bool handleMessage(Message *message);
-
-    bool getData(Message *message);
-    bool getId(Message *message);
-    bool setId(Message *message);
+    virtual bool handleMessage(Message &message) = 0;
 };
 
-#endif // __FIRMWARE_SLAVE_H_
+#endif // __FIRMWARE_MASTER_H_

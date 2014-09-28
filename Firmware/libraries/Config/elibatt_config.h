@@ -79,6 +79,8 @@
 #define COMM2_SPEED 9600  // Software-output
 #define DEBUG_SPEED 9600 // PC comm
 
+#define DEBUG_PIN 13
+
 // Specific combination handling
 #if TARGET_BOARD==BOARD_UNO || TARGET_BOARD==BOARD_MEGA
 #  if TARGET_BOARD==BOARD_UNO
