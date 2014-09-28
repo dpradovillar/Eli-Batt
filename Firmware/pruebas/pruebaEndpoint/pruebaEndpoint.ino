@@ -1,6 +1,8 @@
 #include <ArduinoSoftwareSerial.h>
 #include <Utils.h>
+#include <Debugger.h>
 #include <Endpoint.h>
+#include <SimpleCrc.h>
 
 SerialEndpoint pcComm;
 SerialEndpoint softComm;

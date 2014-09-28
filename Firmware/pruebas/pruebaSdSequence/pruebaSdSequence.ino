@@ -1,8 +1,9 @@
 #include <ArduinoSoftwareSerial.h>
 #include <DataStream.h>
+#include <Debugger.h>
 #include <EEPROM.h>
 #include <Endpoint.h>
-#include <EepromId.h>
+#include <EepromWriter.h>
 #include <SampleCollector.h>
 #include <SD.h>
 #include <SdData.h>
@@ -10,15 +11,15 @@
 #include <Utils.h>
 
 SerialEndpoint debugSerialEndpoint;
-EepromId eepromId;
+EepromWriter eepromWriter;
 SampleClock sampleClock;
 
 SdNameSequencer sdNameSequencer;
 
 class MyCallback : public SampleCallback {
 public:
-  ~MyCallback(){}
-  void eventDetected(uint32_t current_usecs) {
+  virtual ~MyCallback(){}
+  virtual void eventDetected(uint32_t current_usecs) {
 
     char buffer[13];
     sdNameSequencer.next(buffer);
@@ -35,7 +36,7 @@ void setup() {
   debugSerialEndpoint.setup(0, 1, 9600);
   debugSerialEndpoint.waitForConnection();
   
-  uint32_t id = eepromId.readId();
+  uint32_t id = eepromWriter.readId();
   debugSerialEndpoint.print("Id from eeprom:");
   debugSerialEndpoint.println(id);
   

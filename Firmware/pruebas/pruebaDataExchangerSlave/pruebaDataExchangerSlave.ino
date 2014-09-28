@@ -2,13 +2,14 @@
 #include <ArduinoSoftwareSerial.h>
 #include <DataStream.h>
 #include <DataExchanger.h>
+#include <Debugger.h>
 #include <EepromWriter.h>
 #include <Endpoint.h>
 #include <SimpleCrc.h>
 #include <Utils.h>
 
 EepromWriter eepromWriter;
-byte myId[4];
+uint32_t myId;
 
 // previous in devices chain
 SerialEndpoint commA;
@@ -30,7 +31,8 @@ int led = 13;
  */
 class LedBlinkHandler : public Handler {
 public:
-  bool handleMessage(Message *message) {
+  virtual ~LedBlinkHandler() {}
+  virtual bool handleMessage(Message &message) {
     for(int i=0; i<3; i++) {
       digitalWrite(led, HIGH);
       delay(100);
@@ -47,11 +49,10 @@ void setup() {
   pinMode(13, OUTPUT);
   
   // first thing, read id from eeprom
-  uint32_t numId = eepromWriter.readId();
-  Utils::toByte(numId, myId);
+  myId = eepromWriter.readId();
   
   // setup data exchanger only with references
-  dex.setup(myId, &blinkHandler);
+  dex.setup(myId, &blinkHandler, NULL);
   dex.setupHardware(&dsrA, &dswA);
   dex.setupSoftware(&dsrB, &dswB);
 

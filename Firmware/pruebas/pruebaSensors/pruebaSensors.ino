@@ -19,9 +19,10 @@ void setup() {
 }
 
 void loop() {
-Serial.print(tempSensor.readCelsius());Serial.print(";");
-Serial.print((int)currentSensor.read());Serial.print(";");
-Serial.print((int)voltageSensor.read());Serial.print(";");
+  Serial.print(tempSensor.readCelsius());Serial.print(";");
+  Serial.print((int)currentSensor.read());Serial.print(";");
+  Serial.print((int)voltageSensor.read());Serial.print(";");
   Serial.println();
+  
   delay(1000);
 }

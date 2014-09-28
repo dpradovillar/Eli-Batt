@@ -1,8 +1,9 @@
 #include <ArduinoSoftwareSerial.h>
 #include <DataStream.h>
+#include <Debugger.h>
 #include <EEPROM.h>
 #include <Endpoint.h>
-#include <EepromId.h>
+#include <EepromWriter.h>
 #include <SampleCollector.h>
 #include <SD.h>
 #include <SdData.h>
@@ -10,14 +11,14 @@
 #include <Utils.h>
 
 SerialEndpoint debugSerialEndpoint;
-EepromId eepromId;
+EepromWriter eepromWriter;
 SampleClock sampleClock;
 SdWriter sdWriter;
 
 class MyCallback : public SampleCallback {
 public:
-  ~MyCallback(){}
-  void eventDetected(uint32_t current_usecs) {
+  virtual ~MyCallback(){}
+  virtual void eventDetected(uint32_t current_usecs) {
     
     debugSerialEndpoint.println("Trying to open file");
     if (sdWriter.open()) {
@@ -47,15 +48,13 @@ void setup() {
   
 //  ledBlinkCallback.setup(7);
   
-  sdWriter.setDebugEndpoint(&debugSerialEndpoint);
-  
   debugSerialEndpoint.println("trying to start SD card");
-  if(!sdWriter.setup(4)) { // chipSelect on pin 4, additionally, pin 10 is left as OUTPUT
+  if(!sdWriter.setup(4, &debugSerialEndpoint)) { // chipSelect on pin 4, additionally, pin 10 is left as OUTPUT
     debugSerialEndpoint.println("couldn't set it up");
     while(1);
   } 
   
-  uint32_t id = eepromId.readId();
+  uint32_t id = eepromWriter.readId();
   debugSerialEndpoint.print("Id from eeprom:");
   debugSerialEndpoint.println(id);
   
