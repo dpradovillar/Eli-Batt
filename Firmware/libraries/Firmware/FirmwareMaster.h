@@ -1,10 +1,9 @@
 #ifndef __FIRMWARE_MASTER_H_
 #define __FIRMWARE_MASTER_H_
 
-#include "Arduino.h"
-
 #include <Adafruit_MCP9808.h>
 #include <AnalogInput.h>
+#include <Arduino.h>
 #include <ArduinoSoftwareSerial.h>
 #include <BankData.h>
 #include <DataStream.h>
@@ -13,6 +12,7 @@
 #include <EEPROM.h>
 #include <EepromWriter.h>
 #include <Endpoint.h>
+#include <Firmware.h>
 #include <I2cInput.h>
 #include <SD.h>
 #include <SdData.h>
@@ -38,6 +38,8 @@ public:
     void loop();
 
     virtual bool handleMessage(Message &message);
+
+    void process(char cmd);
 
 private:
 };

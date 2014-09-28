@@ -71,9 +71,7 @@ bool BankData::setup(int chipSelectPin, uint32_t fileDuration, SerialEndpoint *d
     d.setup(dbgEndpoint);
     m_file_duration = fileDuration;
 
-    if (m_sd_writer.setup(chipSelectPin, dbgEndpoint)) {
-
-    } else {
+    if (!m_sd_writer.setup(chipSelectPin, dbgEndpoint)) {
         return false;
     }
 
@@ -87,9 +85,9 @@ bool BankData::registerId(uint32_t id) {
         byte buff[4];
         Utils::toByte(id, buff);
         if (m_count_ids == 0) {
-            d.print("Registering master with ID:").printHexInt(buff).println();
+            d.print("Registering master with ID ").printHexInt(buff).println(": Ok");
         } else {
-            d.print("Registering slave with ID:").printHexInt(buff).println();
+            d.print("Registering slave with ID ").printHexInt(buff).print(": Ok");
         }
         m_registered_ids[m_count_ids++] = id;
         return true;
@@ -144,10 +142,10 @@ int BankData::addData(uint32_t id, uint16_t temp, uint16_t current, uint16_t vol
         m_bit_set |= (1UL << pos);
     }
 	int readyCount = ready();
-    if (readyCount == m_registered_ids) {
+    if (readyCount == m_count_ids) {
         forceFlush();
     }
-    return m_registered_ids - readyCount;
+    return (m_count_ids - readyCount);
 }
 
 int BankData::addData(uint32_t id, byte *buffer6bytes) {

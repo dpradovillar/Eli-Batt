@@ -12,7 +12,7 @@
 #define WAIT_SWITCH_TIMEOUT 1000 // Time before to switch to writing
 #define WAIT_WRITE_TIMEOUT   500 // If the device is not reading my bytes, wait this
 
-//#define ENABLE_SERIAL_COMM
+#define ENABLE_SERIAL_COMM
 
 class SerialThread : public QThread {
     Q_OBJECT

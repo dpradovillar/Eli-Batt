@@ -77,6 +77,12 @@ Debugger& Debugger::println(int x) {
     }
     return *this;
 }
+Debugger& Debugger::println(uint16_t x) {
+    if (m_endpoint) {
+        m_endpoint->println(x);
+    }
+    return *this;
+}
 Debugger& Debugger::println(uint32_t x) {
     if (m_endpoint) {
         m_endpoint->println(x);

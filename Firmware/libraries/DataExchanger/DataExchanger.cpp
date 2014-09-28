@@ -46,9 +46,9 @@ size_t Message::readFrom(DataStreamReader *dsr) {
 }
 
 void Message::clearData() {
-	for(byte i = 0; i < CUSTOM_MESSAGE_DATA_LENGTH; i++) {
-		m_data[i] = 0;
-	}
+    for(byte i = 0; i < CUSTOM_MESSAGE_DATA_LENGTH; i++) {
+        m_data[i] = 0;
+    }
 }
 
 void Message::calculateAndSetCrc() {
@@ -68,70 +68,83 @@ void DataExchanger::process(
         DataStreamWriter *readFromLine,   // Communication line where the message was read from.
         DataStreamWriter *opposingLine) { // Opposing communication line, to crosstalk messages.
 
-	switch(message.m_type) {
-	case SCAN_MESSAGE:
-		// Transmit the same unaddressed scan message to the next in the chain.
-		transmit(opposingLine, message);
+    switch(message.m_type) {
+    case SCAN_MESSAGE:
+        d.println("SCAN_MESSAGE");
 
-		// Swap ids to send the message back (I'm sending a message addressed to master).
-		message.m_targetId = message.m_fromId;
-		message.m_fromId = m_id;
-		message.m_type = SCAN_MESSAGE_RESPONSE;
+        // Transmit the same unaddressed scan message to the next in the chain.
+        transmit(opposingLine, message);
 
-		// Send back.
-		message.calculateAndSetCrc();
-		transmit(readFromLine, message);
+        // Swap ids to send the message back (I'm sending a message addressed to master).
+        message.m_targetId = message.m_fromId;
+        message.m_fromId = m_id;
+        message.m_type = SCAN_MESSAGE_RESPONSE;
 
-		break;
+        // Send back.
+        message.calculateAndSetCrc();
+        transmit(readFromLine, message);
 
-	case SCAN_ID_READ:
-		// Swap ids to send the message back (I'm sending a message addressed to master).
-		message.m_targetId = message.m_fromId;
-		message.m_fromId = m_id;
-		message.m_type = SCAN_ID_READ_RESPONSE;
+        break;
 
-		// Send back.
-		message.calculateAndSetCrc();
-		transmit(readFromLine, message);
+    case SCAN_ID_READ:
+        d.println("SCAN_ID_READ");
 
-		break;
+        // Swap ids to send the message back (I'm sending a message addressed to master).
+        message.m_targetId = message.m_fromId;
+        message.m_fromId = m_id;
+        message.m_type = SCAN_ID_READ_RESPONSE;
 
-	case SCAN_ID_CHECK:
-		// Put my id in the content of the message.
-		message.clearData();
-		Utils::toByte(m_id, message.m_data);
+        // Send back.
+        message.calculateAndSetCrc();
+        transmit(readFromLine, message);
 
-		// Swap ids to send back message (addressed to master).
-		message.m_targetId = message.m_fromId;
-		message.m_fromId = m_id;
-		message.m_type = SCAN_ID_CHECK_RESPONSE;
+        break;
 
-		// Send back.
-		transmit(readFromLine, message);
+    case SCAN_ID_CHECK:
+        d.println("SCAN_ID_CHECK");
 
-		break;
+        // Put my id in the content of the message.
+        message.clearData();
+        Utils::toByte(m_id, message.m_data);
 
-	default:
+        // Swap ids to send back message (addressed to master).
+        message.m_targetId = message.m_fromId;
+        message.m_fromId = m_id;
+        message.m_type = SCAN_ID_CHECK_RESPONSE;
 
-		// Addressed to me?
-		if (message.m_targetId == m_id) {
-			if (m_handler->handleMessage(message)) {
-				message.calculateAndSetCrc();
-				transmit(readFromLine, message);
-			}
-		}
-		// Not to me? pass it on unchanged.
-		else {
-			transmit(opposingLine, message);
-		}
-		break;
-	}
+        // Send back.
+        message.calculateAndSetCrc();
+        transmit(readFromLine, message);
+
+        break;
+
+    default:
+        d.print("addressed to me?").println(message.m_targetId == m_id ? "yes" : "no");
+        // Addressed to me?
+        if (message.m_targetId == m_id) {
+            if (m_handler->handleMessage(message)) {
+                d.println("Re-transmitting message as response. Recalculating crc.");
+                message.calculateAndSetCrc();
+                transmit(readFromLine, message);
+            } else {
+                d.println("Omitting response. Function returned false.");
+            }
+        }
+        // Not to me? pass it on unchanged.
+        else {
+            d.println("Passing message on unchanged");
+            transmit(opposingLine, message);
+        }
+        break;
+    }
 
 }
 
 void DataExchanger::transmit(DataStreamWriter *dsw, Message &message) {
-    message.writeTo(dsw);
-    dsw->flush();
+    if (dsw) {
+        message.writeTo(dsw);
+        dsw->flush();
+    }
 }
 
 DataExchanger::DataExchanger() :
@@ -164,19 +177,21 @@ void DataExchanger::loop() {
     if (m_hardwareReader && m_hardwareReader->available() >= MESSAGE_SIZE) {
         if (m.readFrom(m_hardwareReader) == -1) {
             d.println("ERROR while reading from hardware connection (comm A)");
-        } else if (m_hardwareWriter && m_softwareWriter) {
-            process(m, m_hardwareWriter, m_softwareWriter);
         } else {
-        	d.println("WARNING package dismissed because there's no connection set up.");
+            process(m, m_hardwareWriter, m_softwareWriter);
         }
     }
     if (m_softwareReader && m_softwareReader->available() >= MESSAGE_SIZE) {
         if (m.readFrom(m_softwareReader) == -1) {
             d.println("ERROR while reading from software connection (comm B)");
-        } else if (m_softwareWriter && m_hardwareWriter) {
-            process(m, m_softwareWriter, m_hardwareWriter);
         } else {
-        	d.println("WARNING package dismissed because there's no connection set up.");
+            process(m, m_softwareWriter, m_hardwareWriter);
         }
     }
+}
+
+void DataExchanger::injectMessage(Message &m) {
+    // This covers both master and slave, because both have comm B connection (also called software
+    // connection).
+    process(m, m_softwareWriter, m_hardwareWriter);
 }

@@ -32,6 +32,7 @@ public:
 
     Debugger& println();
     Debugger& println(int x);
+    Debugger& println(uint16_t x);
     Debugger& println(uint32_t x);
     Debugger& println(char x);
     Debugger& println(const char *s);

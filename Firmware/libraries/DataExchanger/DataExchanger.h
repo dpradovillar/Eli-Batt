@@ -183,6 +183,8 @@ public:
     void setupSoftware(DataStreamReader *dsr, DataStreamWriter *dsw);
 
     void loop();
+
+    void injectMessage(Message &message);
 };
 
 #endif // __DATA_EXCHANGER_H_

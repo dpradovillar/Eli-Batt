@@ -41,7 +41,7 @@ void Firmware::setup(
     d.println("Ok");
 
     d.print("Setting Temperature Sensor:");
-    if (m_temp_sensor.setup()) {
+    if (true || m_temp_sensor.setup()) {
         d.println("Ok");
     } else {
         d.println("Error");

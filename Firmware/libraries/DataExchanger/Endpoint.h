@@ -8,46 +8,11 @@
 #define CR_LF "\r\n"
 
 /**
- * Interface to write/read bytes from a common endpoint.
- */
-/*
-class Endpoint {
-public:
-    virtual ~Endpoint();
-    virtual void flush() = 0;
-    virtual int available() = 0;
-    virtual void waitForConnection() = 0;
-
-    virtual size_t write(byte b) = 0;
-    virtual int read() = 0;
-
-    size_t write(byte *arr, size_t len);
-    size_t read(byte *arr, size_t len);
-
-    virtual size_t write(byte *arr, size_t start, size_t len) = 0;
-	virtual size_t read(byte *arr, size_t start, size_t len) = 0;
-	
-    virtual size_t print(int x) = 0;
-    virtual size_t print(uint16_t x) = 0;
-    virtual size_t print(uint32_t x) = 0;
-    virtual size_t print(char c) = 0;
-    virtual size_t print(const char *s) = 0;
-    virtual size_t print(char *s, int len) = 0;
-
-    virtual size_t println() = 0;
-    virtual size_t println(int x) = 0;
-    virtual size_t println(uint32_t x) = 0;
-    virtual size_t println(char x) = 0;
-    virtual size_t println(const char *s) = 0;
-    virtual size_t println(char *s, int len) = 0;
-};
-*/
-/**
  * Specialization of the Endpoint class, that supports communication from a Serial connection.
  * Automatically detects if it's a hardware or software serial connection by looking at the pins
  * used to initialize the object.
  */
-class SerialEndpoint /*: public Endpoint*/ {
+class SerialEndpoint {
 private:
     int8_t m_hardwareSerialIndex;
     SoftwareSerial m_softwareSerial;
@@ -75,6 +40,7 @@ public:
 
     size_t println();
     size_t println(int x);
+    size_t println(uint16_t x);
     size_t println(uint32_t x);
     size_t println(char x);
     size_t println(const char *s);

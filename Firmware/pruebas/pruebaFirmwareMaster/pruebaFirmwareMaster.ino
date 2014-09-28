@@ -14,6 +14,7 @@
 #include <EEPROM.h>
 #include <EepromWriter.h>
 #include <Endpoint.h>
+#include <Firmware.h>
 #include <FirmwareMaster.h>
 #include <MemoryFree.h>
 #include <I2cInput.h>
@@ -27,51 +28,42 @@
 FirmwareMaster firmwareMaster;
 
 SampleClock sampleClock;
-
-#if TARGET_DEBUG
 SerialEndpoint pcComm;
-#endif
 
 class MasterCallback : public SampleCallback {
 public:
-  ~MasterCallback() {}
+  virtual ~MasterCallback() {}
   virtual void eventDetected(uint32_t usecs){
-    firmwareMaster.process((int)'s', &pcComm);
+    //firmwareMaster.process('g');
   }
 };
 
 MasterCallback masterCallback;
 
 void setup() {
-#if TARGET_DEBUG
   pcComm.setup(DEBUG_RX, DEBUG_TX, DEBUG_SPEED);
   pcComm.waitForConnection();
   pcComm.print("Connected to:");
   pcComm.println(PROFILE_LABEL);
   pcComm.flush();
-#endif
+  pcComm.print("Available memory:");
+  pcComm.println(freeMemory());
+  pcComm.flush();
   sampleClock.setup(0, &masterCallback);
   sampleClock.setPeriod(MASTER_CLOCK_DELAY);
 
   firmwareMaster.setup(
     COMM2_RX,COMM2_TX,COMM2_SPEED,
     CURRENT_PIN, VOLTAGE_PIN,
-    SD_CS_PIN, FILE_DURATION
-#if TARGET_DEBUG
-    ,&pcComm
-#endif
+    SD_CS_PIN, FILE_DURATION,
+    DEBUG_PIN ,&pcComm
   );
 }
 
 void loop() {
-/*
-#if TARGET_DEBUG
-  // TODO(rtapiapincheira): convert this serial comm into a SampleCollector (periodic task).
   if (pcComm.available()) {
-    firmwareMaster.process(pcComm.read(), &pcComm);
+     firmwareMaster.process((char)pcComm.read());
   }
-#endif
-*/
   firmwareMaster.loop();
   sampleClock.loop();
 }

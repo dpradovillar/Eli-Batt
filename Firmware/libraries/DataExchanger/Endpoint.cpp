@@ -1,16 +1,5 @@
 #include <Endpoint.h>
 
-/*
-Endpoint::~Endpoint() {
-}
-
-size_t Endpoint::write(byte *arr, size_t len) {
-    write(arr, 0, len);
-}
-size_t Endpoint::read(byte *arr, size_t len) {
-    read(arr, 0, len);
-}*/
-
 SerialEndpoint::SerialEndpoint() {
     m_hardwareSerialIndex = -1;
 }
@@ -219,6 +208,10 @@ size_t SerialEndpoint::println() {
 }
 
 size_t SerialEndpoint::println(int x) {
+    return print(x) + print(CR_LF);
+}
+
+size_t SerialEndpoint::println(uint16_t x) {
     return print(x) + print(CR_LF);
 }
 

@@ -2,6 +2,7 @@
 #define __DATA_STREAM_H__
 
 #include <Endpoint.h>
+#include <Utils.h>
 #include "Arduino.h"
 
 class DataStreamWriter;

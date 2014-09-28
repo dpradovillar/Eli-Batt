@@ -18,8 +18,6 @@ void FirmwareMaster::setup(int rx2, int tx2, int bauds2, int currentSensorPin, i
     if (m_bank_data.setup(sdCsPin, fileDuration, dbgEndpoint)) {
         // TODO(rtapiapincheira): discover new slaves and update eeprom list
         m_bank_data.registerId(m_id);
-
-        d.println("Ok");
     } else {
         d.println("Error");
         Utils::onFailure("SD can't be setup, check wiring.");
@@ -35,18 +33,27 @@ void FirmwareMaster::loop() {
 bool FirmwareMaster::handleMessage(Message &message) {
     int remaining;
     byte slavesCount;
+    uint16_t temp;
 
     switch (message.m_type) {
     case SCAN_MESSAGE_RESPONSE:
-    	m_bank_data.registerId(message.m_fromId);
-    	break;
+        m_bank_data.registerId(message.m_fromId);
+        break;
     case MASTER_DATA_READ:
-        Utils::toByte((uint16_t)m_temp_sensor.readDigital(), message.m_data);
-        Utils::toByte((uint16_t)m_current_sensor.read(), message.m_data+2);
-        Utils::toByte((uint16_t)m_voltage_sensor.read(), message.m_data+4);
+        d.println("MASTER_DATA_READ:");
+        Utils::toByte(temp = (uint16_t)m_temp_sensor.readDigital(), message.m_data);
+        d.print("t=").println(temp);
+
+        Utils::toByte(temp = (uint16_t)m_current_sensor.read(), message.m_data+2);
+        d.print("i=").println(temp);
+
+        Utils::toByte(temp = (uint16_t)m_voltage_sensor.read(), message.m_data+4);
+        d.print("v=").println(temp);
+
         message.m_type = MASTER_DATA_READ_RESPONSE;
         return true;
     case MASTER_DATA_GATHER:
+        d.println("MASTER_DATA_GATHER:");
         m_bank_data.setTime(2014, 9, 20, 22, 15, 10);
         remaining = m_bank_data.addData(
             m_id,
@@ -54,26 +61,31 @@ bool FirmwareMaster::handleMessage(Message &message) {
             m_current_sensor.read(),
             m_voltage_sensor.read()
         );
+        //d.print("Added data for master, rest: ").print(remaining).println(" slaves");
         // Do not emit a response until all data is gathered first!
         if (remaining > 0) { // this handles the case when no slave are connected to master
-        	// Emit one SLAVE_DATA_READ message to every connected slave
-			message.m_type = SLAVE_DATA_READ;
-			message.clearData();
-			message.m_fromId = m_id;
-			slavesCount = m_bank_data.registeredIdCount();
-			for(byte i = 0; i < slavesCount; i++) {
-				message.m_targetId = m_bank_data.registeredIdAt(i);
-				propagateMessage();
-			}
+            d.print("Emitting SLAVE_DATA_READ command to");
+            // Emit one SLAVE_DATA_READ message to every connected slave
+            message.m_type = SLAVE_DATA_READ;
+            message.clearData();
+            message.m_fromId = m_id;
+            slavesCount = m_bank_data.registeredIdCount();
+            d.print((uint32_t)slavesCount).println(" slaves");
+            for(byte i = 0; i < slavesCount; i++) {
+                message.m_targetId = m_bank_data.registeredIdAt(i);
+                propagateMessage();
+            }
         } else {
-        	message.clearData();
-			message.m_type = MASTER_DATA_GATHER_RESPONSE;
-			message.m_data[CUSTOM_MESSAGE_DATA_LENGTH-1] = 1;
-        	return true;
+            //d.println("new row added to the csv!");
+            message.clearData();
+            message.m_type = MASTER_DATA_GATHER_RESPONSE;
+            message.m_data[CUSTOM_MESSAGE_DATA_LENGTH-1] = 1;
+            return true;
         }
 
         break;
     case SLAVE_DATA_READ_RESPONSE:
+
         // When the last requested SLAVE_DATA_READ response is processed, the file will be
         // automatically flushed to a new csv row.
         remaining = m_bank_data.addData(
@@ -81,10 +93,10 @@ bool FirmwareMaster::handleMessage(Message &message) {
             message.m_data
         );
         if (remaining == 0) {
-        	message.clearData();
-			message.m_type = MASTER_DATA_GATHER_RESPONSE;
-			message.m_data[CUSTOM_MESSAGE_DATA_LENGTH-1] = 1;
-			return true;
+            message.clearData();
+            message.m_type = MASTER_DATA_GATHER_RESPONSE;
+            message.m_data[CUSTOM_MESSAGE_DATA_LENGTH-1] = 1;
+            return true;
         }
         break;
     case MASTER_GPS_GET:
@@ -98,3 +110,26 @@ bool FirmwareMaster::handleMessage(Message &message) {
     }
     return false;
 }
+
+void FirmwareMaster::process(char cmd) {
+    switch(cmd) {
+    case 'g':
+        m_the_message.m_type = MASTER_DATA_GATHER;
+        m_the_message.clearData();
+        m_the_message.m_fromId = m_id;
+        m_the_message.m_targetId = m_id;
+        handleMessage(m_the_message);
+        break;
+    case 'r':
+        m_the_message.m_type = MASTER_DATA_READ;
+        m_the_message.clearData();
+        m_the_message.m_fromId = m_id;
+        m_the_message.m_targetId = m_id;
+        handleMessage(m_the_message);
+        break;
+    default:
+        break;
+    }
+}
+
+

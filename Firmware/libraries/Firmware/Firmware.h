@@ -1,10 +1,9 @@
-#ifndef __FIRMWARE_MASTER_H_
-#define __FIRMWARE_MASTER_H_
-
-#include "Arduino.h"
+#ifndef __FIRMWARE_H_
+#define __FIRMWARE_H_
 
 #include <Adafruit_MCP9808.h>
 #include <AnalogInput.h>
+#include <Arduino.h>
 #include <ArduinoSoftwareSerial.h>
 #include <BankData.h>
 #include <DataStream.h>
@@ -67,4 +66,4 @@ public:
     virtual bool handleMessage(Message &message) = 0;
 };
 
-#endif // __FIRMWARE_MASTER_H_
+#endif // __FIRMWARE_H_

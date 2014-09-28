@@ -26,11 +26,10 @@ public:
  * Conveniently outputs via Serial interface, the timing callback. Make sure to enable Serial
  * communications and to call Serial.begin() before using this callback.
  */
-#define EXAMPLE_CALLBACKS 0
-#if EXAMPLE_CALLBACKS
 class SerialCallback : public SampleCallback {
 public:
-    void eventDetected(uint32_t current_usecs);
+	virtual ~SerialCallback();
+	virtual void eventDetected(uint32_t current_usecs);
 };
 
 
@@ -47,15 +46,16 @@ public:
      * Empty constructor, make sure to call the setup method.
      */
     LedBlinkCallback();
+    virtual ~LedBlinkCallback();
     
     /**
      * Initializes this object, make sure to call this method once, in the main setup method.
      */
     void setup(int pin);
 
-    void eventDetected(uint32_t current_usecs);
+    virtual void eventDetected(uint32_t current_usecs);
 };
-#endif
+
 /**
  * Keeps track of frequency and current time, to schedule the execution of actions at regular
  * intervals.
