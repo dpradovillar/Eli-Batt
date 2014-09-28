@@ -12,14 +12,13 @@ FirmwareMaster::FirmwareMaster() {
 void FirmwareMaster::setup(int rx2, int tx2, int bauds2, int currentSensorPin, int voltageSensorPin,
         int sdCsPin, uint32_t fileDuration, int debugPin, SerialEndpoint *dbgEndpoint) {
     Firmware::setup(-1, -1, 0, rx2, tx2, bauds2, currentSensorPin, voltageSensorPin, debugPin,
-    		dbgEndpoint);
+            dbgEndpoint);
 
     d.println("Setting Bank Data (card and registered slaves):");
     if (m_bank_data.setup(sdCsPin, fileDuration, dbgEndpoint)) {
-    	// TODO(rtapiapincheira): discover new slaves and update eeprom list
-    	m_bank_data.registerId(Utils::toInt32(m_id));
-    	//m_bank_data.registerId(Utils::toInt32("0002"));
-    	//m_bank_data.registerId(Utils::toInt32("0003"));
+        // TODO(rtapiapincheira): discover new slaves and update eeprom list
+        m_bank_data.registerId(m_id);
+
         d.println("Ok");
     } else {
         d.println("Error");
@@ -34,41 +33,68 @@ void FirmwareMaster::loop() {
 }
 
 bool FirmwareMaster::handleMessage(Message &message) {
+    int remaining;
+    byte slavesCount;
+
     switch (message.m_type) {
+    case SCAN_MESSAGE_RESPONSE:
+    	m_bank_data.registerId(message.m_fromId);
+    	break;
     case MASTER_DATA_READ:
-    	break;
+        Utils::toByte((uint16_t)m_temp_sensor.readDigital(), message.m_data);
+        Utils::toByte((uint16_t)m_current_sensor.read(), message.m_data+2);
+        Utils::toByte((uint16_t)m_voltage_sensor.read(), message.m_data+4);
+        message.m_type = MASTER_DATA_READ_RESPONSE;
+        return true;
     case MASTER_DATA_GATHER:
-        uint16_t val1 = Utils::toShort(message.m_data[2], message.m_data[3]);
-        uint16_t val2 = Utils::toShort(message.m_data[4], message.m_data[5]);
-        uint16_t val3 = Utils::toShort(message.m_data[6], message.m_data[7]);
-
-        d
-        .print("temperature=").print(val1) // TOOD(rtapiapincheira): convert this value from digital to celsius
-        .print(";current=").print(val2)
-        .print(";voltage=").print(val3)
-        .println();
-
-        /*
-        id = Utils::toInt32(m_id);
-
         m_bank_data.setTime(2014, 9, 20, 22, 15, 10);
+        remaining = m_bank_data.addData(
+            m_id,
+            m_temp_sensor.readDigital(),
+            m_current_sensor.read(),
+            m_voltage_sensor.read()
+        );
+        // Do not emit a response until all data is gathered first!
+        if (remaining > 0) { // this handles the case when no slave are connected to master
+        	// Emit one SLAVE_DATA_READ message to every connected slave
+			message.m_type = SLAVE_DATA_READ;
+			message.clearData();
+			message.m_fromId = m_id;
+			slavesCount = m_bank_data.registeredIdCount();
+			for(byte i = 0; i < slavesCount; i++) {
+				message.m_targetId = m_bank_data.registeredIdAt(i);
+				propagateMessage();
+			}
+        } else {
+        	message.clearData();
+			message.m_type = MASTER_DATA_GATHER_RESPONSE;
+			message.m_data[CUSTOM_MESSAGE_DATA_LENGTH-1] = 1;
+        	return true;
+        }
 
-        tempVal = m_temp_sensor.readDigital();
-        currentVal = m_current_sensor.read();
-        voltageVal = m_voltage_sensor.read();
-
-        m_bank_data.addData(id, tempVal, currentVal, voltageVal);
-        */
-
-    	break;
+        break;
+    case SLAVE_DATA_READ_RESPONSE:
+        // When the last requested SLAVE_DATA_READ response is processed, the file will be
+        // automatically flushed to a new csv row.
+        remaining = m_bank_data.addData(
+            message.m_fromId,
+            message.m_data
+        );
+        if (remaining == 0) {
+        	message.clearData();
+			message.m_type = MASTER_DATA_GATHER_RESPONSE;
+			message.m_data[CUSTOM_MESSAGE_DATA_LENGTH-1] = 1;
+			return true;
+        }
+        break;
     case MASTER_GPS_GET:
-    	break;
+        break;
     case MASTER_RTC_GET:
-    	break;
+        break;
     case MASTER_RTC_SET:
-    	break;
+        break;
     case MASTER_ID_WRITE:
-    	break;
+        break;
     }
-    return true;
+    return false;
 }

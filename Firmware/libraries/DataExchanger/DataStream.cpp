@@ -19,18 +19,16 @@ size_t DataStreamWriter::writeByte(byte b) {
      return m_endpoint->write(b);
 }
 
-size_t DataStreamWriter::writeShort(short s) {
-    byte hi = (byte)(s >> 8);
-    byte lo = (byte)(s >> 0);
-    size_t r = 0;
-    r += m_endpoint->write(hi);
-    r += m_endpoint->write(lo);
-    return r;
+size_t DataStreamWriter::writeInt16(uint16_t x) {
+	byte buffer[2];
+	Utils::toByte(x, buffer);
+    return m_endpoint->write(buffer, 0, 2);
 }
 
-size_t DataStreamWriter::writeString(const String &s) {
-    size_t n = s.length();
-    return writeShort(n) + writeArray((byte*)s.c_str(), n);
+size_t DataStreamWriter::writeInt32(uint32_t x) {
+	byte buffer[4];
+	Utils::toByte(x, buffer);
+	return m_endpoint->write(buffer, 0, 4);
 }
 
 size_t DataStreamWriter::writeArray(byte *s, size_t n) {
@@ -65,36 +63,24 @@ byte DataStreamReader::readByte(bool *ok) {
     return (byte)code;
 }
 
-short DataStreamReader::readShort(bool *ok) {
+uint16_t DataStreamReader::readInt16(bool *ok) {
 	if (!m_endpoint) {
 		if (ok) *ok = false;
 		return 0;
 	}
-	if (ok) *ok = true;
-    while(m_endpoint->available() < 2);
-
-    int16_t hi = m_endpoint->read();
-    int16_t lo = m_endpoint->read();
-    if (ok && (hi < 0 || lo < 0)) {
-        *ok = false;
-    }
-    return (short)(hi << 8 | lo << 0);
+	byte buffer[2];
+	readFully(buffer, 2, ok);
+	return Utils::toUInt16(buffer);
 }
 
-int32_t DataStreamReader::readInt(bool *ok) {
+uint32_t DataStreamReader::readInt32(bool *ok) {
 	if (!m_endpoint) {
 		if (ok) *ok = false;
 		return 0;
 	}
-    short hi = readShort(ok);
-    if (ok && !*ok) {
-		return 0;
-	}
-    short lo = readShort(ok);
-    if (ok && !*ok) {
-        return 0;
-    }
-    return (int32_t)(hi << 16 | lo << 0);
+	byte buffer[4];
+	readFully(buffer, 4, ok);
+	return Utils::toInt32(buffer);
 }
 
 void DataStreamReader::readFully(byte *buff, size_t len, bool *ok) {
@@ -102,6 +88,7 @@ void DataStreamReader::readFully(byte *buff, size_t len, bool *ok) {
 		if (ok) *ok = false;
 		return;
 	}
+	if (ok) *ok = true;
 	size_t i = 0;
     while(i < len) {
         if (m_endpoint->available()){

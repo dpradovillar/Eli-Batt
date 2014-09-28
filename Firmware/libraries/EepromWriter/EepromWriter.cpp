@@ -2,9 +2,10 @@
 
 void EepromWriter::read(byte *buff) {
     byte addr = ID_EEPROM_OFFSET;
-    byte hiCrc = EEPROM.read(addr++);
-    byte loCrc = EEPROM.read(addr++);
-    uint16_t eepromCrc = Utils::toShort(hiCrc, loCrc);
+    byte buffer[2];
+	buffer[0] = EEPROM.read(addr++);
+	buffer[1] = EEPROM.read(addr++);
+    uint16_t eepromCrc = Utils::toUInt16(buffer);
 
     for(byte i = 0; i < ID_LENGTH; i++){
         buff[i] = EEPROM.read(addr++);

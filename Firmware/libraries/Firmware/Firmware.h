@@ -23,7 +23,7 @@
 class Firmware : public Handler {
 protected:
     EepromWriter m_eeprom_writer;
-    byte m_id[4];
+    uint32_t m_id;
 
     /** Previous device in the series. */
     SerialEndpoint m_comm_a;
@@ -49,6 +49,7 @@ protected:
     Message m_the_message;
 
     void propagateMessage();
+	void packSensorValues(byte *buffer6Bytes);
 
 public:
     Firmware();

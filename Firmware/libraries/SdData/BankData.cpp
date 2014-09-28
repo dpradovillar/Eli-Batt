@@ -1,42 +1,43 @@
 #include <BankData.h>
 
 void BankData::forceFlush() {
-	if (!m_sd_writer.isOpen()) {
-		m_sd_writer.open();
-		d.println("Writing header into blank file!");
-		m_sd_writer.writeHeader(m_registered_ids, m_count_ids);
-	}
+    if (!m_sd_writer.isOpen()) {
+        m_sd_writer.open();
+        d.println("Writing header into blank file!");
+        m_sd_writer.writeHeader(m_registered_ids, m_count_ids);
+    }
 
-	if (m_bit_set == 0) {
-		d.println("None of the registered devices have data, consecutive forceFlush()'es");
-		d.println(" will be omitted (no empty rows on the resulting file).");
-		return;
-	}
-	d.println("Flushing data of slaves into disk!");
-	// Write timestamp
-	m_sd_writer.writeNewline();
-	m_sd_writer.writeDatetime(m_year, m_month, m_day, m_hour, m_minute, m_second);
-	for (byte i=0; i<m_count_ids; i++) {
-		m_sd_writer.writeTuple(m_buffer[i][ID_TEMP], m_buffer[i][ID_CURR], m_buffer[i][ID_VOLT]);
-	}
+    if (m_bit_set == 0) {
+        d.println("None of the registered devices have data, consecutive forceFlush()'es");
+        d.println(" will be omitted (no empty rows on the resulting file).");
+        return;
+    }
+    d.println("Flushing data of slaves into disk!");
+    // Write timestamp
+    m_sd_writer.writeNewline();
+    m_sd_writer.writeDatetime(m_year, m_month, m_day, m_hour, m_minute, m_second);
+    for (byte i=0; i<m_count_ids; i++) {
+        m_sd_writer.writeTuple(m_buffer[i][ID_TEMP], m_buffer[i][ID_CURR], m_buffer[i][ID_VOLT]);
+    }
 
-	m_current_duration++;
-	m_bit_set = 0;
+    m_current_duration++;
+    m_bit_set = 0;
 
-	if (m_current_duration == m_file_duration) {
-		// Force a renewal of the file!
-		m_sd_writer.close();
-		m_current_duration = 0;
-	}
+    if (m_current_duration == m_file_duration) {
+        // Force a renewal of the file!
+        m_sd_writer.close();
+        m_current_duration = 0;
+    }
 }
 
-bool BankData::ready() {
+int BankData::ready() {
+	int readyCount = 0;
      for (byte i=0; i<m_count_ids; i++) {
-         if ( ! (m_bit_set & (1UL << i) ) ) {
-             return false;
+         if (m_bit_set & (1UL << i) ) {
+             readyCount++;
          }
      }
-    return true;
+    return readyCount;
 }
 
 byte BankData::findId(uint32_t id) {
@@ -73,7 +74,7 @@ bool BankData::setup(int chipSelectPin, uint32_t fileDuration, SerialEndpoint *d
     if (m_sd_writer.setup(chipSelectPin, dbgEndpoint)) {
 
     } else {
-    	return false;
+        return false;
     }
 
     return true;
@@ -83,9 +84,13 @@ bool BankData::registerId(uint32_t id) {
     m_bit_set = 0;
     byte pos = findId(id);
     if (pos == 255) {
-    	byte buff[4];
-    	Utils::toByte(id, buff);
-    	d.print("Registering slave with ID:").printHexInt(buff).println();
+        byte buff[4];
+        Utils::toByte(id, buff);
+        if (m_count_ids == 0) {
+            d.print("Registering master with ID:").printHexInt(buff).println();
+        } else {
+            d.print("Registering slave with ID:").printHexInt(buff).println();
+        }
         m_registered_ids[m_count_ids++] = id;
         return true;
     }
@@ -104,6 +109,17 @@ void BankData::unregisterId(uint32_t id) {
     m_bit_set = 0;
 }
 
+byte BankData::registeredIdCount() {
+	return m_count_ids;
+}
+
+uint32_t BankData::registeredIdAt(byte pos) {
+	if (pos >= m_count_ids) {
+		return -1;
+	}
+	return m_registered_ids[pos];
+}
+
 void BankData::setTime(uint16_t year, uint8_t month, uint8_t day,  uint8_t hour, uint8_t minute, uint8_t second) {
     // set the date/time for the current row
     m_year = year;
@@ -115,7 +131,7 @@ void BankData::setTime(uint16_t year, uint8_t month, uint8_t day,  uint8_t hour,
     m_second = second;
 }
 
-void BankData::addData(uint32_t id, uint16_t temp, uint16_t current, uint16_t voltage) {
+int BankData::addData(uint32_t id, uint16_t temp, uint16_t current, uint16_t voltage) {
     byte pos = findId(id);
     if (pos == 255) {
         byte buffer[4];
@@ -127,9 +143,18 @@ void BankData::addData(uint32_t id, uint16_t temp, uint16_t current, uint16_t vo
         m_buffer[pos][ID_VOLT] = voltage;
         m_bit_set |= (1UL << pos);
     }
-
-    if (ready()) {
+	int readyCount = ready();
+    if (readyCount == m_registered_ids) {
         forceFlush();
     }
+    return m_registered_ids - readyCount;
 }
+
+int BankData::addData(uint32_t id, byte *buffer6bytes) {
+    return addData(id,
+            Utils::toUInt16(buffer6bytes),
+            Utils::toUInt16(buffer6bytes+2),
+            Utils::toUInt16(buffer6bytes+4));
+}
+
 

@@ -4,13 +4,11 @@ Message::~Message() {
 }
 
 size_t Message::writeTo(DataStreamWriter *dsw) {
-    m_crc = calculateCrc();
     size_t r = 0;
-    r += dsw->writeShort(m_crc);
+    r += dsw->writeInt16(m_crc);
     r += dsw->writeByte(m_type);
-    r += dsw->writeByte(m_status);
-    r += dsw->writeArray(m_fromId, ID_DATA_LENGTH);
-    r += dsw->writeArray(m_targetId, ID_DATA_LENGTH);
+    r += dsw->writeInt32(m_fromId);
+    r += dsw->writeInt32(m_targetId);
     r += dsw->writeArray(m_data, CUSTOM_MESSAGE_DATA_LENGTH);
     if (r != MESSAGE_SIZE) {
         return -1;
@@ -21,7 +19,7 @@ size_t Message::writeTo(DataStreamWriter *dsw) {
 size_t Message::readFrom(DataStreamReader *dsr) {
     bool ok = true;
 
-    m_crc = dsr->readShort(&ok);
+    m_crc = dsr->readInt16(&ok);
     size_t r = 2;
     if (!ok) return -1;
 
@@ -29,16 +27,12 @@ size_t Message::readFrom(DataStreamReader *dsr) {
     r++;
     if (!ok) return -1;
 
-    m_status = dsr->readByte(&ok);
-    r++;
+    m_fromId = dsr->readInt32(&ok);
+    r += 4;
     if (!ok) return -1;
 
-    dsr->readFully(m_fromId, ID_DATA_LENGTH, &ok);
-    r += ID_DATA_LENGTH;
-    if (!ok) return -1;
-
-    dsr->readFully(m_targetId, ID_DATA_LENGTH, &ok);
-    r += ID_DATA_LENGTH;
+    m_targetId = dsr->readInt32(&ok);
+    r += 4;
     if (!ok) return -1;
 
     dsr->readFully(m_data, CUSTOM_MESSAGE_DATA_LENGTH, &ok);
@@ -51,22 +45,19 @@ size_t Message::readFrom(DataStreamReader *dsr) {
     return r;
 }
 
-uint16_t Message::calculateCrc() {
-    byte buffer[MESSAGE_SIZE-2];
-    buffer[0] = m_type;
-    buffer[1] = m_status;
-    Utils::copyArray(m_fromId, buffer+2, ID_DATA_LENGTH);
-    Utils::copyArray(m_targetId, buffer+2+ID_DATA_LENGTH, ID_DATA_LENGTH);
-    Utils::copyArray(m_data, buffer+2+2*ID_DATA_LENGTH, CUSTOM_MESSAGE_DATA_LENGTH);
-    return SimpleCrc::crc16(buffer, MESSAGE_SIZE-2);
+void Message::clearData() {
+	for(byte i = 0; i < CUSTOM_MESSAGE_DATA_LENGTH; i++) {
+		m_data[i] = 0;
+	}
 }
 
-void Message::swapIds() {
-    // Swap fromId and targetId arrays.
-    byte buffer[ID_DATA_LENGTH];
-    Utils::copyArray(m_fromId, buffer, ID_DATA_LENGTH);
-    Utils::copyArray(m_targetId, m_fromId, ID_DATA_LENGTH);
-    Utils::copyArray(buffer, m_targetId, ID_DATA_LENGTH);
+void Message::calculateAndSetCrc() {
+    byte buffer[MESSAGE_SIZE-2];
+    buffer[0] = m_type;
+    Utils::toByte(m_fromId, buffer+1);
+    Utils::toByte(m_targetId, buffer+5);
+    Utils::copyArray(m_data, buffer+9, CUSTOM_MESSAGE_DATA_LENGTH);
+    m_crc = SimpleCrc::crc16(buffer, MESSAGE_SIZE-2);
 }
 
 Handler::~Handler() {
@@ -82,26 +73,38 @@ void DataExchanger::process(
 		// Transmit the same unaddressed scan message to the next in the chain.
 		transmit(opposingLine, message);
 
-		// Fall back to next case on purpose!
-
-	case SCAN_ID_READ:
-		// Put my id as the targetId.
-		Utils::copyArray(m_id, message.m_targetId, ID_DATA_LENGTH);
-
 		// Swap ids to send the message back (I'm sending a message addressed to master).
-		message.swapIds();
+		message.m_targetId = message.m_fromId;
+		message.m_fromId = m_id;
+		message.m_type = SCAN_MESSAGE_RESPONSE;
 
 		// Send back.
+		message.calculateAndSetCrc();
+		transmit(readFromLine, message);
+
+		break;
+
+	case SCAN_ID_READ:
+		// Swap ids to send the message back (I'm sending a message addressed to master).
+		message.m_targetId = message.m_fromId;
+		message.m_fromId = m_id;
+		message.m_type = SCAN_ID_READ_RESPONSE;
+
+		// Send back.
+		message.calculateAndSetCrc();
 		transmit(readFromLine, message);
 
 		break;
 
 	case SCAN_ID_CHECK:
 		// Put my id in the content of the message.
-		Utils::copyArray(m_id, message.m_data, ID_DATA_LENGTH);
+		message.clearData();
+		Utils::toByte(m_id, message.m_data);
 
 		// Swap ids to send back message (addressed to master).
-		message.swapIds();
+		message.m_targetId = message.m_fromId;
+		message.m_fromId = m_id;
+		message.m_type = SCAN_ID_CHECK_RESPONSE;
 
 		// Send back.
 		transmit(readFromLine, message);
@@ -111,12 +114,13 @@ void DataExchanger::process(
 	default:
 
 		// Addressed to me?
-		if (Utils::arrayEquals(message.m_targetId, m_id, ID_DATA_LENGTH)) {
+		if (message.m_targetId == m_id) {
 			if (m_handler->handleMessage(message)) {
+				message.calculateAndSetCrc();
 				transmit(readFromLine, message);
 			}
 		}
-		// Not to me? pass it on.
+		// Not to me? pass it on unchanged.
 		else {
 			transmit(opposingLine, message);
 		}
@@ -131,6 +135,7 @@ void DataExchanger::transmit(DataStreamWriter *dsw, Message &message) {
 }
 
 DataExchanger::DataExchanger() :
+        m_id(0),
         m_hardwareReader(NULL),
         m_hardwareWriter(NULL),
         m_softwareReader(NULL),
@@ -138,10 +143,9 @@ DataExchanger::DataExchanger() :
         m_handler(NULL)
 {}
 
-void DataExchanger::setup(byte *id, Handler *handler, SerialEndpoint *debugEndpoint) {
+void DataExchanger::setup(uint32_t id, Handler *handler, SerialEndpoint *debugEndpoint) {
     d.setup(debugEndpoint);
-
-    Utils::copyArray(id, m_id, ID_DATA_LENGTH);
+    m_id = id;
     m_handler = handler;
 }
 

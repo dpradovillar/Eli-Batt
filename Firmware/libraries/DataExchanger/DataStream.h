@@ -22,8 +22,8 @@ public:
     void flush();
 
     size_t writeByte(byte b);
-    size_t writeShort(short s);
-    size_t writeString(const String &s);
+    size_t writeInt16(uint16_t x);
+    size_t writeInt32(uint32_t x);
     size_t writeArray(byte *s, size_t n);
 };
 
@@ -42,8 +42,8 @@ public:
     int available();
 
     byte readByte(bool *ok=NULL);
-    short readShort(bool *ok=NULL);
-    int32_t readInt(bool *ok=NULL);
+    uint16_t readInt16(bool *ok=NULL);
+    uint32_t readInt32(bool *ok=NULL);
     void readFully(byte *buff, size_t len, bool *ok=NULL);
 };
 

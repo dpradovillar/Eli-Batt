@@ -9,8 +9,7 @@
 /**
  * Wrapper for the Endpoint class that allows to optionally direct output to a given endpoint.
  * <p/>
- * All calls to this class are delegated into an instance (optionally) set up before doing the
- * calls.
+ * All calls to this class are delegated into an (optional) instance set up before doing the calls.
  */
 class Debugger {
 private:
@@ -39,6 +38,8 @@ public:
     Debugger& println(char *s, int len);
 
     Debugger& printInt(byte *buff4bytes);
+    Debugger& printHexUInt16(uint16_t value);
+    Debugger& printHexUInt16(byte *buff2bytes);
     Debugger& printHexInt(byte *buff4bytes);
 };
 

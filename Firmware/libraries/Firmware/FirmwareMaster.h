@@ -38,6 +38,8 @@ public:
     void loop();
 
     virtual bool handleMessage(Message &message);
+
+private:
 };
 
 #endif // __FIRMWARE_MASTER_H_

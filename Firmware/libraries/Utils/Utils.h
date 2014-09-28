@@ -11,11 +11,12 @@ public:
     static void copyArray(byte *src, byte *dst, size_t len);
     static void copyArray(const char *src, byte *dst, size_t len);
 
-    static uint16_t toShort(byte hi, byte lo);
+    //static uint16_t toShort(byte hi, byte lo);
     static void toByte(uint16_t x, byte *buffer);
 
     static uint32_t toInt32(const char *buffer4bytes);
     static uint32_t toInt32(byte *buff);
+    static uint16_t toUInt16(byte *buffer2bytes);
     static void toByte(uint32_t x, byte *buffer4bytes);
 
     static bool arrayEquals(byte *src1, byte *src2, size_t len);

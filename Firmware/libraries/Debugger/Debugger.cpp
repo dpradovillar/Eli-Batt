@@ -110,6 +110,24 @@ Debugger& Debugger::printInt(byte *buff4bytes) {
     return *this;
 }
 
+Debugger& Debugger::printHexUInt16(uint16_t value) {
+	byte buffer[2];
+	Utils::toByte(value, buffer);
+	printHexUInt16(buffer);
+}
+
+Debugger& Debugger::printHexUInt16(byte *buff2bytes) {
+    if (m_endpoint) {
+        uint16_t val = Utils::toUInt16(buff2bytes);
+        char buffer[6];
+        Utils::toHex(buffer+2, val);
+        buffer[0] = '0';
+        buffer[1] = 'x';
+        m_endpoint->print(buffer, 6);
+    }
+    return *this;
+}
+
 Debugger& Debugger::printHexInt(byte *buff4bytes) {
     if (m_endpoint) {
         uint32_t val = Utils::toInt32(buff4bytes);

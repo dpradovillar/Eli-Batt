@@ -44,7 +44,7 @@ private:
 	Debugger d;
 
 private:
-	bool ready();
+	int ready();
 	byte findId(uint32_t id);
 
 public:
@@ -59,12 +59,15 @@ public:
 	bool setup(int chipSelectPin, uint32_t fileDuration, SerialEndpoint *dbgEndpoint);
 
 	bool registerId(uint32_t id);
-
 	void unregisterId(uint32_t id);
+
+	byte registeredIdCount();
+	uint32_t registeredIdAt(byte pos);
 
 	void setTime(uint16_t year, uint8_t month, uint8_t day,  uint8_t hour, uint8_t minute, uint8_t sec);
 
-	void addData(uint32_t id, uint16_t temp, uint16_t current, uint16_t voltage);
+	int addData(uint32_t id, uint16_t temp, uint16_t current, uint16_t voltage);
+	int addData(uint32_t id, byte *buffer6bytes);
 };
 
 #endif // __BANK_DATA_H_

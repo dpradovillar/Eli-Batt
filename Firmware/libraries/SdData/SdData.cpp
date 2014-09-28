@@ -117,10 +117,10 @@ uint16_t SdWriter::countFilesInSd() {
 }
 
 void SdWriter::writeHeader(uint32_t *ids, byte len) {
-    m_file.print("YYYYMMDDTHHMMSS");
+    m_file.print("YYYYMMDDTHHMMSS,");
     for(byte i = 0; i<len; i++) {
-    	m_file.print(",");
-    	m_file.print(ids[i]);
+        m_file.print(",");
+        m_file.print(ids[i]);
     }
 }
 
@@ -133,28 +133,28 @@ void SdWriter::writeDatetime(uint16_t year, uint8_t month, uint8_t day, uint8_t 
         auxBuffer[4] = 0;
         m_file.print(auxBuffer);
 
-		// Month
-		Utils::leftPad(month, auxBuffer, 2);
+        // Month
+        Utils::leftPad(month, auxBuffer, 2);
         auxBuffer[2] = 0;
         m_file.print(auxBuffer);
 
         // Day
-    	Utils::leftPad(day, auxBuffer, 2);
-    	m_file.print(auxBuffer);
+        Utils::leftPad(day, auxBuffer, 2);
+        m_file.print(auxBuffer);
 
-    	m_file.print('T');
+        m_file.print('T');
 
-    	// Hour
-    	Utils::leftPad(hour, auxBuffer, 2);
-    	m_file.print(auxBuffer);
+        // Hour
+        Utils::leftPad(hour, auxBuffer, 2);
+        m_file.print(auxBuffer);
 
-    	// Minute
-    	Utils::leftPad(minute, auxBuffer, 2);
-    	m_file.print(auxBuffer);
+        // Minute
+        Utils::leftPad(minute, auxBuffer, 2);
+        m_file.print(auxBuffer);
 
-    	// Second
-    	Utils::leftPad(sec, auxBuffer, 2);
-    	m_file.print(auxBuffer);
+        // Second
+        Utils::leftPad(sec, auxBuffer, 2);
+        m_file.print(auxBuffer);
     } else {
         d.println("Throwing timestamp away because file is not open!");
     }
@@ -172,10 +172,10 @@ void SdWriter::writeTuple(uint16_t temp, uint16_t current, uint16_t voltage) {
 }
 
 void SdWriter::writeNewline() {
-	if (m_open) {
-		m_file.println();
-	} else {
-		d.println("Throwing CRLF away because file is not open!");
-	}
+    if (m_open) {
+        m_file.println();
+    } else {
+        d.println("Throwing CRLF away because file is not open!");
+    }
 }
 

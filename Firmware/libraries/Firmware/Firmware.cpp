@@ -1,12 +1,18 @@
 #include <Firmware.h>
 
 void Firmware::propagateMessage() {
-    Serial.println("Sending message through both endpoints");
+    d.println("Sending message through both endpoints");
     m_the_message.writeTo(&m_dsw_a); m_dsw_a.flush();
     m_the_message.writeTo(&m_dsw_b); m_dsw_b.flush();
 }
 
-Firmware::Firmware() {
+void Firmware::packSensorValues(byte *buffer6bytes) {
+
+}
+
+Firmware::Firmware() :
+	m_id(0)
+{
 }
 
 Firmware::~Firmware() {
@@ -23,8 +29,8 @@ void Firmware::setup(
     pinMode(debugPin, OUTPUT);
 
     d.print("Reading ID from EEPROM:");
-    m_eeprom_writer.read(m_id);
-    d.printInt(m_id).print("/").printHexInt(m_id).println();
+    m_id = m_eeprom_writer.readId();
+    d.print(m_id).print("/").printHexUInt16(m_id).println();
 
     d.print("Setting Current Sensor:");
     m_current_sensor.setup(currentSensorPin);

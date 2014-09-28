@@ -15,10 +15,10 @@ void Utils::copyArray(const char *src, byte *dst, size_t len) {
         i++;
     }
 }
-
+/*
 uint16_t Utils::toShort(byte hi, byte lo) {
     return (uint16_t)(((((uint16_t)hi) << 8) | (((uint16_t)lo) << 0)) & 0xFFFF);
-}
+}*/
 
 void Utils::toByte(uint16_t x, byte *buffer2bytes) {
     buffer2bytes[0] = (byte)(x >> 8);
@@ -35,6 +35,12 @@ uint32_t Utils::toInt32(byte *buffer4bytes) {
     ((uint32_t)buffer4bytes[1]) << 16 |
     ((uint32_t)buffer4bytes[2]) << 8 |
     ((uint32_t)buffer4bytes[3]) << 0);
+}
+
+uint16_t Utils::toUInt16(byte *buffer2bytes) {
+	return (uint16_t)(
+	((uint16_t)buffer2bytes[0]) << 8 |
+	((uint16_t)buffer2bytes[1]) << 0);
 }
 
 void Utils::toByte(uint32_t x, byte *buffer4bytes) {
