@@ -118,14 +118,21 @@ void FirmwareMaster::process(char cmd) {
         m_the_message.clearData();
         m_the_message.m_fromId = m_id;
         m_the_message.m_targetId = m_id;
-        handleMessage(m_the_message);
+        m_dex.injectMessage(m_the_message);
         break;
     case 'r':
         m_the_message.m_type = MASTER_DATA_READ;
         m_the_message.clearData();
         m_the_message.m_fromId = m_id;
         m_the_message.m_targetId = m_id;
-        handleMessage(m_the_message);
+        m_dex.injectMessage(m_the_message);
+        break;
+    case 's':
+        m_the_message.m_type = SCAN_MESSAGE;
+        m_the_message.clearData();
+        m_the_message.m_fromId = m_id;
+        m_the_message.m_targetId = m_id;
+        m_dex.injectMessage(m_the_message);
         break;
     default:
         break;

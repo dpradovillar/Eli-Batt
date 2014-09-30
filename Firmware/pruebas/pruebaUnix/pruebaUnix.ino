@@ -26,20 +26,24 @@
  */
 const int chipSelect = 38;
 
+// Use Serial3 when using BLE
+// Use Serial when using PC
+#define SERIAL Serial3
+
 void setup()
 {
  // Open serial communications and wait for port to open:
-  Serial.begin(9600);
-  while (!Serial);
+  SERIAL.begin(57600);
+  while (!SERIAL);
 
   
   // see if the card is present and can be initialized:
   if (!SD.begin(chipSelect)) {
-    Serial.println("Card failed, or not present");
+    SERIAL.println("Card failed, or not present");
     return;
   }
 
-  Serial.println("Try it out some UNIX-like commands: ls, mv, rm, cat, touch");
+  SERIAL.println("Try it out some UNIX-like commands: ls, mv, rm, cat, touch");
 }
 
 void ls(bool removeIt=false) {
@@ -52,24 +56,24 @@ void ls(bool removeIt=false) {
     }
     if (removeIt) {
        if (!entry.isDirectory()) {
-         Serial.print("Removing (");
-         Serial.print(entry.name());
-         Serial.print("): ");
+         SERIAL.print("Removing (");
+         SERIAL.print(entry.name());
+         SERIAL.print("): ");
        }
     } else {
       if (entry.isDirectory()) {
-        Serial.print("D ");
+        SERIAL.print("D ");
       }else{
-        Serial.print(entry.size());
-        Serial.print(' ');
+        SERIAL.print(entry.size());
+        SERIAL.print(' ');
       }
-      Serial.print(entry.name());
-      Serial.println();
+      SERIAL.print(entry.name());
+      SERIAL.println();
     }
 
     // If remove it, remove it
     if (removeIt) {
-      Serial.println(SD.remove(entry.name()) ? "OK" : "ERROR");
+      SERIAL.println(SD.remove(entry.name()) ? "OK" : "ERROR");
     }
     
     entry.close();
@@ -80,15 +84,15 @@ void ls(bool removeIt=false) {
 void mv(char *filename1, char *filename2) {
   File from = SD.open(filename1);
   if (!from){
-    Serial.print("Can't open file ");
-    Serial.println(filename1);
+    SERIAL.print("Can't open file ");
+    SERIAL.println(filename1);
     return;
   }
   
   File to = SD.open(filename2, FILE_WRITE);
   if(!to){
-    Serial.print("Can't create file");
-    Serial.println(filename2);
+    SERIAL.print("Can't create file");
+    SERIAL.println(filename2);
     
     from.close();
     return;
@@ -101,22 +105,22 @@ void mv(char *filename1, char *filename2) {
   from.close();
   to.close();
   SD.remove(filename1);
-  Serial.println("File renamed OK!");
+  SERIAL.println("File renamed OK!");
 }
 
 void rm(char *filename) {
   
   if (equals(filename, 1, "*", 1)) {
-    Serial.println("Removing everything!");
+    SERIAL.println("Removing everything!");
     ls(1);
     return;
   }  
   File dataFile = SD.open(filename);
   if (dataFile) {
     dataFile.close();
-    Serial.println(SD.remove(filename) ? "File removed OK!" : "File couldn't be removed");
+    SERIAL.println(SD.remove(filename) ? "File removed OK!" : "File couldn't be removed");
   } else {
-    Serial.println("Can't remove a file that can't be open!");
+    SERIAL.println("Can't remove a file that can't be open!");
   }
 }
 
@@ -124,12 +128,12 @@ void cat(char *filename) {
   File dataFile = SD.open(filename);
   if (dataFile) {
     while (dataFile.available()) {
-      Serial.write(dataFile.read());
-      Serial.flush();
+      SERIAL.write(dataFile.read());
+      SERIAL.flush();
     }
     dataFile.close();
   } else {
-    Serial.println("File is not available, maybe it doesn't exist?");
+    SERIAL.println("File is not available, maybe it doesn't exist?");
   }
 }
 
@@ -137,9 +141,9 @@ void touch(char *filename) {
   File dataFile = SD.open(filename, FILE_WRITE);
   if (dataFile) {
     dataFile.close();
-    Serial.println("File created OK!");
+    SERIAL.println("File created OK!");
   } else {
-    Serial.println("Can't create that file!");
+    SERIAL.println("Can't create that file!");
   }
 }
 
@@ -249,36 +253,36 @@ void loop() {
   static char filename1[FILENAME_MAX+1];
   static char filename2[FILENAME_MAX+1];
   
-  if (Serial.available()) {
-    char c = Serial.read();
+  if (SERIAL.available()) {
+    char c = SERIAL.read();
     cmdBuffer[cmdLen++] = c;
-    Serial.write(c);
+    SERIAL.write(c);
     
     if (cmdLen >= BUFFER_MAX || cmdBuffer[cmdLen-1] == '\n') {
         switch(parseCmd(cmdBuffer, cmdLen, filename1, filename2)){
           case 0:
             ls();
-            Serial.println("##############################");
+            SERIAL.println("##############################");
             break;
           case 1:
             mv(filename1, filename2);
-            Serial.println("##############################");
+            SERIAL.println("##############################");
             break;
           case 2:
             rm(filename1);
-            Serial.println("##############################");
+            SERIAL.println("##############################");
             break;
           case 3:
             cat(filename1);
-            Serial.println("##############################");
+            SERIAL.println("##############################");
             break;
           case 4:
             touch(filename1);
-            Serial.println("##############################");
+            SERIAL.println("##############################");
             break;
           default:
-            Serial.println("Command not found!");
-            Serial.println("##############################");
+            SERIAL.println("Command not found!");
+            SERIAL.println("##############################");
             break;
         }
         cmdLen = 0;
