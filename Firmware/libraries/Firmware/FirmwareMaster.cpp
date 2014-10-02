@@ -1,7 +1,6 @@
 #include <FirmwareMaster.h>
 
 void FirmwareMaster::propagateMessage() {
-    Serial.println("Sending message through both endpoints");
     m_the_message.writeTo(&m_dsw_a); m_dsw_a.flush();
     m_the_message.writeTo(&m_dsw_b); m_dsw_b.flush();
 }
@@ -14,16 +13,16 @@ void FirmwareMaster::setup(int rx2, int tx2, int bauds2, int currentSensorPin, i
     Firmware::setup(-1, -1, 0, rx2, tx2, bauds2, currentSensorPin, voltageSensorPin, debugPin,
             dbgEndpoint);
 
-    d.println("Setting Bank Data (card and registered slaves):");
+    d.println(F("Setting Bank Data (card and registered slaves):"));
     if (m_bank_data.setup(sdCsPin, fileDuration, dbgEndpoint)) {
         // TODO(rtapiapincheira): discover new slaves and update eeprom list
         m_bank_data.registerId(m_id);
     } else {
         d.println("Error");
-        Utils::onFailure("SD can't be setup, check wiring.");
+        Utils::onFailure(F("SD can't be setup, check wiring."));
     }
 
-    d.println("Starting MASTER main loop");
+    d.println(F("Starting MASTER main loop"));
 }
 
 void FirmwareMaster::loop() {
@@ -40,20 +39,20 @@ bool FirmwareMaster::handleMessage(Message &message) {
         m_bank_data.registerId(message.m_fromId);
         break;
     case MASTER_DATA_READ:
-        d.println("MASTER_DATA_READ:");
+        d.println(F("MASTER_DATA_READ:"));
         Utils::toByte(temp = (uint16_t)m_temp_sensor.readDigital(), message.m_data);
-        d.print("t=").println(temp);
+        d.print(F("t=")).println(temp);
 
         Utils::toByte(temp = (uint16_t)m_current_sensor.read(), message.m_data+2);
-        d.print("i=").println(temp);
+        d.print(F("i=")).println(temp);
 
         Utils::toByte(temp = (uint16_t)m_voltage_sensor.read(), message.m_data+4);
-        d.print("v=").println(temp);
+        d.print(F("v=")).println(temp);
 
         message.m_type = MASTER_DATA_READ_RESPONSE;
         return true;
     case MASTER_DATA_GATHER:
-        d.println("MASTER_DATA_GATHER:");
+        d.println(F("MASTER_DATA_GATHER:"));
         m_bank_data.setTime(2014, 9, 20, 22, 15, 10);
         remaining = m_bank_data.addData(
             m_id,
@@ -64,7 +63,7 @@ bool FirmwareMaster::handleMessage(Message &message) {
         //d.print("Added data for master, rest: ").print(remaining).println(" slaves");
         // Do not emit a response until all data is gathered first!
         if (remaining > 0) { // this handles the case when no slave are connected to master
-            d.print("Emitting SLAVE_DATA_READ command to");
+            d.print(F("Emitting SLAVE_DATA_READ command to"));
             // Emit one SLAVE_DATA_READ message to every connected slave
             message.m_type = SLAVE_DATA_READ;
             message.clearData();
@@ -82,10 +81,8 @@ bool FirmwareMaster::handleMessage(Message &message) {
             message.m_data[CUSTOM_MESSAGE_DATA_LENGTH-1] = 1;
             return true;
         }
-
         break;
     case SLAVE_DATA_READ_RESPONSE:
-
         // When the last requested SLAVE_DATA_READ response is processed, the file will be
         // automatically flushed to a new csv row.
         remaining = m_bank_data.addData(
@@ -138,5 +135,3 @@ void FirmwareMaster::process(char cmd) {
         break;
     }
 }
-
-

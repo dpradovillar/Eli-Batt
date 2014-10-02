@@ -43,7 +43,7 @@ void setup() {
     CURRENT_PIN, VOLTAGE_PIN,
     DEBUG_PIN, &pcComm
   );
-  while(1);
+  //while(1);
 }
 
 void loop() {

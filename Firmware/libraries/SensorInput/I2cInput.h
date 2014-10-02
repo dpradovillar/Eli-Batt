@@ -6,23 +6,6 @@
 #include <Wire.h>
 
 /**
- * This class needs a lot of device specific logic, use it only as a model.
- */
-/*
-class I2cInput {
-
-public:
-    I2cInput();
-    ~I2cInput();
-
-    // connect sda=A4 and scl=A5 on UNO!
-    void setup();
-
-    int read();
-};
-*/
-
-/**
  * MCP9808 sensor, using internally Adafruit's library.
  */
 class Mcp9808Sensor {

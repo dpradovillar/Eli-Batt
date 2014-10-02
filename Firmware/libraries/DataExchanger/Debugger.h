@@ -29,6 +29,7 @@ public:
     Debugger& print(char c);
     Debugger& print(const char *s);
     Debugger& print(char *s, int len);
+    Debugger& print(const __FlashStringHelper *s);
 
     Debugger& println();
     Debugger& println(int x);
@@ -37,6 +38,7 @@ public:
     Debugger& println(char x);
     Debugger& println(const char *s);
     Debugger& println(char *s, int len);
+    Debugger& println(const __FlashStringHelper *s);
 
     Debugger& printInt(byte *buff4bytes);
     Debugger& printHexUInt16(uint16_t value);

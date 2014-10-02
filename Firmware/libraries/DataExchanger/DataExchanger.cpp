@@ -70,7 +70,7 @@ void DataExchanger::process(
 
     switch(message.m_type) {
     case SCAN_MESSAGE:
-        d.println("SCAN_MESSAGE");
+        d.println(F("SCAN_MESSAGE"));
 
         // Transmit the same unaddressed scan message to the next in the chain.
         transmit(opposingLine, message);
@@ -87,7 +87,7 @@ void DataExchanger::process(
         break;
 
     case SCAN_ID_READ:
-        d.println("SCAN_ID_READ");
+        d.println(F("SCAN_ID_READ"));
 
         // Swap ids to send the message back (I'm sending a message addressed to master).
         message.m_targetId = message.m_fromId;
@@ -101,7 +101,7 @@ void DataExchanger::process(
         break;
 
     case SCAN_ID_CHECK:
-        d.println("SCAN_ID_CHECK");
+        d.println(F("SCAN_ID_CHECK"));
 
         // Put my id in the content of the message.
         message.clearData();
@@ -119,7 +119,7 @@ void DataExchanger::process(
         break;
 
     default:
-        d.print("addressed to me?").println(message.m_targetId == m_id ? "yes" : "no");
+        d.print(F("addressed to me?")).println(message.m_targetId == m_id ? F("yes") : F("no"));
         // Addressed to me?
         if (message.m_targetId == m_id) {
             if (m_handler->handleMessage(message)) {
@@ -132,7 +132,7 @@ void DataExchanger::process(
         }
         // Not to me? pass it on unchanged.
         else {
-            d.println("Passing message on unchanged");
+            d.println(F("Passing message on unchanged"));
             transmit(opposingLine, message);
         }
         break;
@@ -176,14 +176,14 @@ void DataExchanger::loop() {
     Message m;
     if (m_hardwareReader && m_hardwareReader->available() >= MESSAGE_SIZE) {
         if (m.readFrom(m_hardwareReader) == -1) {
-            d.println("ERROR while reading from hardware connection (comm A)");
+            d.println(F("ERROR while reading from hardware connection (comm A)"));
         } else {
             process(m, m_hardwareWriter, m_softwareWriter);
         }
     }
     if (m_softwareReader && m_softwareReader->available() >= MESSAGE_SIZE) {
         if (m.readFrom(m_softwareReader) == -1) {
-            d.println("ERROR while reading from software connection (comm B)");
+            d.println(F("ERROR while reading from software connection (comm B)"));
         } else {
             process(m, m_softwareWriter, m_hardwareWriter);
         }

@@ -30,49 +30,49 @@ void Firmware::setup(
 
     d.print("Reading ID from EEPROM:");
     m_id = m_eeprom_writer.readId();
-    d.print(m_id).print("/").printHexUInt16(m_id).println();
+    d.print(m_id).print(F("/")).printHexUInt16(m_id).println();
 
-    d.print("Setting Current Sensor:");
+    d.print(F("Setting Current Sensor:"));
     m_current_sensor.setup(currentSensorPin);
-    d.println("Ok");
+    d.println(F("Ok"));
 
-    d.print("Setting Voltage Sensor:");
+    d.print(F("Setting Voltage Sensor:"));
     m_voltage_sensor.setup(voltageSensorPin);
-    d.println("Ok");
+    d.println(F("Ok"));
 
-    d.print("Setting Temperature Sensor:");
+    d.print(F("Setting Temperature Sensor:"));
     if (true || m_temp_sensor.setup()) {
-        d.println("Ok");
+        d.println(F("Ok"));
     } else {
-        d.println("Error");
-        Utils::onFailure("Temperature sensor can't be setup, check wiring.");
+        d.println(F("Error"));
+        Utils::onFailure(F("Temperature sensor can't be setup, check wiring."));
     }
 
     m_dex.setup(m_id, this, dbgEndpoint);
 
     // DataExchanger will work OK
     if (rx1==-1 || tx1==-1) {
-        d.println("Omitting First communication channel.");
+        d.println(F("Omitting First communication channel."));
     } else {
-        d.print("Setting First communication channel:");
+        d.print(F("Setting First communication channel:"));
         m_dsr_a.setup(&m_comm_a);
         m_dsw_a.setup(&m_comm_a);
         m_comm_a.setup(rx1, tx1, bauds1); // The master device has only one serial connection
         m_comm_a.waitForConnection();
         m_dex.setupHardware(&m_dsr_a, &m_dsw_a);
-        d.println("Ok");
+        d.println(F("Ok"));
     }
 
     if (rx2==-1 || tx2==-1) {
-        d.println("Omitting Second communication channel.");
+        d.println(F("Omitting Second communication channel."));
     } else {
-        d.print("Setting Second communication channel:");
+        d.print(F("Setting Second communication channel:"));
         m_dsr_b.setup(&m_comm_b);
         m_dsw_b.setup(&m_comm_b);
         m_comm_b.setup(rx2, tx2, bauds2);
         m_comm_b.waitForConnection();
         m_dex.setupSoftware(&m_dsr_b, &m_dsw_b);
-        d.println("Ok");
+        d.println(F("Ok"));
     }
 }
 

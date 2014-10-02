@@ -15,10 +15,6 @@ void Utils::copyArray(const char *src, byte *dst, size_t len) {
         i++;
     }
 }
-/*
-uint16_t Utils::toShort(byte hi, byte lo) {
-    return (uint16_t)(((((uint16_t)hi) << 8) | (((uint16_t)lo) << 0)) & 0xFFFF);
-}*/
 
 void Utils::toByte(uint16_t x, byte *buffer2bytes) {
     buffer2bytes[0] = (byte)(x >> 8);
@@ -88,7 +84,7 @@ void Utils::putInMemory(byte *mem, uint16_t address, uint16_t value) {
     toByte(value, mem+address);
 }
 
-void Utils::onFailure(const char *err, bool doLog) {
+void Utils::onFailure(const __FlashStringHelper *err, bool doLog) {
     // TODO(rtapiapincheira): log err to the SD card
 #define DOT_DURATION    100
 #define DASH_DURATION   300

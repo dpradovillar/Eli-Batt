@@ -11,7 +11,6 @@ public:
     static void copyArray(byte *src, byte *dst, size_t len);
     static void copyArray(const char *src, byte *dst, size_t len);
 
-    //static uint16_t toShort(byte hi, byte lo);
     static void toByte(uint16_t x, byte *buffer);
 
     static uint32_t toInt32(const char *buffer4bytes);
@@ -36,7 +35,7 @@ public:
     /**
      * Stops the firmware execution and starts an LED error sequence (SOS).
      */
-    static void onFailure(const char *err, bool doLog=false);
+    static void onFailure(const __FlashStringHelper *err, bool doLog=false);
 
     static void leftPad(uint32_t value, char *buffLenBytes, int len, char toPad = '0');
 

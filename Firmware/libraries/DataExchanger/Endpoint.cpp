@@ -184,13 +184,16 @@ size_t SerialEndpoint::print(char x) {
 }
 
 size_t SerialEndpoint::print(const char *s) {
-    uint32_t i = 0;
-    size_t counter = 0;
-    while(s[i]) {
-        counter += print(s[i]);
-        i++;
+    switch(m_hardwareSerialIndex) {
+    case -1: return m_softwareSerial.print(s);
+    case 0: return Serial.print(s);
+#ifdef __AVR_ATmega1280__
+    case 1: return Serial1.print(s);
+    case 2: return Serial2.print(s);
+    case 3: return Serial3.print(s);
+#endif
     }
-    return counter;
+    return 0;
 }
 
 size_t SerialEndpoint::print(char *s, int len) {
@@ -201,6 +204,19 @@ size_t SerialEndpoint::print(char *s, int len) {
         i++;
     }
     return counter;
+}
+
+size_t SerialEndpoint::print(const __FlashStringHelper *s) {
+    switch(m_hardwareSerialIndex) {
+    case -1: return m_softwareSerial.print(s);
+    case 0: return Serial.print(s);
+#ifdef __AVR_ATmega1280__
+    case 1: return Serial1.print(s);
+    case 2: return Serial2.print(s);
+    case 3: return Serial3.print(s);
+#endif
+    }
+    return 0;
 }
 
 size_t SerialEndpoint::println() {
@@ -229,5 +245,9 @@ size_t SerialEndpoint::println(const char *s) {
 
 size_t SerialEndpoint::println(char *s, int len) {
     return print(s, len) + print(CR_LF);
+}
+
+size_t SerialEndpoint::println(const __FlashStringHelper *s) {
+    return print(s) + print(CR_LF);
 }
 

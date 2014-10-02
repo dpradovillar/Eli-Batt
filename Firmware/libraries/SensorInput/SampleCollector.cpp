@@ -13,15 +13,15 @@ SerialCallback::~SerialCallback(){
 }
 
 void SerialCallback::eventDetected(uint32_t current_usecs) {
-    Serial.print("Micros:");
+    Serial.print(F("Micros:"));
     Serial.print(current_usecs);
-    Serial.print(",");
+    Serial.print(F(","));
 
-    Serial.print("Millis:");
+    Serial.print(F("Millis:"));
     Serial.print(current_usecs/1000);
-    Serial.print(",");
+    Serial.print(F(","));
 
-    Serial.print("Secs:");
+    Serial.print(F("Secs:"));
     Serial.print(current_usecs/1000000);
     Serial.println();
 }

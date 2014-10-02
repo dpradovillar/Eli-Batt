@@ -1,19 +1,5 @@
 #include <I2cInput.h>
-/*
-I2cInput::I2cInput() {
-}
 
-I2cInput::~I2cInput() {
-}
-
-void I2cInput::setup(int pin) {
-    m_pin = pin;
-}
-
-int I2cInput::read() {
-    return
-}
-*/
 bool Mcp9808Sensor::setup() {
     return m_ok = m_ada.begin();
 }

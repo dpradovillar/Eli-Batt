@@ -22,17 +22,17 @@ bool FirmwareSlave::handleMessage(Message &message) {
     case SLAVE_ID_WRITE:
         break;
     case SLAVE_DATA_READ:
-        d.println("SLAVE_DATA_READ");
+        d.println(F("SLAVE_DATA_READ"));
 
-        d.println("MASTER_DATA_READ:");
+        d.println(F("MASTER_DATA_READ:"));
         Utils::toByte(temp = (uint16_t)m_temp_sensor.readDigital(), message.m_data);
-        d.print("t=").println(temp);
+        d.print(F("t=")).println(temp);
 
         Utils::toByte(temp = (uint16_t)m_current_sensor.read(), message.m_data+2);
-        d.print("i=").println(temp);
+        d.print(F("i=")).println(temp);
 
         Utils::toByte(temp = (uint16_t)m_voltage_sensor.read(), message.m_data+4);
-        d.print("v=").println(temp);
+        d.print(F("v=")).println(temp);
 
         message.m_type = SLAVE_DATA_READ_RESPONSE;
         break;

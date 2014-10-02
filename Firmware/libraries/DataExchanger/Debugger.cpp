@@ -65,6 +65,13 @@ Debugger& Debugger::print(char *s, int len) {
     return *this;
 }
 
+Debugger& Debugger::print(const __FlashStringHelper *s) {
+    if (m_endpoint) {
+        m_endpoint->print(s);
+    }
+    return *this;
+}
+
 Debugger& Debugger::println() {
     if (m_endpoint) {
         m_endpoint->println();
@@ -104,6 +111,13 @@ Debugger& Debugger::println(const char *s) {
 Debugger& Debugger::println(char *s, int len) {
     if (m_endpoint) {
         m_endpoint->println(s, len);
+    }
+    return *this;
+}
+
+Debugger& Debugger::println(const __FlashStringHelper *s) {
+    if (m_endpoint) {
+        m_endpoint->println(s);
     }
     return *this;
 }

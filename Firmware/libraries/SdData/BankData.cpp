@@ -3,16 +3,16 @@
 void BankData::forceFlush() {
     if (!m_sd_writer.isOpen()) {
         m_sd_writer.open();
-        d.println("Writing header into blank file!");
+        d.println(F("Writing header into blank file!"));
         m_sd_writer.writeHeader(m_registered_ids, m_count_ids);
     }
 
     if (m_bit_set == 0) {
-        d.println("None of the registered devices have data, consecutive forceFlush()'es");
-        d.println(" will be omitted (no empty rows on the resulting file).");
+        d.println(F("None of the registered devices have data, consecutive forceFlush()'es"));
+        d.println(F(" will be omitted (no empty rows on the resulting file)."));
         return;
     }
-    d.println("Flushing data of slaves into disk!");
+    d.println(F("Flushing data of slaves into disk!"));
     // Write timestamp
     m_sd_writer.writeNewline();
     m_sd_writer.writeDatetime(m_year, m_month, m_day, m_hour, m_minute, m_second);
@@ -85,9 +85,9 @@ bool BankData::registerId(uint32_t id) {
         byte buff[4];
         Utils::toByte(id, buff);
         if (m_count_ids == 0) {
-            d.print("Registering master with ID ").printHexInt(buff).println(": Ok");
+            d.print(F("Registering master with ID ")).printHexInt(buff).println(F(": Ok"));
         } else {
-            d.print("Registering slave with ID ").printHexInt(buff).print(": Ok");
+            d.print(F("Registering slave with ID ")).printHexInt(buff).print(F(": Ok"));
         }
         m_registered_ids[m_count_ids++] = id;
         return true;
@@ -134,7 +134,7 @@ int BankData::addData(uint32_t id, uint16_t temp, uint16_t current, uint16_t vol
     if (pos == 255) {
         byte buffer[4];
         Utils::toByte(id, buffer);
-        d.print("Warning, id: ").printHexInt(buffer).println(" not found!");
+        d.print(F("Warning, id: ")).printHexInt(buffer).println(F(" not found!"));
     } else {
         m_buffer[pos][ID_TEMP] = temp;
         m_buffer[pos][ID_CURR] = current;
