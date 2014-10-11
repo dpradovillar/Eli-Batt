@@ -45,9 +45,9 @@ protected:
     /** Debugging endpoint. */
     Debugger d;
 
-    Message m_the_message;
+    //Message m_the_message;
 
-    void propagateMessage();
+    //void propagateMessage();
 	void packSensorValues(byte *buffer6Bytes);
 
 public:

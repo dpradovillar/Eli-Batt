@@ -16,7 +16,8 @@ void SdNameSequencer::setStart(uint16_t start) {
 
 SdWriter::SdWriter() :
     m_chip_select_pin(0),
-    m_open(false)
+    m_open(false),
+    m_ok(false)
 {
 }
 
@@ -30,14 +31,14 @@ bool SdWriter::setup(int chipSelectPin, SerialEndpoint *debugEndpoint) {
 
     if (!SD.begin(m_chip_select_pin)) {
         d.println(F("Failed initialization of SD card. Check wiring."));
-        return false;
+        return (m_ok = false);
     }
 
     uint16_t filesCount = countFilesInSd();
     d.print(F("  there are ")).print(filesCount).println(F(" files in the SD card."));
     m_sequence.setStart(filesCount+1);
 
-    return true;
+    return (m_ok = true);
 }
 
 bool SdWriter::open() {
@@ -62,8 +63,12 @@ bool SdWriter::open() {
 
     d.print(F("New file open:")).println(buffer);
 
-    m_file = SD.open(buffer, FILE_WRITE);
-    m_open = (m_file ? true : false);
+    if (m_ok) {
+        m_file = SD.open(buffer, FILE_WRITE);
+        m_open = (m_file ? true : false);
+    } else {
+        m_open = true;
+    }
 
     d.println(m_open ? F("File open!") : F("File unopened"));
 
@@ -76,7 +81,9 @@ bool SdWriter::isOpen() {
 
 bool SdWriter::close() {
     if(m_open) {
-        m_file.close();
+        if (m_ok) {
+            m_file.close();
+        }
         m_open = false;
         d.println(F("Closing file."));
         return true;
@@ -87,14 +94,17 @@ bool SdWriter::close() {
 }
 
 size_t SdWriter::write(char *s, size_t n) {
-    return m_file.write((byte*)s, n);
+    return m_ok ? m_file.write((byte*)s, n) : 0;
 }
 
 size_t SdWriter::writeInt32(uint32_t id) {
-    return m_file.print(id);
+    return m_ok ? m_file.print(id) : 0;
 }
 
 uint16_t SdWriter::countFilesInSd() {
+    if (m_ok) {
+        return 0;
+    }
     int count = 0;
     File root = SD.open("/");
     while (true) {
@@ -111,65 +121,79 @@ uint16_t SdWriter::countFilesInSd() {
 }
 
 void SdWriter::writeHeader(uint32_t *ids, byte len) {
-    m_file.print("YYYYMMDDTHHMMSS,");
-    for(byte i = 0; i<len; i++) {
-        m_file.print(F(","));
-        m_file.print(ids[i]);
+    if (m_ok) {
+        m_file.print(F("YYYYMMDDTHHMMSS,"));
+        for(byte i = 0; i<len; i++) {
+            m_file.print(F(","));
+            m_file.print(ids[i]);
+        }
     }
 }
 
 void SdWriter::writeDatetime(uint16_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t minute, uint8_t sec) {
-    if (m_open) {
-        char auxBuffer[5];
+    if (m_ok) {
+        if (m_open) {
+            char auxBuffer[5];
 
-        // Year
-        Utils::leftPad(year, auxBuffer, 4);
-        auxBuffer[4] = 0;
-        m_file.print(auxBuffer);
+            // Year
+            Utils::leftPad(year, auxBuffer, 4);
+            auxBuffer[4] = 0;
+            m_file.print(auxBuffer);
 
-        // Month
-        Utils::leftPad(month, auxBuffer, 2);
-        auxBuffer[2] = 0;
-        m_file.print(auxBuffer);
+            // Month
+            Utils::leftPad(month, auxBuffer, 2);
+            auxBuffer[2] = 0;
+            m_file.print(auxBuffer);
 
-        // Day
-        Utils::leftPad(day, auxBuffer, 2);
-        m_file.print(auxBuffer);
+            // Day
+            Utils::leftPad(day, auxBuffer, 2);
+            m_file.print(auxBuffer);
 
-        m_file.print(F("T"));
+            m_file.print(F("T"));
 
-        // Hour
-        Utils::leftPad(hour, auxBuffer, 2);
-        m_file.print(auxBuffer);
+            // Hour
+            Utils::leftPad(hour, auxBuffer, 2);
+            m_file.print(auxBuffer);
 
-        // Minute
-        Utils::leftPad(minute, auxBuffer, 2);
-        m_file.print(auxBuffer);
+            // Minute
+            Utils::leftPad(minute, auxBuffer, 2);
+            m_file.print(auxBuffer);
 
-        // Second
-        Utils::leftPad(sec, auxBuffer, 2);
-        m_file.print(auxBuffer);
+            // Second
+            Utils::leftPad(sec, auxBuffer, 2);
+            m_file.print(auxBuffer);
+        } else {
+            d.println(F("Throwing timestamp away because file is not open!"));
+        }
     } else {
-        d.println(F("Throwing timestamp away because file is not open!"));
+        d.println(F("Throwing timestamp away because SD has errors."));
     }
 }
 
 void SdWriter::writeTuple(uint16_t temp, uint16_t current, uint16_t voltage) {
-    if (m_open) {
-        d.println(F("Writing to disk"));
-        m_file.print(F(",")); m_file.print((unsigned int)temp);
-        m_file.print(F(",")); m_file.print((unsigned int)current);
-        m_file.print(F(",")); m_file.print((unsigned int)voltage);
+    if (m_ok) {
+        if (m_open) {
+            d.println(F("Writing to disk"));
+            m_file.print(F(",")); m_file.print((unsigned int)temp);
+            m_file.print(F(",")); m_file.print((unsigned int)current);
+            m_file.print(F(",")); m_file.print((unsigned int)voltage);
+        } else {
+            d.println(F("Throwing data away because file is not open!"));
+        }
     } else {
-        d.println(F("Throwing data away because file is not open!"));
+        d.println(F("Throwing data away because SD has errors."));
     }
 }
 
 void SdWriter::writeNewline() {
-    if (m_open) {
-        m_file.println();
+    if (m_ok) {
+        if (m_open) {
+            m_file.println();
+        } else {
+            d.println(F("Throwing CRLF away because file is not open!"));
+        }
     } else {
-        d.println(F("Throwing CRLF away because file is not open!"));
+        d.println(F("Throwing CRLF away because SD has errors."));
     }
 }
 

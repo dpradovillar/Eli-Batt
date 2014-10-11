@@ -84,33 +84,33 @@ void Utils::putInMemory(byte *mem, uint16_t address, uint16_t value) {
     toByte(value, mem+address);
 }
 
-void Utils::onFailure(const __FlashStringHelper *err, bool doLog) {
+void Utils::onFailure(int dbg_pin, const __FlashStringHelper *err, bool doLog) {
     // TODO(rtapiapincheira): log err to the SD card
 #define DOT_DURATION    100
 #define DASH_DURATION   300
 #define SLEEP_DURATION 5000
 
-    digitalWrite(13, LOW);
+    digitalWrite(dbg_pin, LOW);
     char i;
     while(true) {
         for (i = 0; i < 3; i++) {
-            digitalWrite(13, HIGH);
+            digitalWrite(dbg_pin, HIGH);
             delay(DOT_DURATION);
-            digitalWrite(13, LOW);
+            digitalWrite(dbg_pin, LOW);
             delay(DOT_DURATION);
         }
         delay(150);
         for (i = 0; i < 3; i++) {
-            digitalWrite(13, HIGH);
+            digitalWrite(dbg_pin, HIGH);
             delay(DASH_DURATION);
-            digitalWrite(13, LOW);
+            digitalWrite(dbg_pin, LOW);
             delay(DASH_DURATION);
         }
         delay(150);
         for (i = 0; i < 3; i++) {
-            digitalWrite(13, HIGH);
+            digitalWrite(dbg_pin, HIGH);
             delay(DOT_DURATION);
-            digitalWrite(13, LOW);
+            digitalWrite(dbg_pin, LOW);
             delay(DOT_DURATION);
         }
         delay(SLEEP_DURATION);

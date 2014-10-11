@@ -11,20 +11,20 @@
 
 // Select the board used for the firmware:
 #ifndef TARGET_BOARD
-//#  define TARGET_BOARD BOARD_UNO
-#  define TARGET_BOARD BOARD_MEGA
+#  define TARGET_BOARD BOARD_UNO
+//#  define TARGET_BOARD BOARD_MEGA
 #endif
 
 // Select the type of firmware for building:
 #ifndef TARGET_FIRMWARE
-//#  define TARGET_FIRMWARE FIRMWARE_SLAVE
-#  define TARGET_FIRMWARE FIRMWARE_MASTER
+#  define TARGET_FIRMWARE FIRMWARE_SLAVE
+//#  define TARGET_FIRMWARE FIRMWARE_MASTER
 #endif
 
 // Select the profile used for the firmware:
 #ifndef TARGET_DEBUG
-//#  define TARGET_DEBUG true
-#  define TARGET_DEBUG false
+#  define TARGET_DEBUG true
+//#  define TARGET_DEBUG false
 #endif
 
 #ifdef DEBUG_RX
@@ -86,7 +86,7 @@
 #  if TARGET_BOARD==BOARD_UNO
 #    define SD_CS_PIN        4
 #    if TARGET_FIRMWARE==FIRMWARE_MASTER
-#      if TARGET_DEBUG==true
+#      if TARGET_DEBUG
 //       UNO/MASTER/DEBUG
 #        define PROFILE_LABEL "UNO/MASTER/DEBUG"
 #        define DEBUG_RX     0
@@ -108,7 +108,7 @@
 #        define BLE_TX       5
 #      endif
 #    elif TARGET_FIRMWARE==FIRMWARE_SLAVE
-#      if TARGET_DEBUG==true
+#      if TARGET_DEBUG
 //       UNO/SLAVE/DEBUG
 #        define PROFILE_LABEL "UNO/SLAVE/DEBUG"
 #        define DEBUG_RX     0

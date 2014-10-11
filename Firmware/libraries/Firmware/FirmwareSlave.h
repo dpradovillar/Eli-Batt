@@ -1,16 +1,11 @@
 #ifndef __FIRMWARE_SLAVE_H_
 #define __FIRMWARE_SLAVE_H_
 
-#define TARGET_BOARD    BOARD_MEGA
-#define TARGET_FIRMWARE FIRMWARE_SLAVE
-#define TARGET_DEBUG    true
-
 #include <elibatt_config.h>
-
-#include "Arduino.h"
 
 #include <Adafruit_MCP9808.h>
 #include <AnalogInput.h>
+#include <Arduino.h>
 #include <ArduinoSoftwareSerial.h>
 #include <DataStream.h>
 #include <DataExchanger.h>
@@ -35,6 +30,7 @@ public:
     void loop();
 
     virtual bool handleMessage(Message &message);
+    virtual bool forceDebugRetransmit();
 };
 
 #endif // __FIRMWARE_SLAVE_H_

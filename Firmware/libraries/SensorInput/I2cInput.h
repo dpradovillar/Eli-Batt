@@ -1,7 +1,7 @@
 #ifndef __I2C_INPUT_H_
 #define __I2C_INPUT_H_
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include <Adafruit_MCP9808.h>
 #include <Wire.h>
 

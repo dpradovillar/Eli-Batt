@@ -9,7 +9,6 @@ SerialLib::~SerialLib() {
 bool SerialLib::begin(const QString &portName, qint32 bauds) {
     m_serialPort.setPortName(portName);
     m_serialPort.setBaudRate(bauds);
-    cout << "opening port:" << portName.toStdString() << ", bauds:" << bauds << endl;
     return false;
 }
 

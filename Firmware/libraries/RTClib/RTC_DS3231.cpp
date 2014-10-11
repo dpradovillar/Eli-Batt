@@ -315,7 +315,7 @@ void RTC_DS3231::SQWFrequency(uint8_t freq)
     Wire.endTransmission();
 }
 
-void RTC_DS3231::getControlRegisterData(char &datastr) {
+void RTC_DS3231::getControlRegisterData(/*char &datastr*/) {
 
     Wire.beginTransmission(DS3231_ADDRESS);
     Wire.write( DS3231_REG_CONTROL );
@@ -330,13 +330,13 @@ void RTC_DS3231::getControlRegisterData(char &datastr) {
     char sregstr[] = "00000000";
     getBinaryString(creg, cregstr);
     getBinaryString(sreg, sregstr);
-    
+    /*
     strcpy(&datastr, "\n----- DS3231 Information -----\ncreg: ");
     strcat(&datastr, cregstr);
     strcat(&datastr, "\nsreg: ");
     strcat(&datastr, sregstr);
     strcat(&datastr, "\n------------------------------\n");     
-
+    */
     return;
 }
 

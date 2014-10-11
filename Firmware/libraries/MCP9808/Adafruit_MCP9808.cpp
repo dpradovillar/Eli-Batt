@@ -48,7 +48,7 @@ Adafruit_MCP9808::Adafruit_MCP9808() {
 /**************************************************************************/
 boolean Adafruit_MCP9808::begin(uint8_t addr) {
   _i2caddr = addr;
-  Wire.begin();
+  //Wire.begin();
 
   if (read16(MCP9808_REG_MANUF_ID) != 0x0054) return false;
   if (read16(MCP9808_REG_DEVICE_ID) != 0x0400) return false;

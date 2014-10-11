@@ -10,24 +10,33 @@
 
 #define CUSTOM_MESSAGE_DATA_LENGTH 8
 
-#define MESSAGE_SIZE 19 // 1+ID_DATA_LENGTH+ID_DATA_LENGTH+1+CUSTOM_MESSAGE_DATA_LENGTH+1
+#define MESSAGE_SIZE 19 // 7+ID_DATA_LENGTH+CUSTOM_MESSAGE_DATA_LENGTH
 
 /**
  * Sent from master, to all slaves, to discover theirs ids. The slave receives it, emits a response,
  * and passes it on.
  *
  * Request : Message(crc,SCAN_MESSAGE,<master id>,<empty>,<empty>)
- * Response: Message(crc,SCAN_MESSAGE,<discovered id>,<master id>,<empty>)
+ * Response: Message(crc,SCAN_MESSAGE_RESPONSE,<discovered id>,<master id>,<empty>)
  */
 #define SCAN_MESSAGE            1
 #define SCAN_MESSAGE_RESPONSE 101
+
+/**
+ * Sent from pc to master, to force it emit a SCAN_MESSAGE request with the master as target.
+ *
+ * Request : Message(crc,SCAN_MESSAGE_START,<pc id>,<master id>,<empty>)
+ * Response: Message(crc,SCAN_MESSAGE_START_RESPONSE,<master id>,<pc id>,<empty>)
+ */
+#define SCAN_MESSAGE_START             12
+#define SCAN_MESSAGE_START_RESPONSE   112
 
 /**
  * Sent from master, to an specific slave, to change its id. The master must know the previous slave
  * id.
  *
  * Request : Message(crc,SLAVE_ID_WRITE,<master id>,<old slave id>,<new slave id>)
- * Response: Message(crc,SLAVE_ID_WRITE,<old slave id>,<master id>,<ok|error>)
+ * Response: Message(crc,SLAVE_ID_WRITE_RESPONSE,<old slave id>,<master id>,<ok|error>)
  */
 #define SLAVE_ID_WRITE            2
 #define SLAVE_ID_WRITE_RESPONSE 102
@@ -38,7 +47,7 @@
  * immediately and should report its id as a response.
  *
  * Request : Message(crc,SCAN_ID_READ,<master|slave|pc id>,<empty>,<empty>)
- * Response: Message(crc,SCAN_ID_READ,<recognized id>,<master|slave|pc id>,<empty>)
+ * Response: Message(crc,SCAN_ID_READ_RESPONSE,<recognized id>,<master|slave|pc id>,<empty>)
  */
 #define SCAN_ID_READ            3
 #define SCAN_ID_READ_RESPONSE 103
@@ -48,7 +57,7 @@
  * responding with its correct id.
  *
  * Request : Message(crc,SCAN_ID_CHECK,<master|pc id>,<slave|master id>,<empty>)
- * Response: Message(crc,SCAN_ID_CHECK,<slave|master id>,<master|pc id>,<slave|master id>)
+ * Response: Message(crc,SCAN_ID_CHECK_RESPONSE,<slave|master id>,<master|pc id>,<slave|master id>)
  */
 #define SCAN_ID_CHECK            4
 #define SCAN_ID_CHECK_RESPONSE 104
@@ -58,7 +67,7 @@
  * voltage).
  *
  * Request : Message(crc,SLAVE_DATA_READ,<master id>,<slave id>,<empty>)
- * Response: Message(crc,SLAVE_DATA_READ,<slave id>,<master id>,<temperature|current|voltage>)
+ * Response: Message(crc,SLAVE_DATA_READ_RESPONSE,<slave id>,<master id>,<temperature|current|voltage>)
  */
 #define SLAVE_DATA_READ            5
 #define SLAVE_DATA_READ_RESPONSE 105
@@ -67,7 +76,7 @@
  * Sent from pc to master, to read the current sensor values (temperature, current, voltage).
  *
  * Request : Message(crc,MASTER_DATA_READ,<pc id>,<master id>,<empty>)
- * Response: Message(crc,MASTER_DATA_READ,<master id>,<pc id>,<temperature|current|voltage>)
+ * Response: Message(crc,MASTER_DATA_READ_RESPONSE,<master id>,<pc id>,<temperature|current|voltage>)
  */
 #define MASTER_DATA_READ            6
 #define MASTER_DATA_READ_RESPONSE 106
@@ -77,16 +86,17 @@
  * master and the slaves attached to it.
  *
  * Request : Message(crc,MASTER_DATA_GATHER,<pc id>,<master id>,<empty>)
- * Response: Message(crc,MASTER_DATA_GATHER,<master id>,<pc id>,<ok|error>)
+ * Response: Message(crc,MASTER_DATA_GATHER_RESPONSE,<master id>,<pc id>,<ok|error>)
  */
 #define MASTER_DATA_GATHER            7
 #define MASTER_DATA_GATHER_RESPONSE 107
+#define MASTER_DATA_GATHER_COMPLETE 207
 
 /**
  * Sent from pc to master, to read the current GPS status.
  *
  * Request : Message(crc,MASTER_GPS_GET,<pc id>,<master id>,<empty>)
- * Response: Message(crc,MASTER_GPS_GET,<master id>,<pc id>,<lat|lon>) TODO: include more info here
+ * Response: Message(crc,MASTER_GPS_GET_RESPONSE,<master id>,<pc id>,<lat|lon>) TODO: include more info here
  */
 #define MASTER_GPS_GET             8
 #define MASTER_GPS_GET_RESPONSE  108
@@ -95,7 +105,7 @@
  * Sent from pc to master, to set the current RTC time being served by the board.
  *
  * Request : Message(crc,MASTER_RTC_SET,<pc id>,<master id>,<new datetime>)
- * Response: Message(crc,MASTER_RTC_SET,<master id>,<pc id>,<ok|error>)
+ * Response: Message(crc,MASTER_RTC_SET_RESPONSE,<master id>,<pc id>,<ok|error>)
  */
 #define MASTER_RTC_SET            9
 #define MASTER_RTC_SET_RESPONSE 109
@@ -104,7 +114,7 @@
  * Sent from pc to master, to read the current RTC time being served by the board.
  *
  * Request : Message(crc,MASTER_RTC_GET,<pc id>,<master id>,<empty>)
- * Response: Message(crc,MASTER_RTC_GET,<master id>,<pc id>,<date time>)
+ * Response: Message(crc,MASTER_RTC_GET_RESPONSE,<master id>,<pc id>,<date time>)
  */
 #define MASTER_RTC_GET           10
 #define MASTER_RTC_GET_RESPONSE 110
@@ -113,7 +123,7 @@
  * Sent from pc to master, to set the id of the master device.
  *
  * Request : Message(crc,MASTER_ID_WRITE,<pc id>,<old master id>,<new master id>)
- * Response: Message(crc,MASTER_ID_WRITE,<old master id>,<pc id>,<ok|error>)
+ * Response: Message(crc,MASTER_ID_WRITE_RESPONSE,<old master id>,<pc id>,<ok|error>)
  */
 #define MASTER_ID_WRITE           11
 #define MASTER_ID_WRITE_RESPONSE 111

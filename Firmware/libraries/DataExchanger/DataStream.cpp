@@ -1,5 +1,7 @@
 #include <DataStream.h>
 
+#define TARGET_DEBUG 0
+
 // TODO(rtapiapincheira): add timeout mechanism.
 
 DataStreamWriter::DataStreamWriter() :
@@ -16,34 +18,43 @@ void DataStreamWriter::flush() {
 }
 
 size_t DataStreamWriter::writeByte(byte b) {
+#if TARGET_DEBUG
+    Serial.println("Here!");
     Serial.print(" ");
     Serial.print((uint16_t)b);
+#endif
     return m_endpoint->write(b);
 }
 
 size_t DataStreamWriter::writeInt16(uint16_t x) {
     byte buffer[2];
     Utils::toByte(x, buffer);
+#if TARGET_DEBUG
     Serial.print(" ");
     Serial.print(x);
+#endif
     return m_endpoint->write(buffer, 0, 2);
 }
 
 size_t DataStreamWriter::writeInt32(uint32_t x) {
+#if TARGET_DEBUG
     Serial.print(" ");
     Serial.print(x);
+#endif
     byte buffer[4];
     Utils::toByte(x, buffer);
     return m_endpoint->write(buffer, 0, 4);
 }
 
 size_t DataStreamWriter::writeArray(byte *s, size_t n) {
+#if TARGET_DEBUG
     Serial.print("{");
     for (size_t i = 0; i < n; i++) {
         Serial.print(" ");
         Serial.print((uint16_t)s[i]);
     }
     Serial.print(" }");
+#endif
     return m_endpoint->write(s, 0, n);
 }
 

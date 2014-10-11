@@ -1,10 +1,10 @@
 #include <Firmware.h>
-
+/*
 void Firmware::propagateMessage() {
     d.println("Sending message through both endpoints");
     m_the_message.writeTo(&m_dsw_a); m_dsw_a.flush();
     m_the_message.writeTo(&m_dsw_b); m_dsw_b.flush();
-}
+}*/
 
 void Firmware::packSensorValues(byte *buffer6bytes) {
 
@@ -25,10 +25,11 @@ void Firmware::setup(
      int debugPin, SerialEndpoint *dbgEndpoint)
 {
     d.setup(dbgEndpoint);
+    Wire.begin();
 
     pinMode(debugPin, OUTPUT);
 
-    d.print("Reading ID from EEPROM:");
+    d.print(F("Reading ID from EEPROM:"));
     m_id = m_eeprom_writer.readId();
     d.print(m_id).print(F("/")).printHexUInt16(m_id).println();
 
@@ -41,11 +42,11 @@ void Firmware::setup(
     d.println(F("Ok"));
 
     d.print(F("Setting Temperature Sensor:"));
-    if (true || m_temp_sensor.setup()) {
+    if (m_temp_sensor.setup() || true) {
         d.println(F("Ok"));
     } else {
         d.println(F("Error"));
-        Utils::onFailure(F("Temperature sensor can't be setup, check wiring."));
+        Utils::onFailure(debugPin, F("Temperature sensor can't be setup, check wiring."));
     }
 
     m_dex.setup(m_id, this, dbgEndpoint);

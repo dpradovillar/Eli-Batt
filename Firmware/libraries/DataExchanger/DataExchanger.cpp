@@ -123,11 +123,11 @@ void DataExchanger::process(
         // Addressed to me?
         if (message.m_targetId == m_id) {
             if (m_handler->handleMessage(message)) {
-                d.println("Re-transmitting message as response. Recalculating crc.");
+                d.println(F("Re-transmitting message as response. Recalculating crc."));
                 message.calculateAndSetCrc();
                 transmit(readFromLine, message);
             } else {
-                d.println("Omitting response. Function returned false.");
+                d.println(F("Omitting response. Function returned false."));
             }
         }
         // Not to me? pass it on unchanged.
@@ -137,6 +137,7 @@ void DataExchanger::process(
         }
         break;
     }
+
 
 }
 

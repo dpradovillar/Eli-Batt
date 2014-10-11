@@ -1,31 +1,45 @@
 #ifndef THREADEDSERIAL_H
 #define THREADEDSERIAL_H
 
-#include <QDateTime>
-#include <QDebug>
-#include <QSerialPort>
-#include <QTimer>
-#include <QtCore>
+#include <QThread>
+#include <QMutex>
+#include <QWaitCondition>
+#include <QtSerialPort/QSerialPort>
+#include <QTime>
 
-#include <iostream>
-using namespace std;
+#include "messageserializer.h"
 
-/**
- * @brief The ThreadedSerial class contains an internal SerialLib object to perform
- * I/O operations
- */
+#define WAIT_SWITCH_TIMEOUT 1000 // Time before to switch to writing
+#define WAIT_WRITE_TIMEOUT   500 // If the device is not reading my bytes, wait this
+#define WAIT_READ_TIMEOUT    100
+
+#define ENABLE_SERIAL_COMM
+
 class ThreadedSerial : public QThread {
-  Q_OBJECT
-private:
-    QSerialPort m_serialPort;
-    bool m_running;
+    Q_OBJECT
 
 public:
-    explicit ThreadedSerial();
-    virtual ~ThreadedSerial();
+    ThreadedSerial(QObject *parent = 0);
+    ~ThreadedSerial();
 
-protected:
+    void setParams(const QString &portName, quint32 bauds);
+    void transmitPackage(const Message &msg);
+    void stop();
     void run();
+
+signals:
+    void newResponse(const Message &msg);
+    void newError(const QString &s);
+    void newTimeout(const QString &s);
+
+private:
+    QString m_portName;
+    quint32 m_bauds;
+    QSerialPort *m_serialPort;
+
+    QMutex m_mutex;
+    QList<Message> m_messages;
+    bool m_quit;
 };
 
 #endif // THREADEDSERIAL_H

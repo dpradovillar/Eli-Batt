@@ -44,6 +44,8 @@ private:
     SdNameSequencer m_sequence;
     Debugger d;
 
+    bool m_ok;
+
 public:
     SdWriter();
 

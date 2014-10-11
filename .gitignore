@@ -245,3 +245,7 @@ Software/Elibatt-Qt/Makefile
 Software/Elibatt-Qt/Makefile.Debug
 Software/Elibatt-Qt/Makefile.Release
 Software/Elibatt-Qt/ui_uidialog.h
+
+Software/Elibatt-lib/Makefile
+Software/Elibatt-lib/Makefile.Debug
+Software/Elibatt-lib/Makefile.Release

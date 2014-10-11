@@ -127,6 +127,10 @@ void BankData::setTime(uint16_t year, uint8_t month, uint8_t day,  uint8_t hour,
     m_hour = hour;
     m_minute = minute;
     m_second = second;
+
+    d.print(F("Setting date:"))
+        .print((int)year).print(F("/")).print((int)month).print(F("/")).print(day).print(F(" "))
+        .print((int)hour).print(F(":")).print((int)minute).print(F(":")).println((int)second);
 }
 
 int BankData::addData(uint32_t id, uint16_t temp, uint16_t current, uint16_t voltage) {

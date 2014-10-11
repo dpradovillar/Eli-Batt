@@ -68,7 +68,7 @@ int SerialEndpoint::available() {
 
 void SerialEndpoint::waitForConnection() {
     switch(m_hardwareSerialIndex) {
-    case -1: while(!Serial); return;
+    case -1: return;
     case 0: while(!Serial); return;
 #ifdef __AVR_ATmega1280__
     case 1: while(!Serial1); return;
@@ -80,7 +80,7 @@ void SerialEndpoint::waitForConnection() {
 
 size_t SerialEndpoint::write(byte b) {
     switch(m_hardwareSerialIndex) {
-    case -1: return Serial.write(&b, 1);
+    case -1: return m_softwareSerial.write(&b, 1);
     case 0: return Serial.write(&b, 1);
 #ifdef __AVR_ATmega1280__
     case 1: return Serial1.write(&b, 1);

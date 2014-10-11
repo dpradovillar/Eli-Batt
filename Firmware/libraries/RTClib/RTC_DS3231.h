@@ -30,7 +30,7 @@ public:
     static void SQWEnable(uint8_t enable);		// tested in example code
     static void BBSQWEnable(uint8_t enable);	// tested in example code
     static void SQWFrequency(uint8_t freq);		// tested in example code
-    static void getControlRegisterData(char &datastr);     // tested in example code
+    static void getControlRegisterData(/*char &datastr*/);     // tested in example code
     
     
 private:

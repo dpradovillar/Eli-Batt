@@ -35,7 +35,7 @@ public:
     /**
      * Stops the firmware execution and starts an LED error sequence (SOS).
      */
-    static void onFailure(const __FlashStringHelper *err, bool doLog=false);
+    static void onFailure(int dbg_pin, const __FlashStringHelper *err, bool doLog=false);
 
     static void leftPad(uint32_t value, char *buffLenBytes, int len, char toPad = '0');
 

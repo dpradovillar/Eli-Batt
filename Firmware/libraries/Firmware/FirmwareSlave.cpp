@@ -20,11 +20,19 @@ bool FirmwareSlave::handleMessage(Message &message) {
 
     switch (message.m_type) {
     case SLAVE_ID_WRITE:
+        d.println(F("SLAVE_ID_WRITE"));
+        m_eeprom_writer.writeId(Utils::toInt32(message.m_data));
+
+        message.clearData();
+        message.m_data[CUSTOM_MESSAGE_DATA_LENGTH-1] = 1;
+        message.m_type = SLAVE_ID_WRITE_RESPONSE;
+        message.m_targetId = message.m_fromId;
+        message.m_fromId = m_id;
+        return true;
         break;
     case SLAVE_DATA_READ:
         d.println(F("SLAVE_DATA_READ"));
 
-        d.println(F("MASTER_DATA_READ:"));
         Utils::toByte(temp = (uint16_t)m_temp_sensor.readDigital(), message.m_data);
         d.print(F("t=")).println(temp);
 
@@ -35,7 +43,10 @@ bool FirmwareSlave::handleMessage(Message &message) {
         d.print(F("v=")).println(temp);
 
         message.m_type = SLAVE_DATA_READ_RESPONSE;
-        break;
+        // Swap ids.
+        message.m_targetId = message.m_fromId;
+        message.m_fromId = m_id;
+        return true;
     default:
         break;
     }
