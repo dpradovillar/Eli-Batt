@@ -131,4 +131,9 @@ void Utils::leftPad(uint32_t value, char *buffLenBytes, int len, char toPad) {
 	}
 }
 
+void Utils::splitFloat(float value, uint32_t &_int, uint32_t &_dec) {
+    _int = (uint32_t)value;
+    _dec = FLOAT_TO_INT_FACTOR*(value - _int);
+}
+
 

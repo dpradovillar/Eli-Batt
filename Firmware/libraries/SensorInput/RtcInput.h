@@ -14,13 +14,6 @@
 
 extern volatile long TOGGLE_COUNT;
 
-/*
-ISR(TIMER1_COMPA_vect) {
-    TOGGLE_COUNT++;
-}
-ISR(INT0_vect) {
-}*/
-
 /**
  * Wrapper for the RTC ChronoDot library.
  */

@@ -101,11 +101,7 @@ void setup () {
     RTC.BBSQWEnable(true);
     RTC.SQWFrequency( SQW_FREQ );
   
-    char datastr[100];
-    RTC.getControlRegisterData( datastr[0]  );
-    Serial.print(  datastr );
- 
-  
+    RTC.getControlRegisterData();
   
     //--------INT 0---------------
     EICRA = 0;      //clear it

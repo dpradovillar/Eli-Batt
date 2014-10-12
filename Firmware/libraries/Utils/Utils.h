@@ -1,7 +1,9 @@
 #ifndef __H_UTILS_
 #define __H_UTILS_
 
-#include "Arduino.h"
+#include <Arduino.h>
+
+#define FLOAT_TO_INT_FACTOR 1000000
 
 class Utils {
 public:
@@ -39,6 +41,7 @@ public:
 
     static void leftPad(uint32_t value, char *buffLenBytes, int len, char toPad = '0');
 
+    static void splitFloat(float value, uint32_t &_int, uint32_t &_dec);
 };
 
 #endif // __H_UTILS_

@@ -12,8 +12,6 @@ ISR(INT0_vect) {
 
 /** ------------------------------------------*/
 
-#define RETRANSMIT_DEBUG
-
 void FirmwareMaster::propagateForward(Message &msg) {
     //msg.writeTo(&m_dsw_a); m_dsw_a.flush();
     msg.writeTo(&m_dsw_b); m_dsw_b.flush();
@@ -87,17 +85,6 @@ bool FirmwareMaster::handleMessage(Message &message) {
     case SCAN_MESSAGE_RESPONSE:
         d.println(F("SCAN_MESSAGE_RESPONSE:"));
         s = m_bank_data.registerId(message.m_fromId);
-
-#ifdef RETRANSMIT_DEBUG
-        message.clearData();
-        Utils::toByte(message.m_fromId, message.m_data);
-        message.m_data[CUSTOM_MESSAGE_DATA_LENGTH-1] = (s ? 1 : 0);
-        message.m_fromId = m_id;
-        message.m_targetId = 1234;
-        message.m_type = SCAN_MESSAGE_RESPONSE;
-        return true;
-#endif
-
         break;
 
     case SCAN_MESSAGE_START:
@@ -140,7 +127,6 @@ bool FirmwareMaster::handleMessage(Message &message) {
             m_voltage_sensor.read()
         );
 
-        //d.print("Added data for master, rest: ").print(remaining).println(" slaves");
         // Do not emit a response until all data is gathered first!
         if (remaining > 0) { // this handles the case when no slave are connected to master
             d.print(F("Emitting SLAVE_DATA_READ command to"));
@@ -154,10 +140,6 @@ bool FirmwareMaster::handleMessage(Message &message) {
                 propagateForward(message);
             }
         } else {
-
-            //return printDbg("-clock");
-
-            //d.println("new row added to the csv!");
             set(message, m_id, message.m_fromId, MASTER_DATA_GATHER_RESPONSE);
             message.clearData();
             message.m_data[CUSTOM_MESSAGE_DATA_LENGTH-1] = 1;
@@ -180,36 +162,21 @@ bool FirmwareMaster::handleMessage(Message &message) {
             propagateBackward(message);
             return false;
         }
-/*
-#ifdef RETRANSMIT_DEBUG
-        message.clearData();
-        Utils::toByte(message.m_fromId, message.m_data);
-        message.m_data[CUSTOM_MESSAGE_DATA_LENGTH-1] = (s ? 1 : 0);
-        message.m_fromId = m_id;
-        message.m_targetId = 1234;
-        message.m_type = SCAN_MESSAGE_RESPONSE;
-        return true;
-#endif
-*/
+        break;
+    case MASTER_RTC_TIME_GET:
+        break;
+    case MASTER_RTC_TIME_SET:
 
-        break;
-    case MASTER_GPS_GET:
-        break;
-    case MASTER_RTC_GET:
-        break;
-    case MASTER_RTC_SET:
         break;
     case MASTER_ID_WRITE:
         d.println(F("MASTER_ID_WRITE"));
         m_eeprom_writer.writeId(Utils::toInt32(message.m_data));
-
         message.clearData();
         message.m_data[CUSTOM_MESSAGE_DATA_LENGTH-1] = 1;
         message.m_type = MASTER_ID_WRITE_RESPONSE;
         message.m_targetId = message.m_fromId;
         message.m_fromId = m_id;
         return true;
-        break;
     }
     return false;
 }
