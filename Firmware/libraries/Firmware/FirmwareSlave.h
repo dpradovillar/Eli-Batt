@@ -30,7 +30,6 @@ public:
     void loop();
 
     virtual bool handleMessage(Message &message);
-    virtual bool forceDebugRetransmit();
 };
 
 #endif // __FIRMWARE_SLAVE_H_

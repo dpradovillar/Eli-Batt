@@ -7,30 +7,61 @@ int main(int argc, char **argv)
     Q_UNUSED(argc);
     Q_UNUSED(argv);
 
-    cout << "1   SCAN_MESSAGE" << endl;
-    cout << "101 SCAN_MESSAGE_RESPONSE" << endl;
-    cout << "2   SLAVE_ID_WRITE" << endl;
-    cout << "102 SLAVE_ID_WRITE_RESPONSE" << endl;
-    cout << "3   SCAN_ID_READ" << endl;
-    cout << "103 SCAN_ID_READ_RESPONSE" << endl;
-    cout << "4   SCAN_ID_CHECK" << endl;
-    cout << "104 SCAN_ID_CHECK_RESPONSE" << endl;
-    cout << "5   SLAVE_DATA_READ" << endl;
-    cout << "105 SLAVE_DATA_READ_RESPONSE" << endl;
-    cout << "6   MASTER_DATA_READ" << endl;
-    cout << "106 MASTER_DATA_READ_RESPONSE" << endl;
-    cout << "7   MASTER_DATA_GATHER" << endl;
-    cout << "107 MASTER_DATA_GATHER_RESPONSE" << endl;
-    cout << "8   MASTER_GPS_GET" << endl;
-    cout << "108 MASTER_GPS_GET_RESPONSE" << endl;
-    cout << "9   MASTER_RTC_SET" << endl;
-    cout << "109 MASTER_RTC_SET_RESPONSE" << endl;
-    cout << "10  MASTER_RTC_GET" << endl;
-    cout << "110 MASTER_RTC_GET_RESPONSE" << endl;
-    cout << "11  MASTER_ID_WRITE" << endl;
-    cout << "111 MASTER_ID_WRITE_RESPONSE" << endl;
-    cout << "12  SCAN_MESSAGE_START" << endl;
-    cout << "112 SCAN_MESSAGE_START_RESPONSE" << endl;
+    cout << "SCAN_MESSAGE                   1" << endl;
+    cout << "SCAN_MESSAGE_RESPONSE        101" << endl;
+    cout << "SCAN_MESSAGE_START             2" << endl;
+    cout << "SCAN_MESSAGE_START_RESPONSE  102" << endl;
+    cout << "SLAVE_ID_WRITE                 3" << endl;
+    cout << "SLAVE_ID_WRITE_RESPONSE      103" << endl;
+    cout << "SCAN_ID_READ                   4" << endl;
+    cout << "SCAN_ID_READ_RESPONSE        104" << endl;
+    cout << "SCAN_ID_CHECK                  5" << endl;
+    cout << "SCAN_ID_CHECK_RESPONSE       105" << endl;
+    cout << "SLAVE_DATA_READ                6" << endl;
+    cout << "SLAVE_DATA_READ_RESPONSE     106" << endl;
+    cout << "MASTER_DATA_READ               7" << endl;
+    cout << "MASTER_DATA_READ_RESPONSE    107" << endl;
+    cout << "MASTER_DATA_GATHER             8" << endl;
+    cout << "MASTER_DATA_GATHER_RESPONSE  108" << endl;
+    cout << "MASTER_DATA_GATHER_COMPLETE  208" << endl;
+    cout << "MASTER_RTC_TIME_GET               9" << endl;
+    cout << "MASTER_RTC_DATE_GET              10" << endl;
+    cout << "MASTER_RTC_TIME_SET              11" << endl;
+    cout << "MASTER_RTC_DATE_SET              12" << endl;
+    cout << "MASTER_RTC_TIME_GET_RESPONSE    109" << endl;
+    cout << "MASTER_RTC_DATE_GET_RESPONSE    110" << endl;
+    cout << "MASTER_RTC_TIME_SET_RESPONSE    111" << endl;
+    cout << "MASTER_RTC_DATE_SET_RESPONSE    112" << endl;
+    cout << "MASTER_ID_WRITE                  13" << endl;
+    cout << "MASTER_ID_WRITE_RESPONSE        113" << endl;
+    cout << "MASTER_GPS_TIME_GET              14" << endl;
+    cout << "MASTER_GPS_DATE_GET              15" << endl;
+    cout << "MASTER_GPS_LAT_GET               16" << endl;
+    cout << "MASTER_GPS_LON_GET               17" << endl;
+    cout << "MASTER_GPS_ALTITUDE_GET          18" << endl;
+    cout << "MASTER_GPS_FIX_TYPE_GET          19" << endl;
+    cout << "MASTER_GPS_SPEED_GET             20" << endl;
+    cout << "MASTER_GPS_TRACK_GET             21" << endl;
+    cout << "MASTER_GPS_PDOP_GET              22" << endl;
+    cout << "MASTER_GPS_HDOP_GET              23" << endl;
+    cout << "MASTER_GPS_VDOP_GET              24" << endl;
+    cout << "MASTER_GPS_ENABLED_GET           25" << endl;
+    cout << "MASTER_GPS_TIME_GET_RESPONSE      114" << endl; // hour_byte, minute_byte, second_byte
+    cout << "MASTER_GPS_DATE_GET_RESPONSE      115" << endl; // year_byte, month_byte, day_byte
+    cout << "MASTER_GPS_LAT_GET_RESPONSE       116" << endl; // integer_int32, decimal_int32
+    cout << "MASTER_GPS_LON_GET_RESPONSE       117" << endl; // integer_int32, decimal_int32
+    cout << "MASTER_GPS_ALTITUDE_GET_RESPONSE  118" << endl; // altitude_int32
+    cout << "MASTER_GPS_FIX_TYPE_GET_RESPONSE  119" << endl; // fixed_byte (0 or 1)
+    cout << "MASTER_GPS_SPEED_GET_RESPONSE     120" << endl; // integer_int32, decimal_int32
+    cout << "MASTER_GPS_TRACK_GET_RESPONSE     121" << endl; // tracking_byte
+    cout << "MASTER_GPS_PDOP_GET_RESPONSE      122" << endl; // integer_int32, decimal_int32
+    cout << "MASTER_GPS_HDOP_GET_RESPONSE      123" << endl; // integer_int32, decimal_int32
+    cout << "MASTER_GPS_VDOP_GET_RESPONSE      124" << endl; // integer_int32, decimal_int32
+    cout << "MASTER_GPS_ENABLED_GET_RESPONSE   125" << endl; // enabled_gps_byte
+    cout << "MASTER_BLE_ENABLED_SET             26" << endl;
+    cout << "MASTER_BLE_ENABLED_GET             27" << endl;
+    cout << "MASTER_BLE_ENABLED_SET_RESPONSE   126" << endl; // enabled_byte
+    cout << "MASTER_BLE_ENABLED_GET_RESPONSE   127" << endl; // enabled_byte
 
     cout << "<TYPE> <TARGET> [<B1> ... <B8>]" << endl;
 

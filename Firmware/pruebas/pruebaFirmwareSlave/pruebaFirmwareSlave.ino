@@ -4,6 +4,7 @@
 
 #include <elibatt_config.h>
 
+#include <Adafruit_GPS.h>
 #include <Adafruit_MCP9808.h>
 #include <AnalogInput.h>
 #include <ArduinoSoftwareSerial.h>

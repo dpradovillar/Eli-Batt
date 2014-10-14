@@ -251,3 +251,124 @@ size_t SerialEndpoint::println(const __FlashStringHelper *s) {
     return print(s) + print(CR_LF);
 }
 
+
+// -------------------------------------------------------------------------------------------------
+
+DualSerialEndpoint::DualSerialEndpoint() :
+        m_a(NULL),
+        m_b(NULL) {
+}
+
+void DualSerialEndpoint::setup(SerialEndpoint *readWrite,
+        SerialEndpoint *writeOnly) {
+    m_a = readWrite;
+    m_b = writeOnly;
+}
+
+void DualSerialEndpoint::flush() {
+    m_a->flush();
+    if (m_b) m_b->flush();
+}
+int DualSerialEndpoint::available() {
+    return m_a->available();
+}
+void DualSerialEndpoint::waitForConnection() {
+    m_a->waitForConnection();
+    if (m_b) m_b->waitForConnection();
+}
+
+size_t DualSerialEndpoint::write(byte b) {
+    size_t r = m_a->write(b);
+    if (m_b) m_b->write(b);
+    return r;
+}
+int DualSerialEndpoint::read() {
+    return m_a->read();
+}
+
+size_t DualSerialEndpoint::write(byte *arr, size_t start, size_t len) {
+    size_t r = m_a->write(arr, start, len);
+    if (m_b) m_b->write(arr, start, len);
+    return r;
+}
+size_t DualSerialEndpoint::read(byte *arr, size_t start, size_t len) {
+    return m_a->read(arr, start, len);
+}
+
+size_t DualSerialEndpoint::print(int x) {
+    size_t r = m_a->print(x);
+    if (m_b) m_b->print(x);
+    return r;
+}
+size_t DualSerialEndpoint::print(uint16_t x) {
+    size_t r = m_a->print(x);
+    if (m_b) m_b->print(x);
+    return r;
+}
+size_t DualSerialEndpoint::print(uint32_t x) {
+    size_t r = m_a->print(x);
+    if (m_b) m_b->print(x);
+    return r;
+}
+size_t DualSerialEndpoint::print(char c) {
+    size_t r = m_a->print(c);
+    if (m_b) m_b->print(c);
+    return r;
+}
+size_t DualSerialEndpoint::print(const char *s) {
+    size_t r = m_a->print(s);
+    if (m_b) m_b->print(s);
+    return r;
+}
+size_t DualSerialEndpoint::print(char *s, int len) {
+    size_t r = m_a->print(s, len);
+    if (m_b) m_b->print(s, len);
+    return r;
+}
+size_t DualSerialEndpoint::print(const __FlashStringHelper *s) {
+    size_t r = m_a->print(s);
+    if (m_b) m_b->print(s);
+    return r;
+}
+
+size_t DualSerialEndpoint::println() {
+    size_t r = m_a->println();
+    if (m_b) m_b->println();
+    return r;
+}
+size_t DualSerialEndpoint::println(int x) {
+    size_t r = m_a->println(x);
+    if (m_b) m_b->println(x);
+    return r;
+}
+size_t DualSerialEndpoint::println(uint16_t x) {
+    size_t r = m_a->println(x);
+    if (m_b) m_b->println(x);
+    return r;
+}
+size_t DualSerialEndpoint::println(uint32_t x) {
+    size_t r = m_a->println(x);
+    if (m_b) m_b->println(x);
+    return r;
+}
+size_t DualSerialEndpoint::println(char x) {
+    size_t r = m_a->println(x);
+    if (m_b) m_b->println(x);
+    return r;
+}
+size_t DualSerialEndpoint::println(const char *s) {
+    size_t r = m_a->println(s);
+    if (m_b) m_b->println(s);
+    return r;
+}
+size_t DualSerialEndpoint::println(char *s, int len) {
+    size_t r = m_a->println(s, len);
+    if (m_b) m_b->println(s, len);
+    return r;
+}
+size_t DualSerialEndpoint::println(const __FlashStringHelper *s) {
+    size_t r = m_a->println(s);
+    if (m_b) m_b->println(s);
+    return r;
+}
+

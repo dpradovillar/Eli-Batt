@@ -8,7 +8,7 @@ void FirmwareSlave::setup(int rx1, int tx1, int bauds1, int rx2, int tx2, int ba
 {
     d.setup(debuggerEndpoint);
     Firmware::setup(rx1, tx1, bauds1, rx2, tx2, bauds2, currentSensorPin, voltageSensorPin,
-            debugPin, debuggerEndpoint);
+            debugPin, NULL, debuggerEndpoint);
 }
 
 void FirmwareSlave::loop() {

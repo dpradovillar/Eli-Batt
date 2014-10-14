@@ -1,12 +1,12 @@
 #ifndef __DATA_EXCHANGER_H_
 #define __DATA_EXCHANGER_H_
 
-#include <Endpoint.h>
+#include <Arduino.h>
 #include <DataStream.h>
 #include <Debugger.h>
+#include <Endpoint.h>
 #include <SimpleCrc.h>
 #include <Utils.h>
-#include "Arduino.h"
 
 #define CUSTOM_MESSAGE_DATA_LENGTH 8
 
@@ -132,30 +132,28 @@
 #define MASTER_GPS_FIX_TYPE_GET   19
 #define MASTER_GPS_SPEED_GET      20
 #define MASTER_GPS_TRACK_GET      21
-#define MASTER_GPS_PDOP_GET       22
-#define MASTER_GPS_HDOP_GET       23
-#define MASTER_GPS_VDOP_GET       24
-#define MASTER_GPS_ENABLED_GET    25
+#define MASTER_GPS_QUALITY_GET    22
+
+#define MASTER_GPS_ENABLED_GET    25 // TODO: pending
 
 // Packing description bytes, starting at byte 0 of the m_content field.
 #define MASTER_GPS_TIME_GET_RESPONSE      114 // hour_byte, minute_byte, second_byte
-#define MASTER_GPS_DATE_GET_RESPONSE      115 // year_byte, month_byte, day_byte
+#define MASTER_GPS_DATE_GET_RESPONSE      115 // year_int16, month_byte, day_byte
 #define MASTER_GPS_LAT_GET_RESPONSE       116 // integer_int32, decimal_int32
 #define MASTER_GPS_LON_GET_RESPONSE       117 // integer_int32, decimal_int32
 #define MASTER_GPS_ALTITUDE_GET_RESPONSE  118 // altitude_int32
 #define MASTER_GPS_FIX_TYPE_GET_RESPONSE  119 // fixed_byte (0 or 1)
 #define MASTER_GPS_SPEED_GET_RESPONSE     120 // integer_int32, decimal_int32
 #define MASTER_GPS_TRACK_GET_RESPONSE     121 // tracking_byte
-#define MASTER_GPS_PDOP_GET_RESPONSE      122 // integer_int32, decimal_int32
-#define MASTER_GPS_HDOP_GET_RESPONSE      123 // integer_int32, decimal_int32
-#define MASTER_GPS_VDOP_GET_RESPONSE      124 // integer_int32, decimal_int32
-#define MASTER_GPS_ENABLED_GET_RESPONSE   125 // enabled_gps_byte
+#define MASTER_GPS_QUALITY_GET_RESPONSE   122 // integer_int32, decimal_int32
+
+#define MASTER_GPS_ENABLED_GET_RESPONSE   125 // enabled_gps_byte // TODO: pending
 
 
-#define MASTER_BLE_ENABLED_SET             26
-#define MASTER_BLE_ENABLED_GET             27
-#define MASTER_BLE_ENABLED_SET_RESPONSE   126 // enabled_byte
-#define MASTER_BLE_ENABLED_GET_RESPONSE   127 // enabled_byte
+#define MASTER_BLE_ENABLED_SET             26 // TODO: pending
+#define MASTER_BLE_ENABLED_GET             27 // TODO: pending
+#define MASTER_BLE_ENABLED_SET_RESPONSE   126 // enabled_byte // TODO: pending
+#define MASTER_BLE_ENABLED_GET_RESPONSE   127 // enabled_byte // TODO: pending
 
 /**
  * Base class for all the different kind of messages sent between any pair of boards. It has a basic
@@ -182,6 +180,10 @@ public:
     size_t readFrom(DataStreamReader *dsr);
     void clearData();
     void calculateAndSetCrc();
+
+    Message &putAt(uint32_t value, byte address);
+    Message &putAt(uint16_t value, byte address);
+    Message &putAt(byte value, byte address);
 }; // MESSAGE_SIZE bytes in total
 
 class Handler {

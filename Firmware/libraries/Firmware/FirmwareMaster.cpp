@@ -44,10 +44,16 @@ FirmwareMaster::FirmwareMaster() {
 }
 
 void FirmwareMaster::setup(int dbg_rx, int dbg_tx, int dbg_bauds, int rx2, int tx2, int bauds2,
+        int ble_rx, int ble_tx, int bauds_ble,
         int currentSensorPin, int voltageSensorPin, int sdCsPin, uint32_t fileDuration,
         int debugPin, SerialEndpoint *dbgEndpoint) {
     Firmware::setup(dbg_rx, dbg_tx, dbg_bauds, rx2, tx2, bauds2, currentSensorPin, voltageSensorPin,
-            debugPin, dbgEndpoint);
+            debugPin, &m_ble, dbgEndpoint);
+
+    d.print(F("Setting BLE up: "));
+    m_ble.setup(ble_rx, ble_tx, bauds_ble);
+    m_ble.waitForConnection();
+    d.println(F("OK"));
 
     d.println(F("Setting Bank Data (card and registered slaves):"));
     if ( m_bank_data.setup(sdCsPin, fileDuration, dbgEndpoint) || true) {
@@ -66,11 +72,22 @@ void FirmwareMaster::setup(int dbg_rx, int dbg_tx, int dbg_bauds, int rx2, int t
         Utils::onFailure(debugPin, F("RTC can't be setup, check wiring"));
     }
 
+    d.print(F("Setting GPS: "));
+    // TODO: take parameters from config header file
+    if (m_gps.setup(&Serial2, 9600, dbgEndpoint)) {
+        d.println(F("OK!"));
+    } else {
+        d.println("Error");
+        Utils::onFailure(debugPin, F("GPS can't be setup, check wiring"));
+    }
+
+
     d.println(F("Starting MASTER main loop"));
 }
 
 void FirmwareMaster::loop() {
     m_dex.loop();
+    m_gps.loop();
 }
 
 bool FirmwareMaster::handleMessage(Message &message) {
@@ -163,11 +180,6 @@ bool FirmwareMaster::handleMessage(Message &message) {
             return false;
         }
         break;
-    case MASTER_RTC_TIME_GET:
-        break;
-    case MASTER_RTC_TIME_SET:
-
-        break;
     case MASTER_ID_WRITE:
         d.println(F("MASTER_ID_WRITE"));
         m_eeprom_writer.writeId(Utils::toInt32(message.m_data));
@@ -177,8 +189,86 @@ bool FirmwareMaster::handleMessage(Message &message) {
         message.m_targetId = message.m_fromId;
         message.m_fromId = m_id;
         return true;
+
+    case MASTER_GPS_TIME_GET:
+    case MASTER_GPS_DATE_GET:
+    case MASTER_GPS_LAT_GET:
+    case MASTER_GPS_LON_GET:
+    case MASTER_GPS_ALTITUDE_GET:
+    case MASTER_GPS_FIX_TYPE_GET:
+    case MASTER_GPS_SPEED_GET:
+    case MASTER_GPS_TRACK_GET:
+    case MASTER_GPS_QUALITY_GET:
+    //case MASTER_GPS_ENABLED_GET: // TODO: finish this command
+        return processGpsCommand(message);
     }
     return false;
+}
+
+bool FirmwareMaster::processGpsCommand(Message &message) {
+
+    // Handle case when m_gps.available() returns false, that is, there's no GPS data available.
+
+    message.clearData();
+    message.m_targetId = message.m_fromId;
+    message.m_fromId = m_id;
+
+    GpsStruct data;
+
+    if (m_gps.available()) {
+        data = m_gps.getData();
+    } else {
+        return false;
+    }
+
+    switch(message.m_type) {
+    case MASTER_GPS_TIME_GET:
+        d.println(F("MASTER_GPS_TIME_GET"));
+        message.m_type = MASTER_GPS_TIME_GET_RESPONSE;
+        message.putAt(data.hour, 0).putAt(data.minute, 1).putAt(data.second, 2);
+        break;
+    case MASTER_GPS_DATE_GET:
+        d.println(F("MASTER_GPS_DATE_GET"));
+        message.m_type = MASTER_GPS_DATE_GET_RESPONSE;
+        message.putAt(data.year, 0).putAt(data.month, 2).putAt(data.day, 3);
+        break;
+    case MASTER_GPS_LAT_GET:
+        d.println(F("MASTER_GPS_LAT_GET"));
+        message.m_type = MASTER_GPS_LAT_GET_RESPONSE;
+        message.putAt(data.int_lat, 0).putAt(data.dec_lat, 4);
+        break;
+    case MASTER_GPS_LON_GET:
+        d.println(F("MASTER_GPS_LON_GET"));
+        message.m_type = MASTER_GPS_LON_GET_RESPONSE;
+        message.putAt(data.int_lon, 0).putAt(data.dec_lon, 4);
+        break;
+    case MASTER_GPS_ALTITUDE_GET:
+        d.println(F("MASTER_GPS_ALTITUDE_GET"));
+        message.m_type = MASTER_GPS_ALTITUDE_GET_RESPONSE;
+        message.putAt(data.int_altitude, 0).putAt(data.dec_altitude, 4);
+        break;
+    case MASTER_GPS_FIX_TYPE_GET:
+        d.println(F("MASTER_GPS_FIX_TYPE_GET"));
+        message.m_type = MASTER_GPS_FIX_TYPE_GET_RESPONSE;
+        message.putAt(data.fix, 0);
+        break;
+    case MASTER_GPS_SPEED_GET:
+        d.println(F("MASTER_GPS_SPEED_GET"));
+        message.m_type = MASTER_GPS_SPEED_GET_RESPONSE;
+        message.putAt(data.int_speed, 0).putAt(data.dec_speed, 4);
+        break;
+    case MASTER_GPS_TRACK_GET:
+        d.println(F("MASTER_GPS_TRACK_GET"));
+        message.m_type = MASTER_GPS_TRACK_GET_RESPONSE;
+        message.putAt(data.satellites, 0);
+        break;
+    case MASTER_GPS_QUALITY_GET:
+        d.println(F("MASTER_GPS_QUALITY_GET"));
+        message.m_type = MASTER_GPS_QUALITY_GET_RESPONSE;
+        message.putAt(data.quality, 0);
+        break;
+    }
+    return true;
 }
 
 void FirmwareMaster::process(char cmd) {

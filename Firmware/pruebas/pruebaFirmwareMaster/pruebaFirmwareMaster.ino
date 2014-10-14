@@ -4,6 +4,7 @@
 
 #include <elibatt_config.h>
 
+#include <Adafruit_GPS.h>
 #include <Adafruit_MCP9808.h>
 #include <AnalogInput.h>
 #include <ArduinoSoftwareSerial.h>
@@ -68,6 +69,7 @@ void setup() {
     0,1,9600,
 #endif
     COMM2_RX,COMM2_TX,COMM2_SPEED,
+    BLE_RX, BLE_TX, BLE_BAUD,
     CURRENT_PIN, VOLTAGE_PIN,
     SD_CS_PIN, FILE_DURATION,
     DEBUG_PIN,

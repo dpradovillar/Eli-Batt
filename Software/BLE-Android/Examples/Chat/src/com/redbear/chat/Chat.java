@@ -1,8 +1,6 @@
 package com.redbear.chat;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
@@ -147,9 +145,42 @@ public class Chat extends Activity {
         System.exit(0);
     }
 
+    private List<byte[]> buffer = new ArrayList<byte[]>();
+
+    private int sizeInBytes() {
+        int count = 0;
+        for (byte[]b : buffer) {
+            count += b.length;
+        }
+        return count;
+    }
+
+    private byte[] toLinearArray() {
+        int c = sizeInBytes();
+        byte[] arr = new byte[c];
+        int j = 0;
+        for(byte[] b : buffer) {
+            for(int i = 0; i < b.length; i++) {
+                arr[j] = b[i];
+                j++;
+            }
+        }
+        return arr;
+    }
+
     private void displayData(byte[] byteArray) {
         if (byteArray != null) {
-            String data = new String(byteArray);
+            buffer.add(byteArray);
+
+            if (sizeInBytes() >= 19) {
+                byteArray = toLinearArray();
+                buffer.clear();
+            } else {
+                return;
+            }
+
+            String data = "length=" + byteArray.length;// + ", type=" + (int)(byteArray[2]);
+
             tv.append(data);
             // find the amount we need to scroll. This works by
             // asking the TextView's internal layout for the position

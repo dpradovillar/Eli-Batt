@@ -7,7 +7,7 @@ bool GpsInput::setup(HardwareSerial *serial, int gps_bauds, SerialEndpoint *debu
 
     m_gps.begin(gps_bauds);
     m_gps.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
-    m_gps.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   // 1 Hz update rate
+    m_gps.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // 1 Hz update rate
     m_gps.sendCommand(PGCMD_ANTENNA);
 
     m_ok = true;
@@ -15,15 +15,13 @@ bool GpsInput::setup(HardwareSerial *serial, int gps_bauds, SerialEndpoint *debu
     return m_ok;
 }
 
-void GpsInput::pull() {
+void GpsInput::loop() {
     m_gps.read();
 }
 
 bool GpsInput::available() {
     if (m_gps.newNMEAreceived()) {
-        Serial.println("received!");
         if (m_gps.parse(m_gps.lastNMEA())) {
-            Serial.println("parsgin!");
             m_data.year = 2000+m_gps.year;
             m_data.month = m_gps.month;
             m_data.day = m_gps.day;
@@ -46,11 +44,7 @@ bool GpsInput::available() {
         } else {
             return false;
         }
-    } else {
-        Serial.println("no new data");
-
     }
-
     return true;
 }
 

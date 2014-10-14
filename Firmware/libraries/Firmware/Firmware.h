@@ -34,6 +34,9 @@ protected:
     DataStreamReader m_dsr_b;
     DataStreamWriter m_dsw_b;
 
+    DualSerialEndpoint m_comm_a_wrapper;
+    DualSerialEndpoint m_comm_b_wrapper;
+
     /** For processing and forward/reply messages. */
     DataExchanger m_dex;
 
@@ -44,8 +47,6 @@ protected:
 
     /** Debugging endpoint. */
     Debugger d;
-
-    //Message m_the_message;
 
     //void propagateMessage();
 	void packSensorValues(byte *buffer6Bytes);
@@ -58,7 +59,7 @@ public:
         int rx1, int tx1, int bauds1,
         int rx2, int tx2, int bauds2,
         int currentSensorPin, int voltageSensorPin,
-        int debugPin, SerialEndpoint *dbgEndpoint
+        int debugPin, SerialEndpoint *additionalEndpoint, SerialEndpoint *dbgEndpoint
     );
 
     void loop();

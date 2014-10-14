@@ -15,11 +15,11 @@ class DataStreamReader;
  */
 class DataStreamWriter {
 private:
-    SerialEndpoint *m_endpoint;
+    DualSerialEndpoint *m_endpoint;
 public:
     DataStreamWriter();
 
-    void setup(SerialEndpoint *endpoint);
+    void setup(DualSerialEndpoint *endpoint);
     void flush();
 
     size_t writeByte(byte b);
@@ -35,11 +35,11 @@ public:
  */
 class DataStreamReader {
 private:
-    SerialEndpoint *m_endpoint;
+    DualSerialEndpoint *m_endpoint;
 public:
     DataStreamReader();
 
-    void setup(SerialEndpoint *endpoint);
+    void setup(DualSerialEndpoint *endpoint);
     int available();
 
     byte readByte(bool *ok=NULL);

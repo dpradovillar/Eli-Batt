@@ -13,6 +13,7 @@
 #include <EepromWriter.h>
 #include <Endpoint.h>
 #include <Firmware.h>
+#include <GpsInput.h>
 #include <I2cInput.h>
 #include <RtcInput.h>
 #include <RTClib.h>
@@ -31,7 +32,9 @@ protected:
 
     RtcClock m_rtc_clock;
 
-    // RTC? GPS? BLE?
+    GpsInput m_gps;
+
+    SerialEndpoint m_ble;
 
     void propagateForward(Message &msg);
     void propagateBackward(Message &msg);
@@ -43,12 +46,15 @@ public:
     FirmwareMaster();
 
     void setup(int dbg_rx, int dbg_tx, int dbg_bauds, int rx2, int tx2, int bauds2,
+            int ble_rx, int ble_tx, int bauds_ble,
             int currentSensorPin, int voltageSensorPin, int sdCsPin, uint32_t fileDuration,
             int debugPin, SerialEndpoint *dbgEndpoint=NULL);
 
     void loop();
 
     virtual bool handleMessage(Message &message);
+
+    bool processGpsCommand(Message &message);
 
     void process(char cmd);
 };

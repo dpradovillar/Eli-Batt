@@ -60,6 +60,21 @@ void Message::calculateAndSetCrc() {
     m_crc = SimpleCrc::crc16(buffer, MESSAGE_SIZE-2);
 }
 
+Message &Message::putAt(uint32_t value, byte address) {
+    Utils::toByte(value, m_data+address);
+    return *this;
+}
+
+Message &Message::putAt(uint16_t value, byte address) {
+    Utils::toByte(value, m_data+address);
+    return *this;
+}
+
+Message &Message::putAt(byte value, byte address) {
+    m_data[address] = value;
+    return *this;
+}
+
 Handler::~Handler() {
 }
 

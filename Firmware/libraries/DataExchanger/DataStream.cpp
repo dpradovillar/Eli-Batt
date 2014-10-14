@@ -9,7 +9,7 @@ DataStreamWriter::DataStreamWriter() :
 {
 }
 
-void DataStreamWriter::setup(SerialEndpoint *endpoint) {
+void DataStreamWriter::setup(DualSerialEndpoint *endpoint) {
     m_endpoint = endpoint;
 }
 
@@ -63,7 +63,7 @@ DataStreamReader::DataStreamReader() :
 {
 }
 
-void DataStreamReader::setup(SerialEndpoint *endpoint) {
+void DataStreamReader::setup(DualSerialEndpoint *endpoint) {
     m_endpoint = endpoint;
 }
 

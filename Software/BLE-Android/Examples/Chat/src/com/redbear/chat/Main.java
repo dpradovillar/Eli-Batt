@@ -89,7 +89,6 @@ public class Main extends Activity {
         mDialog = new AlertDialog.Builder(mContext).create();
         mDialog.setOnKeyListener(keyListener);
         mDialog.show();
-        // 注意此处要放在show之后 否则会报异常
         mDialog.setContentView(layout);
     }
 

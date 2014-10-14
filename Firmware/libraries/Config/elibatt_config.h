@@ -87,6 +87,7 @@
 #    define SD_CS_PIN        4
 #    if TARGET_FIRMWARE==FIRMWARE_MASTER
 #      define GPS_BAUD     9600
+#      define BLE_BAUD     57600
 #      if TARGET_DEBUG
 //       UNO/MASTER/DEBUG
 #        define PROFILE_LABEL "UNO/MASTER/DEBUG"
@@ -131,6 +132,7 @@
 #    define SD_CS_PIN        38
 #    if TARGET_FIRMWARE==FIRMWARE_MASTER
 #      define GPS_BAUD     9600
+#      define BLE_BAUD     57600
 #      if TARGET_DEBUG==true
 //       MEGA/MASTER/DEBUG
 #        define PROFILE_LABEL "MEGA/MASTER/DEBUG"
