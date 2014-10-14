@@ -42,7 +42,7 @@ class MasterCallback : public SampleCallback {
 public:
   virtual ~MasterCallback() {}
   virtual void eventDetected(uint32_t usecs){
-    //firmwareMaster.process('g');
+      firmwareMaster.process('g');
   }
 };
 
