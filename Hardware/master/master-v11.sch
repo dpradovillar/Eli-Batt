@@ -11421,20 +11421,6 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <wire x1="340.36" y1="86.36" x2="302.26" y2="86.36" width="0.1524" layer="91"/>
 <wire x1="302.26" y1="86.36" x2="302.26" y2="81.28" width="0.1524" layer="91"/>
 </segment>
-<segment>
-<pinref part="TEMP" gate="G$1" pin="SCK"/>
-<wire x1="314.96" y1="139.7" x2="312.42" y2="139.7" width="0.1524" layer="91"/>
-<pinref part="R10" gate="G$1" pin="2"/>
-<wire x1="312.42" y1="139.7" x2="297.18" y2="139.7" width="0.1524" layer="91"/>
-<wire x1="304.8" y1="152.4" x2="312.42" y2="152.4" width="0.1524" layer="91"/>
-<wire x1="312.42" y1="152.4" x2="312.42" y2="139.7" width="0.1524" layer="91"/>
-<label x="297.18" y="139.7" size="1.27" layer="95" rot="R180" xref="yes"/>
-</segment>
-<segment>
-<pinref part="DS3231" gate="G$1" pin="SCL"/>
-<wire x1="40.64" y1="71.12" x2="45.72" y2="71.12" width="0.1524" layer="91"/>
-<label x="43.18" y="71.12" size="1.778" layer="95"/>
-</segment>
 </net>
 <net name="MISO" class="0">
 <segment>
@@ -11468,20 +11454,6 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <pinref part="MICROSD" gate="G$1" pin="DI"/>
 <wire x1="340.36" y1="91.44" x2="325.12" y2="91.44" width="0.1524" layer="91"/>
 <label x="325.12" y="91.44" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="TEMP" gate="G$1" pin="SDA"/>
-<wire x1="314.96" y1="144.78" x2="309.88" y2="144.78" width="0.1524" layer="91"/>
-<wire x1="309.88" y1="144.78" x2="309.88" y2="142.24" width="0.1524" layer="91"/>
-<wire x1="309.88" y1="142.24" x2="297.18" y2="142.24" width="0.1524" layer="91"/>
-<pinref part="R16" gate="G$1" pin="2"/>
-<wire x1="309.88" y1="147.32" x2="309.88" y2="144.78" width="0.1524" layer="91"/>
-<label x="297.18" y="142.24" size="1.27" layer="95" rot="R180" xref="yes"/>
-</segment>
-<segment>
-<pinref part="DS3231" gate="G$1" pin="SDA"/>
-<wire x1="40.64" y1="68.58" x2="45.72" y2="68.58" width="0.1524" layer="91"/>
-<label x="43.18" y="68.58" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="RAW" class="1">
@@ -11987,6 +11959,48 @@ wire to board 2.54 mm (.1 inch) pitch header</description>
 <pinref part="ACS711" gate="G$1" pin="IP-@4"/>
 <wire x1="294.64" y1="251.46" x2="287.02" y2="251.46" width="0.1524" layer="91"/>
 <pinref part="V_OUT" gate="G$1" pin="MOUNT"/>
+</segment>
+</net>
+<net name="SDA" class="0">
+<segment>
+<pinref part="DS3231" gate="G$1" pin="SDA"/>
+<wire x1="40.64" y1="68.58" x2="45.72" y2="68.58" width="0.1524" layer="91"/>
+<label x="43.18" y="68.58" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="ATMEGA1280" gate="G$1" pin="(SDA/INT1)PD1"/>
+<wire x1="236.22" y1="157.48" x2="238.76" y2="157.48" width="0.2032" layer="91"/>
+<label x="238.76" y="157.48" size="1.27" layer="95" xref="yes"/>
+</segment>
+<segment>
+<pinref part="TEMP" gate="G$1" pin="SDA"/>
+<wire x1="314.96" y1="144.78" x2="309.88" y2="144.78" width="0.1524" layer="91"/>
+<wire x1="309.88" y1="144.78" x2="309.88" y2="142.24" width="0.1524" layer="91"/>
+<wire x1="309.88" y1="142.24" x2="297.18" y2="142.24" width="0.1524" layer="91"/>
+<pinref part="R16" gate="G$1" pin="2"/>
+<wire x1="309.88" y1="147.32" x2="309.88" y2="144.78" width="0.1524" layer="91"/>
+<label x="297.18" y="142.24" size="1.27" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
+<net name="SCL" class="0">
+<segment>
+<pinref part="ATMEGA1280" gate="G$1" pin="(SCL/INT0)PD0"/>
+<wire x1="236.22" y1="154.94" x2="238.76" y2="154.94" width="0.2032" layer="91"/>
+<label x="238.76" y="154.94" size="1.27" layer="95" xref="yes"/>
+</segment>
+<segment>
+<pinref part="DS3231" gate="G$1" pin="SCL"/>
+<wire x1="40.64" y1="71.12" x2="45.72" y2="71.12" width="0.1524" layer="91"/>
+<label x="43.18" y="71.12" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="TEMP" gate="G$1" pin="SCK"/>
+<wire x1="314.96" y1="139.7" x2="312.42" y2="139.7" width="0.1524" layer="91"/>
+<pinref part="R10" gate="G$1" pin="2"/>
+<wire x1="312.42" y1="139.7" x2="297.18" y2="139.7" width="0.1524" layer="91"/>
+<wire x1="304.8" y1="152.4" x2="312.42" y2="152.4" width="0.1524" layer="91"/>
+<wire x1="312.42" y1="152.4" x2="312.42" y2="139.7" width="0.1524" layer="91"/>
+<label x="297.18" y="139.7" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 </nets>
