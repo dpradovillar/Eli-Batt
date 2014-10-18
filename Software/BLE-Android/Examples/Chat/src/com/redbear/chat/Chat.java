@@ -21,21 +21,69 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYSeries;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.renderer.XYSeriesRenderer;
 
 public class Chat extends Activity {
     private final static String TAG = Chat.class.getSimpleName();
 
     public static final String EXTRAS_DEVICE = "EXTRAS_DEVICE";
     private BluetoothDevice device;
+
     private TextView tv = null;
     private EditText et = null;
     private Button btn = null;
+
     private String mDeviceName;
     private String mDeviceAddress;
     private RBLService mBluetoothLeService;
     private Map<UUID, BluetoothGattCharacteristic> map = new HashMap<UUID, BluetoothGattCharacteristic>();
 
+    /*
+    private GraphicalView mChart1;
+    private XYMultipleSeriesDataset mDataset1 = new XYMultipleSeriesDataset();
+    private XYMultipleSeriesRenderer mRenderer1 = new XYMultipleSeriesRenderer();
+    private XYSeries mCurrentSeries1;
+    private XYSeriesRenderer mCurrentRenderer1;
+
+    private GraphicalView mChart2;
+    private XYMultipleSeriesDataset mDataset2 = new XYMultipleSeriesDataset();
+    private XYMultipleSeriesRenderer mRenderer2 = new XYMultipleSeriesRenderer();
+    private XYSeries mCurrentSeries2;
+    private XYSeriesRenderer mCurrentRenderer2;
+
+    private GraphicalView mChart3;
+    private XYMultipleSeriesDataset mDataset3 = new XYMultipleSeriesDataset();
+    private XYMultipleSeriesRenderer mRenderer3 = new XYMultipleSeriesRenderer();
+    private XYSeries mCurrentSeries3;
+    private XYSeriesRenderer mCurrentRenderer3;
+
+    private void initChart() {
+        mCurrentSeries1 = new XYSeries("Voltaje");
+        mDataset1.addSeries(mCurrentSeries1);
+        mCurrentRenderer1 = new XYSeriesRenderer();
+        mRenderer1.addSeriesRenderer(mCurrentRenderer1);
+        mRenderer1.setLegendTextSize(48);
+
+        mCurrentSeries2 = new XYSeries("Corriente");
+        mDataset2.addSeries(mCurrentSeries2);
+        mCurrentRenderer2 = new XYSeriesRenderer();
+        mRenderer2.addSeriesRenderer(mCurrentRenderer2);
+        mRenderer2.setLegendTextSize(48);
+
+        mCurrentSeries3 = new XYSeries("Temperatura");
+        mDataset3.addSeries(mCurrentSeries3);
+        mCurrentRenderer3 = new XYSeriesRenderer();
+        mRenderer3.addSeriesRenderer(mCurrentRenderer3);
+        mRenderer3.setLegendTextSize(48);
+    }
+    */
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
@@ -75,6 +123,7 @@ public class Chat extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.second);
 
+
         tv = (TextView) findViewById(R.id.textView);
         tv.setMovementMethod(ScrollingMovementMethod.getInstance());
         et = (EditText) findViewById(R.id.editText);
@@ -87,6 +136,8 @@ public class Chat extends Activity {
 
                 String str = et.getText().toString() + "\n";
                 final byte[] tx = str.getBytes();
+
+                displayData(tx);
 
                 characteristic.setValue(tx);
                 mBluetoothLeService.writeCharacteristic(characteristic);
@@ -108,14 +159,19 @@ public class Chat extends Activity {
         Intent gattServiceIntent = new Intent(this, RBLService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
     }
+/*
+    private void addData(double v, double a, double t) {
+        long time = System.currentTimeMillis();
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+        mCurrentSeries1.add(time, v);
+        mCurrentSeries2.add(time, a);
+        mCurrentSeries3.add(time, t);
 
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+        mChart1.repaint();
+        mChart2.repaint();
+        mChart3.repaint();
     }
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -144,7 +200,7 @@ public class Chat extends Activity {
 
         System.exit(0);
     }
-
+/*
     private List<byte[]> buffer = new ArrayList<byte[]>();
 
     private int sizeInBytes() {
@@ -168,18 +224,45 @@ public class Chat extends Activity {
         return arr;
     }
 
+*/
+    /*
+    private String strBuffer = "";
+    private void processCharacter(char c) {
+        if (c == '\n') {
+            String[] parts = strBuffer.split(";");
+            addData(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]), Double.parseDouble(parts[2]));
+
+            strBuffer = "";
+        } else {
+            strBuffer += c;
+        }
+    }*/
+
     private void displayData(byte[] byteArray) {
         if (byteArray != null) {
+            // For handling binary message
+            /*
             buffer.add(byteArray);
-
             if (sizeInBytes() >= 19) {
                 byteArray = toLinearArray();
                 buffer.clear();
             } else {
                 return;
             }
-
             String data = "length=" + byteArray.length;// + ", type=" + (int)(byteArray[2]);
+            */
+            /*
+            for (int i = 0; i < byteArray.length; i++) {
+                processCharacter( (char)byteArray[i] );
+            }
+            */
+
+            String data = "";
+            for (int i = 0; i < byteArray.length; i++) {
+                //processCharacter( (char)byteArray[i] );
+                data += (char)byteArray[i];
+            }
+
 
             tv.append(data);
             // find the amount we need to scroll. This works by

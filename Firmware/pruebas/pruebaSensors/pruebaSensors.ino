@@ -93,16 +93,19 @@ void loop() {
   
   float realv = (voltage * R1_R2) / R2;
   float temp_float = rtcClock.getTempAsFloat();
-  
-  BLEMini.print(temp_float);    BLEMini.print(";");
-  
-  // Voltage 3.3v --> to amps
-  //Serial.print(vcurrent);Serial.print(";");
-  BLEMini.print(current); BLEMini.print(";");
+
+  // VOLTAGE, CURRENT, TEMPERATURE
   
   // Voltage 3.3v --> to 12v
   //Serial.print(voltage); Serial.print(";");
   BLEMini.print(realv);   BLEMini.print(";");
+
+  // Voltage 3.3v --> to amps
+  //Serial.print(vcurrent);Serial.print(";");
+  BLEMini.print(current); BLEMini.print(";");
+  
+  BLEMini.print(temp_float);BLEMini.print(";");
+  
   BLEMini.println();
   
   if (countRows == 0) {
@@ -116,15 +119,18 @@ void loop() {
     }
   }
   
-   myFile.print(temp_float);    myFile.print(";");
-  
-  // Voltage 3.3v --> to amps
-  //Serial.print(vcurrent);Serial.print(";");
-  myFile.print(current); myFile.print(";");
+  // VOLTAGE, CURRENT, TEMPERATURE
   
   // Voltage 3.3v --> to 12v
-  //Serial.print(voltage); Serial.print(";");
+  //myFile.print(voltage); myFile.print(";");
   myFile.print(realv);   myFile.print(";");
+  
+  // Voltage 3.3v --> to amps
+  //myFile.print(vcurrent);myFile.print(";");
+  myFile.print(current); myFile.print(";");
+  
+  myFile.print(temp_float);    myFile.print(";");
+   
   myFile.println();
 
   countRows++;

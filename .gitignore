@@ -249,3 +249,6 @@ Software/Elibatt-Qt/ui_uidialog.h
 Software/Elibatt-lib/Makefile
 Software/Elibatt-lib/Makefile.Debug
 Software/Elibatt-lib/Makefile.Release
+
+Software/BLE-Android/Examples/Chat/gen/*
+Software/BLE-Android/Examples/Chat/out/*

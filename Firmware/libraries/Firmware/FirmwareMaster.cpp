@@ -56,7 +56,7 @@ void FirmwareMaster::setup(int dbg_rx, int dbg_tx, int dbg_bauds, int rx2, int t
     d.println(F("OK"));
 
     d.println(F("Setting Bank Data (card and registered slaves):"));
-    if ( m_bank_data.setup(sdCsPin, fileDuration, dbgEndpoint) || true) {
+    if ( m_bank_data.setup(sdCsPin, fileDuration, dbgEndpoint)) {
         // TODO(rtapiapincheira): discover new slaves and update eeprom list
         m_bank_data.registerId(m_id);
     } else {
