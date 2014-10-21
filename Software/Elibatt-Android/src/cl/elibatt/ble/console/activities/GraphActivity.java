@@ -247,13 +247,13 @@ public class GraphActivity extends Activity {
     private StringBuilder buffer = new StringBuilder();
 
     private void onNewLine(String line) {
-        String trimmed = line.trim().replace(';', ',').replace('\t', ',');
+        String trimmed = line.trim().replace(';', ',').replace('\t', ',').replaceAll(" ", "");
         String[] parts = trimmed.split(",");
         if (parts.length >= 3) {
             addData(
-                    Double.parseDouble(parts[0]),
-                    Double.parseDouble(parts[1]),
-                    Double.parseDouble(parts[2])
+                    Double.parseDouble(parts[0].trim()),
+                    Double.parseDouble(parts[1].trim()),
+                    Double.parseDouble(parts[2].trim())
             );
         } else {
             Log.w(TAG, "Warning, line received should contain 3 or more numeric values");
@@ -264,7 +264,7 @@ public class GraphActivity extends Activity {
         if (c == '\n') {
             onNewLine(buffer.toString());
             buffer = new StringBuilder();
-        } else {
+        } else if (32 < c && c < 127) {
             buffer.append(c);
         }
     }

@@ -160,21 +160,24 @@ public class ConsoleActivity extends Activity {
 
     private void displayData(byte[] byteArray) {
         if (byteArray != null) {
-            String data = "";
+            StringBuilder data = new StringBuilder();
             for (int i = 0; i < byteArray.length; i++) {
-                ;
-                data += (char) byteArray[i];
+                char c = (char) byteArray[i];
+                if ((32 < c && c < 127) || c == '\n') {
+                    data.append(c);
+                }
             }
-
-            tv.append(data);
-            // find the amount we need to scroll. This works by asking the TextView's internal layout for the position
-            // of the final line and then subtracting the TextView's height
-            final int scrollAmount = tv.getLayout().getLineTop(tv.getLineCount()) - tv.getHeight();
-            // if there is no need to scroll, scrollAmount will be <=0
-            if (scrollAmount > 0) {
-                tv.scrollTo(0, scrollAmount);
-            } else {
-                tv.scrollTo(0, 0);
+            if (data.length() > 0) {
+                tv.append(data.toString());
+                // find the amount we need to scroll. This works by asking the TextView's internal layout for the position
+                // of the final line and then subtracting the TextView's height
+                final int scrollAmount = tv.getLayout().getLineTop(tv.getLineCount()) - tv.getHeight();
+                // if there is no need to scroll, scrollAmount will be <=0
+                if (scrollAmount > 0) {
+                    tv.scrollTo(0, scrollAmount);
+                } else {
+                    tv.scrollTo(0, 0);
+                }
             }
         }
     }
