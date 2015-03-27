@@ -1,0 +1,28 @@
+Partlist exported from C:/Users/scss/Documents/GitHub/E-liBatt/Hardware/master/Slave-v12.sch at 3/26/2015 11:53:58 PM
+
+Part   Value                         Device                        Package               Description                                             MF          MPN                OC_FARNELL OC_NEWARK PACKAGE SUPPLIER
+ACS711 ACS711                        ACS711                        SOIC8                 Hall-effect-based isolated linear current sensor                    ACS711KLCTR-25AB-T            24T5972                   
+AP1117 AP1117E                       AP1117E                       SOT223                LDO Regulator                                                       AP1117E33G-13                 79R5845                   
+BANCO  TWIG-2.0-DIPD                 TWIG-2.0-DIPD                 2.0_1X4_90                                                                                                              unknown                   
+C1     10uF                          C-EUC0805K                    C0805K                CAPACITOR, European symbol                                          0805ZD106KAT2A                96M1311                   
+C4     10uF                          C-EUC0805K                    C0805K                CAPACITOR, European symbol                                          0805ZD106KAT2A                96M1311                   
+C7     0.1uF                         C-EUC0805K                    C0805K                CAPACITOR, European symbol                                          MC0603B104K500CT              06R4927                   
+DBG_L  BLUE                          LEDCHIPLED_0805               CHIPLED_0805          LED                                                                 150080BS75000                 95W3799                   
+ISP    AVR_SPI_PRG_6PTH              AVR_SPI_PRG_6PTH              2X3                   AVR ISP 6 Pin                                                                                     unknown                   
+J1     22-05-7028-02                 22-05-7028-02                 7395-02               CONNECTOR                                                                              9731601    unknown                   
+OSC    16.00MHZ SMD                  RESONATOR-SMD                 RESONATOR-SMD         Resonator                                                           PBRC8.00HR50X000              23M7097                   
+PWR    RED                           LEDCHIPLED_0805               CHIPLED_0805          LED                                                                 KPT-2012SRC-J4                88W4951                   
+R1     1K                            R-EU_R0805                    R0805                 RESISTOR, European symbol                               VISHAY/DALE CRCW08051K00FKTA              05F1507                   
+R2     1M                            R-EU_R0805                    R0805                 RESISTOR, European symbol                               VISHAY/DALE CRCW080510K0FKTA              05F1511                   
+R3     1K                            R-EU_R0805                    R0805                 RESISTOR, European symbol                               VISHAY/DALE CRCW08051K00FKTA              05F1507                   
+R8     10k                           R-EU_R0805                    R0805                 RESISTOR, European symbol                               VISHAY/DALE CRCW080510K0FKTA              05F1511                   
+R10    10k                           R-EU_R0805                    R0805                 RESISTOR, European symbol                               VISHAY/DALE CRCW080510K0FKTA              05F1511                   
+R13    10k                           R-EU_R0805                    R0805                 RESISTOR, European symbol                               VISHAY/DALE CRCW080510K0FKTA              05F1511                   
+R14    10k                           R-EU_R0805                    R0805                 RESISTOR, European symbol                               VISHAY/DALE CRCW080510K0FKTA              05F1511                   
+R15    3.3k                          R-EU_R0805                    R0805                 RESISTOR, European symbol                               VISHAY/DALE CRCW08053K30FKTA              48F4423                   
+R16    10k                           R-EU_R0805                    R0805                 RESISTOR, European symbol                               VISHAY/DALE CRCW080510K0FKTA              05F1511                   
+S1     SWITCH-MOMENTARY-2-SMD-1101NE SWITCH-MOMENTARY-2-SMD-1101NE TACTILE-SWITCH-1101NE Various NO switches- pushbuttons, reed, etc                                                       unknown                   
+TEMP   MCP9804                       MCP9804                       MSOP8                 TEMP SENSOR                                                         MCP9808-E/MS                  89T8871                   
+U1     ATMEGA328P-AU                 ATMEGA328P-AU                 QFP80P900X900X120-32N 8-bit Microcontroller with In-System Programmable Flash             ATMEGA328P-AU      1715486    14R4631   TQFP-32 Atmel   
+V_IN   MOUNT-PAD-ROUND4.5            MOUNT-PAD-ROUND4.5            4,5-PAD               MOUNTING PAD, round                                                                               unknown                   
+V_OUT  MOUNT-PAD-ROUND4.5            MOUNT-PAD-ROUND4.5            4,5-PAD               MOUNTING PAD, round                                                                               unknown                   
