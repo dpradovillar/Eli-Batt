@@ -1,8 +1,10 @@
 #include <GpsInput.h>
 
-bool GpsInput::setup(HardwareSerial *serial, int gps_bauds, SerialEndpoint *debugEndpoint) {
-    d.setup(debugEndpoint);
+GpsInput::GpsInput() : m_ok (false)
+{
+}
 
+bool GpsInput::setup(HardwareSerial *serial, int gps_bauds) {
     m_gps.setup(serial);
 
     m_gps.begin(gps_bauds);

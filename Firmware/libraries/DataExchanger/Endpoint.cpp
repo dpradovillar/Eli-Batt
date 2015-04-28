@@ -183,6 +183,19 @@ size_t SerialEndpoint::print(char x) {
     return 0;
 }
 
+size_t SerialEndpoint::print(float f, int decimals) {
+    switch(m_hardwareSerialIndex) {
+    case -1: return m_softwareSerial.print(f, decimals);
+    case 0: return Serial.print(f, decimals);
+#ifdef __AVR_ATmega1280__
+    case 1: return Serial1.print(f, decimals);
+    case 2: return Serial2.print(f, decimals);
+    case 3: return Serial3.print(f, decimals);
+#endif
+    }
+    return 0;
+}
+
 size_t SerialEndpoint::print(const char *s) {
     switch(m_hardwareSerialIndex) {
     case -1: return m_softwareSerial.print(s);
@@ -219,6 +232,20 @@ size_t SerialEndpoint::print(const __FlashStringHelper *s) {
     return 0;
 }
 
+size_t SerialEndpoint::printFloating(int integral_part, int decimal_part) {
+    return print(integral_part) + print('.') + print(decimal_part);
+}
+
+size_t SerialEndpoint::printSimpleDate(int year, int month, int day) {
+    return print(year) + print('/') + print(month) + print('/') + print(day);
+}
+
+size_t SerialEndpoint::printSimpleTime(int hour, int minute, int second) {
+    return print(hour) + print(':') + print(minute) + print(':') + print(second);
+}
+
+// --------------------------- .*ln() methods ---------------------------
+
 size_t SerialEndpoint::println() {
     return print(CR_LF);
 }
@@ -239,6 +266,10 @@ size_t SerialEndpoint::println(char c) {
     return print(c) + print(CR_LF);
 }
 
+size_t SerialEndpoint::println(float f, int decimals) {
+    return println(f, decimals) + print(CR_LF);
+}
+
 size_t SerialEndpoint::println(const char *s) {
     return print(s) + print(CR_LF);
 }
@@ -251,6 +282,17 @@ size_t SerialEndpoint::println(const __FlashStringHelper *s) {
     return print(s) + print(CR_LF);
 }
 
+size_t SerialEndpoint::printlnFloating(int integral_part, int decimal_part) {
+    return printFloating(integral_part, decimal_part) + print(CR_LF);
+}
+
+size_t SerialEndpoint::printlnSimpleDate(int year, int month, int day) {
+    return printSimpleDate(year, month, day) + print(CR_LF);
+}
+
+size_t SerialEndpoint::printlnSimpleTime(int hour, int minute, int second) {
+    return printSimpleTime(hour, minute, second) + print(CR_LF);
+}
 
 // -------------------------------------------------------------------------------------------------
 

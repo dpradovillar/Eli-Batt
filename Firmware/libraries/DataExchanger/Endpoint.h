@@ -8,9 +8,8 @@
 #define CR_LF "\r\n"
 
 /**
- * Specialization of the Endpoint class, that supports communication from a Serial connection.
- * Automatically detects if it's a hardware or software serial connection by looking at the pins
- * used to initialize the object.
+ * Supports communication from a Serial connection. Automatically detects if it's a hardware or software serial
+ * connection by looking at the pins used to initialize the object.
  */
 class SerialEndpoint {
 private:
@@ -37,20 +36,33 @@ public:
     size_t print(uint16_t x);
     size_t print(uint32_t x);
     size_t print(char c);
+    size_t print(float f, int decimals=4);
     size_t print(const char *s);
     size_t print(char *s, int len);
     size_t print(const __FlashStringHelper *s);
+    size_t printFloating(int integral_part, int decimal_part);
+    size_t printSimpleDate(int year, int month, int day);
+    size_t printSimpleTime(int hour, int minute, int second);
 
     size_t println();
     size_t println(int x);
     size_t println(uint16_t x);
     size_t println(uint32_t x);
     size_t println(char x);
+    size_t println(float f, int decimals=4);
     size_t println(const char *s);
     size_t println(char *s, int len);
     size_t println(const __FlashStringHelper *s);
+    size_t printlnFloating(int integral_part, int decimal_part);
+    size_t printlnSimpleDate(int year, int month, int day);
+    size_t printlnSimpleTime(int hour, int minute, int second);
 };
 
+/**
+ * Composite pattern for SerialEndpoint that allows to send data to 2 different parallel Serial connections, using for 
+ * both the same SerialEndpoint interface specification. Beware that bytes will be read only from one SerialEndpoint,
+ * as it's complex to merge bytes coming from 2 sources.
+ */
 class DualSerialEndpoint {
 private:
     SerialEndpoint *m_a;
@@ -59,6 +71,11 @@ private:
 public:
     DualSerialEndpoint();
 
+    /**
+     * The first SerialEnpoint connection will perform read/write operations while the second one only write operations.
+     * This is useful for sending debug and monitoring data to a secondary source that will only consume bytes (not send
+     * a thing back to this).
+     */
     void setup(SerialEndpoint *readWrite,
             SerialEndpoint *writeOnly=NULL);
 

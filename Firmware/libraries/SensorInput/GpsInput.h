@@ -41,7 +41,6 @@ public:
 class GpsInput {
 private:
     byte m_ok;
-    Debugger d;
 
     Adafruit_GPS m_gps;
 
@@ -49,10 +48,12 @@ private:
     GpsStruct m_data;
 
 public:
-    bool setup(HardwareSerial *serial, int gps_bauds, SerialEndpoint *debugEndpoint=NULL);
+    GpsInput();
+
+    bool setup(HardwareSerial *serial, int gps_bauds);
 
     /**
-     * Tries to read and buffer internally new gps data.
+     * Tries to read and buffers internally new gps data.
      * <p/>
      * Make sure to call this method regularly in the main loop (not inside a callback nor every
      * 1 second or so), it should be called as fast as possible.
