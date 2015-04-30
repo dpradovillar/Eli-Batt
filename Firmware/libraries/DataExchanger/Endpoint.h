@@ -99,6 +99,9 @@ public:
     size_t print(const char *s);
     size_t print(char *s, int len);
     size_t print(const __FlashStringHelper *s);
+    size_t printFloating(int integral_part, int decimal_part);
+    size_t printSimpleDate(int year, int month, int day);
+    size_t printSimpleTime(int hour, int minute, int second);
 
     size_t println();
     size_t println(int x);
@@ -108,6 +111,9 @@ public:
     size_t println(const char *s);
     size_t println(char *s, int len);
     size_t println(const __FlashStringHelper *s);
+    size_t printlnFloating(int integral_part, int decimal_part);
+    size_t printlnSimpleDate(int year, int month, int day);
+    size_t printlnSimpleTime(int hour, int minute, int second);
 };
 
 #endif // __ENDPOINT_H__

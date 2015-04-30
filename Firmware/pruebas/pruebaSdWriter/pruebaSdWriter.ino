@@ -1,14 +1,21 @@
+#include <elibatt_config.h>
+
+#include <Adafruit_GPS.h>
+#include <Adafruit_MCP9808.h>
 #include <ArduinoSoftwareSerial.h>
 #include <DataStream.h>
 #include <Debugger.h>
 #include <EEPROM.h>
 #include <Endpoint.h>
 #include <EepromWriter.h>
+#include <RTClib.h>
 #include <SampleCollector.h>
 #include <SD.h>
 #include <SdData.h>
 #include <SimpleCrc.h>
+#include <SPI.h>
 #include <Utils.h>
+#include <Wire.h>
 
 SerialEndpoint debugSerialEndpoint;
 EepromWriter eepromWriter;
@@ -49,7 +56,7 @@ void setup() {
 //  ledBlinkCallback.setup(7);
   
   debugSerialEndpoint.println("trying to start SD card");
-  if(!sdWriter.setup(4, &debugSerialEndpoint)) { // chipSelect on pin 4, additionally, pin 10 is left as OUTPUT
+  if(!sdWriter.setup(38, &debugSerialEndpoint)) { // chipSelect on pin 38, additionally, pin 10 is left as OUTPUT
     debugSerialEndpoint.println("couldn't set it up");
     while(1);
   } 

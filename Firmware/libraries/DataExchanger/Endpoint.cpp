@@ -237,11 +237,47 @@ size_t SerialEndpoint::printFloating(int integral_part, int decimal_part) {
 }
 
 size_t SerialEndpoint::printSimpleDate(int year, int month, int day) {
-    return print(year) + print('/') + print(month) + print('/') + print(day);
+    size_t r = 0;
+    r += print(year);
+    r += print('/');
+
+    if (month < 10) {
+        r += print('0');
+    }
+    r += print(month);
+
+    r += print('/');
+
+    if (day < 10) {
+        r += print('0');
+    }
+    r += print(day);
+
+    return r;
 }
 
 size_t SerialEndpoint::printSimpleTime(int hour, int minute, int second) {
-    return print(hour) + print(':') + print(minute) + print(':') + print(second);
+    size_t r = 0;
+    if (hour < 10) {
+        r += print('0');
+    }
+    r += print(hour);
+
+    r += print(':');
+
+    if (minute < 10) {
+        r += print('0');
+    }
+    r += print(minute);
+
+    r += print(':');
+
+    if (second < 10) {
+        r += print('0');
+    }
+    r += print(second);
+
+    return r;
 }
 
 // --------------------------- .*ln() methods ---------------------------
@@ -372,6 +408,24 @@ size_t DualSerialEndpoint::print(const __FlashStringHelper *s) {
     if (m_b) m_b->print(s);
     return r;
 }
+size_t DualSerialEndpoint::printFloating(int integral_part, int decimal_part) {
+    size_t r = m_a->printFloating(integral_part, decimal_part);
+    if (m_b) m_b->printFloating(integral_part, decimal_part);
+    return r;
+}
+size_t DualSerialEndpoint::printSimpleDate(int year, int month, int day) {
+    size_t r = m_a->printSimpleDate(year, month, day);
+    if (m_b) m_b->printSimpleDate(year, month, day);
+    return r;
+}
+size_t DualSerialEndpoint::printSimpleTime(int hour, int minute, int second) {
+    size_t r = m_a->printSimpleTime(hour, minute, second);
+    if (m_b) m_b->printSimpleTime(hour, minute, second);
+    return r;
+    
+}
+
+// ------------------------- .*ln() methods -------------------------
 
 size_t DualSerialEndpoint::println() {
     size_t r = m_a->println();
@@ -413,4 +467,19 @@ size_t DualSerialEndpoint::println(const __FlashStringHelper *s) {
     if (m_b) m_b->println(s);
     return r;
 }
-
+size_t DualSerialEndpoint::printlnFloating(int integral_part, int decimal_part) {
+    size_t r = m_a->printFloating(integral_part, decimal_part);
+    if (m_b) m_b->printFloating(integral_part, decimal_part);
+    return r;
+}
+size_t DualSerialEndpoint::printlnSimpleDate(int year, int month, int day) {
+    size_t r = m_a->printSimpleDate(year, month, day);
+    if (m_b) m_b->printSimpleDate(year, month, day);
+    return r;
+}
+size_t DualSerialEndpoint::printlnSimpleTime(int hour, int minute, int second) {
+    size_t r = m_a->printlnSimpleTime(hour, minute, second);
+    if (m_b) m_b->printlnSimpleTime(hour, minute, second);
+    return r;
+    
+}

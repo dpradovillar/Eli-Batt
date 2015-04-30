@@ -1,3 +1,6 @@
+#include <elibatt_config.h>
+
+#include <Adafruit_GPS.h>
 #include <Adafruit_MCP9808.h>
 #include <Arduino.h>
 #include <ArduinoSoftwareSerial.h>
@@ -10,26 +13,25 @@
 #include <Utils.h>
 #include <Wire.h>
 
+// --------- Begins required section for RtcInput.h ---------
 volatile long TOGGLE_COUNT = 0;
-
 ISR(TIMER1_COMPA_vect) {
     TOGGLE_COUNT++;
 }
-
 ISR(INT0_vect) {
 }
+// ---------- Ends required section for RtcInput.h ----------
 
 SerialEndpoint pcComm;
 RtcClock rtcClock;
 
-void setup()
-{
+void setup() {
     pcComm.setup(0, 1, 9600);
     pcComm.waitForConnection();
     pcComm.println("connection to pc stablished");
 
-    Wire.begin();
-    
+    delay(500);
+
     if (rtcClock.setup(&pcComm)) {
         pcComm.println("RTC is OK!");
     } else {
@@ -45,35 +47,25 @@ void loop() {
     int8_t temp_hbyte = temp_word >> 8;
     int8_t temp_lbyte = temp_word &= 0x00FF;
 
-    Serial.print(now.year(), DEC);
-    Serial.print('/');
-    Serial.print(now.month(), DEC);
-    Serial.print('/');
-    Serial.print(now.day(), DEC);
-    Serial.print(' ');
-    Serial.print(now.hour(), DEC);
-    Serial.print(':');
-    Serial.print(now.minute(), DEC);
-    Serial.print(':');
-    Serial.print(now.second(), DEC);
-    Serial.println();
+    pcComm.printSimpleDate(now.year(), now.month(), now.day());
+    pcComm.print(' ');
+    pcComm.printlnSimpleTime(now.hour(), now.minute(), now.second());
 
-    Serial.print(" since midnight 1/1/1970 = ");
-    Serial.print(now.unixtime());
-    Serial.print("s = ");
-    Serial.print(now.unixtime() / 86400L);
-    Serial.println("d");
+    pcComm.print(" since midnight 1/1/1970 = ");
+    pcComm.print(now.unixtime());
+    pcComm.print("s = ");
+    pcComm.print(now.unixtime() / 86400L);
+    pcComm.println("d");
 
-    Serial.print("Temp as float: ");
-    Serial.print(temp_float, DEC);
-    Serial.println();
-    Serial.print("Temp as word: ");
-    Serial.print(temp_hbyte, DEC);
-    Serial.print(".");
-    Serial.print(temp_lbyte, DEC);
-    Serial.println();
+    pcComm.print("Temp as float: ");
+    pcComm.println(temp_float);
 
-    Serial.println();
+    pcComm.print("Temp as word: ");
+    pcComm.print((int)temp_hbyte);
+    pcComm.print(".");
+    pcComm.println((int)temp_lbyte);
+
+    pcComm.println();
 
     delay(1000);
 }
