@@ -7,6 +7,9 @@
 
 #define CR_LF "\r\n"
 
+// To enable it on the ATMEGA1280
+#define __AVR_ATmega1280__ true
+
 /**
  * Supports communication from a Serial connection. Automatically detects if it's a hardware or software serial
  * connection by looking at the pins used to initialize the object.

@@ -97,7 +97,7 @@ void V2Libs::sendHeight() {
 long last_t = 0;  // Para loop()
 
 void V2Libs::setup() {
-    ble.setup(15, 14, 9600);  // Serial3 @ 9600
+    ble.setup(15, 14, 57600);  // Serial3 @ 57600
     pcComm.setup(0, 1, 9600); // Serial  @ 9600
 
     ble.waitForConnection();
@@ -189,23 +189,23 @@ void V2Libs::loop() {
     }
     
   }
-  
+
   // ########################## Sensors Handling ####################
   if (millis() - last_t >= 2000) {    
     // Read and print out the temperature, then convert to *F
     float c = tempSensor.readCelsius();
     float f = c * 9.0 / 5.0 + 32;
-    pcComm.print("Temp: "); pcComm.print(c); pcComm.print("*C\t"); 
-    pcComm.print(f); pcComm.println("*F");
+    //pcComm.print("Temp: "); pcComm.print(c); pcComm.print("*C\t"); 
+    //pcComm.print(f); pcComm.println("*F");
     
     // Leer sensores de corriente y voltaje
     float vcurrent = toVolts(currentSensor.read());
     float current = toAmps(vcurrent);
-    pcComm.print("Corriente: "); pcComm.print(current); pcComm.println("[A]");
+    //pcComm.print("Corriente: "); pcComm.print(current); pcComm.println("[A]");
     
     float voltage = toVolts(voltageSensor.read());
     float realv = (voltage * R1_R2) / R2;
-    pcComm.print("Voltaje: "); pcComm.print(realv); pcComm.println("[V]");
+    //pcComm.print("Voltaje: "); pcComm.print(realv); pcComm.println("[V]");
     
     // Valores GPS
     float latitud = 0;
@@ -215,14 +215,14 @@ void V2Libs::loop() {
     // ########################## GPS Handling ####################  
     if (gpsInput.available()) {
       GpsStruct gdata = gpsInput.getData();
-      pcComm.print("Time: ");
-      pcComm.printlnSimpleTime(gdata.hour, gdata.minute, gdata.second);
+      //pcComm.print("Time: ");
+      //pcComm.printlnSimpleTime(gdata.hour, gdata.minute, gdata.second);
       
-      pcComm.print("Date: ");
-      pcComm.printlnSimpleDate(gdata.day, gdata.month, gdata.year);
+      //pcComm.print("Date: ");
+      //pcComm.printlnSimpleDate(gdata.day, gdata.month, gdata.year);
       
-      pcComm.print("Fix: "); pcComm.print((int)gdata.fix);
-      pcComm.print(" quality: "); pcComm.println((int)gdata.quality);
+      //pcComm.print("Fix: "); pcComm.print((int)gdata.fix);
+      //pcComm.print(" quality: "); pcComm.println((int)gdata.quality);
       
       if (gdata.fix) {                        
         pcComm.print("Location: ");
@@ -309,7 +309,7 @@ void V2Libs::loop() {
 //    
 //    BLEMini.println();
     
-    pcComm.println("############################");
+    //pcComm.println("############################");
     
     last_t = millis();
   }
