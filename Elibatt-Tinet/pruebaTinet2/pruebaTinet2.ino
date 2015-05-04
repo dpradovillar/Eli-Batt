@@ -11,6 +11,7 @@
 #include <RTC_DS3231.h>
 #include <RtcInput.h>
 #include <SD.h>
+#include <SdData.h>
 #include <SPI.h>
 #include <UnixCmd.h>
 #include <Utils.h>
