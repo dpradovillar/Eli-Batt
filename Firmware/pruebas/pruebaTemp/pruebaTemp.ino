@@ -34,8 +34,6 @@ void setup() {
   
   pcComm.println("PC serial connection OK!");
   
-  Wire.begin();
-  
   // Setup other stuff
   if(tempSensor.setup()) { // Uses A4 and A5.
     pcComm.println("MCP9808 started OK!");

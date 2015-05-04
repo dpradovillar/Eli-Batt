@@ -42,6 +42,12 @@ bool GpsInput::available() {
             Utils::splitFloat(m_gps.altitude, m_data.int_altitude, m_data.dec_altitude);
             Utils::splitFloat(m_gps.angle, m_data.int_angle, m_data.dec_angle);
 
+            m_data.flat = m_gps.latitude;
+            m_data.flon = m_gps.longitude;
+            m_data.fspeed = m_gps.speed;
+            m_data.faltitude = m_gps.altitude;
+            m_data.fangle = m_gps.angle;
+
             m_data.satellites = m_gps.satellites;
         } else {
             return false;

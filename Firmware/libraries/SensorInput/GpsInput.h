@@ -31,6 +31,12 @@ public:
     uint32_t int_angle;    uint32_t dec_angle;
     uint32_t int_altitude; uint32_t dec_altitude;
 
+    float flat;
+    float flon;
+    float fspeed;
+    float fangle;
+    float faltitude;
+
     byte satellites;
 
 };
