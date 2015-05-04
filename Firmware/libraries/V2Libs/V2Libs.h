@@ -18,7 +18,7 @@
 #define R2 3210.0
 
 #define BUFFER_MAX   100
-#define MAX_ROWS     10
+#define MAX_ROWS     900 // 15min 
 
 class V2Libs {
 private:
