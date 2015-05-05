@@ -80,7 +80,7 @@ bool SdWriter::isOpen() {
 }
 
 bool SdWriter::close() {
-    if(m_open) {
+    if (m_open) {
         if (m_ok) {
             m_file.close();
         }
@@ -99,6 +99,14 @@ size_t SdWriter::write(char *s, size_t n) {
 
 size_t SdWriter::writeInt32(uint32_t id) {
     return m_ok ? m_file.print(id) : 0;
+}
+
+size_t SdWriter::writeFloat(float f) {
+    return m_ok ? m_file.print(f) : 0;
+}
+
+size_t SdWriter::writeChar(char c) {
+    return m_ok ? m_file.print(c) : 0;
 }
 
 uint16_t SdWriter::countFilesInSd() {

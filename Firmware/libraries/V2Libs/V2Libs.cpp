@@ -1,5 +1,16 @@
 #include <V2Libs.h>
 
+#define OUTPUT_TO_PC true
+
+// --------- Begins required section for RtcInput.h ---------
+volatile long TOGGLE_COUNT = 0;
+ISR(TIMER1_COMPA_vect) {
+    TOGGLE_COUNT++;
+}
+ISR(INT0_vect) {
+}
+// ---------- Ends required section for RtcInput.h ----------
+
 V2Libs::V2Libs() {
     //countRows = 0;
 }
@@ -8,7 +19,7 @@ V2Libs::~V2Libs() {
 }
 
 void V2Libs::sendTemperature() {
-  float c = tempSensor.readCelsius();   // Grados Celcius
+  float c = tempSensor.readCelsius(); // Grados Celcius
   float f = c * 9.0 / 5.0 + 32;       // Grados Fahrenheit
   ble.println(c);
 }
@@ -40,16 +51,16 @@ void V2Libs::sendGpsStruct() {
       if (gdata.fix) {
         ble.print("{'GPS': [ { 'Fix' : '");
         ble.print("1");
-        ble.print("', 'Latitud' : '");  ble.print(gdata.int_lat);ble.print(".");ble.print(gdata.dec_lat);
-        ble.print("', 'Longitud' : '");  ble.print(gdata.int_lon);ble.print(".");ble.print(gdata.dec_lon);
-        ble.print("', 'Altura' : '");  ble.print(gdata.int_altitude);ble.print(".");ble.print(gdata.dec_altitude);
+        ble.print("', 'Latitud' : '");  ble.printFloating(gdata.int_lat, gdata.dec_lat);
+        ble.print("', 'Longitud' : '");  ble.printFloating(gdata.int_lon, gdata.dec_lon);
+        ble.print("', 'Altura' : '");  ble.printFloating(gdata.int_altitude, gdata.dec_altitude);
         ble.println("' } ] }");
       } else {
         ble.print("{'GPS': [ { 'Fix' : '");
         ble.print("0");
-        ble.print("', 'Latitud' : '");  ble.print(gdata.int_lat);ble.print(".");ble.print(gdata.dec_lat);
-        ble.print("', 'Longitud' : '");  ble.print(gdata.int_lon);ble.print(".");ble.print(gdata.dec_lon);
-        ble.print("', 'Altura' : '");  ble.print(gdata.int_altitude);ble.print(".");ble.print(gdata.dec_altitude);
+        ble.print("', 'Latitud' : '");  ble.printFloating(gdata.int_lat, gdata.dec_lat);
+        ble.print("', 'Longitud' : '");  ble.printFloating(gdata.int_lon, gdata.dec_lon);
+        ble.print("', 'Altura' : '");  ble.printFloating(gdata.int_altitude, gdata.dec_altitude);
         ble.println("' } ] }");
       }
   }
@@ -59,9 +70,7 @@ void V2Libs::sendLatitude() {
   if (gpsInput.available()) {
       GpsStruct gdata = gpsInput.getData();
       if (gdata.fix) {
-        ble.print(gdata.int_lat);
-        ble.print(".");
-        ble.println(gdata.dec_lat);
+        ble.println(gdata.flat);
       } else {
         ble.println("-1");
       }
@@ -72,22 +81,18 @@ void V2Libs::sendLongitude() {
   if (gpsInput.available()) {
       GpsStruct gdata = gpsInput.getData();
       if (gdata.fix) {
-        ble.print(gdata.int_lon);
-        ble.print(".");
-        ble.println(gdata.dec_lon);
+        ble.println(gdata.flon);
       } else {
         ble.println("-1");
       }
   }
 }
 
-void V2Libs::sendHeight() {
+void V2Libs::sendAltitude() {
   if (gpsInput.available()) {
       GpsStruct gdata = gpsInput.getData();
       if (gdata.fix) {
-        ble.print(gdata.int_altitude);
-        ble.print(".");
-        ble.println(gdata.dec_altitude);
+        ble.println(gdata.faltitude);
       } else {
         ble.println("-1");
       }
@@ -98,13 +103,17 @@ long last_t = 0;  // Para loop()
 
 void V2Libs::setup() {
     ble.setup(15, 14, 57600);  // Serial3 @ 57600
-    pcComm.setup(0, 1, 9600); // Serial  @ 9600
-
     ble.waitForConnection();
+    
+#ifdef OUTPUT_TO_PC
+    pcComm.setup(0, 1, 57600); // Serial  @ 57600
     pcComm.waitForConnection();
+#endif
 
     if (!tempSensor.setup()) {
+#ifdef OUTPUT_TO_PC
         pcComm.println("Couldn't find MCP9808!");
+#endif
         while (1); 
     }
   
@@ -115,13 +124,28 @@ void V2Libs::setup() {
     gpsInput.setup(&Serial2, 9600);
   
     // Setup SD
-    /*
+#ifdef OUTPUT_TO_PC
     pcComm.print("Initializing SD card...");
-    if (!SD.begin(38)) {
+    if (!sdWriter.setup(38, &pcComm)) {
         pcComm.println("Error conexión SD.");
+        while(1);
     }
     pcComm.println("initialization done.");
-    */
+#else
+    if (!sdWriter.setup(38, &pcComm)) {
+        while(1);
+    }
+#endif
+
+    // Setup RTC
+    /*
+    if (!rtcClock.setup(&pcComm)) {
+#ifdef OUTPUT_TO_PC
+        pcComm.println("RTC is in bad shape!");
+#endif
+    }*/
+
+    rowsCount = 0;
 }
 
 void V2Libs::loop() {
@@ -176,11 +200,13 @@ void V2Libs::loop() {
                 sendLongitude();
                 break;
           case 11:
-                sendHeight();
+                sendAltitude();
                 break;
           default:
             ble.println("Command not found!");
-            ble.println("############################");
+#ifdef OUTPUT_TO_PC
+            pcComm.println("Command not found!");
+#endif
             break;
         }
         ptr = strtok(NULL, " ");
@@ -191,125 +217,130 @@ void V2Libs::loop() {
   }
 
   // ########################## Sensors Handling ####################
-  if (millis() - last_t >= 2000) {    
+  if (millis() - last_t >= 1000) {
+  
+    // RTC Time
+    DateTime rtc_now = rtcClock.now();
+
     // Read and print out the temperature, then convert to *F
-    float c = tempSensor.readCelsius();
+    float c = 0.0;//tempSensor.readCelsius();
     float f = c * 9.0 / 5.0 + 32;
-    //pcComm.print("Temp: "); pcComm.print(c); pcComm.print("*C\t"); 
-    //pcComm.print(f); pcComm.println("*F");
+#ifdef OUTPUT_TO_PC
+    pcComm.print("Temp: "); pcComm.print(c); pcComm.print("*C\t"); 
+    pcComm.print(f); pcComm.println("*F");
+#endif
+    
+    pcComm.println("After temp read!");
     
     // Leer sensores de corriente y voltaje
     float vcurrent = toVolts(currentSensor.read());
     float current = toAmps(vcurrent);
-    //pcComm.print("Corriente: "); pcComm.print(current); pcComm.println("[A]");
+#ifdef OUTPUT_TO_PC
+    pcComm.print("Corriente: "); pcComm.print(current); pcComm.println("[A]");
+#endif
     
     float voltage = toVolts(voltageSensor.read());
     float realv = (voltage * R1_R2) / R2;
-    //pcComm.print("Voltaje: "); pcComm.print(realv); pcComm.println("[V]");
+#ifdef OUTPUT_TO_PC
+    pcComm.print("Voltaje: "); pcComm.print(realv); pcComm.println("[V]");
+#endif
     
-    // Valores GPS
-    float latitud = 0;
-    float longitud = 0;
-    float altura = 0;
+    GpsStruct gdata;
+    gdata.fix = 0;
     
     // ########################## GPS Handling ####################  
     if (gpsInput.available()) {
-      GpsStruct gdata = gpsInput.getData();
-      //pcComm.print("Time: ");
-      //pcComm.printlnSimpleTime(gdata.hour, gdata.minute, gdata.second);
+      gdata = gpsInput.getData();
+
+#ifdef OUTPUT_TO_PC
+      pcComm.print("Time: ");
+      pcComm.printlnSimpleTime(gdata.hour, gdata.minute, gdata.second);
       
-      //pcComm.print("Date: ");
-      //pcComm.printlnSimpleDate(gdata.day, gdata.month, gdata.year);
+      pcComm.print("Date: ");
+      pcComm.printlnSimpleDate(gdata.day, gdata.month, gdata.year);
       
-      //pcComm.print("Fix: "); pcComm.print((int)gdata.fix);
-      //pcComm.print(" quality: "); pcComm.println((int)gdata.quality);
-      
-      if (gdata.fix) {                        
+      pcComm.print("Fix: "); pcComm.print((int)gdata.fix);
+      pcComm.print(" quality: "); pcComm.println((int)gdata.quality);
+#endif
+
+      if (gdata.fix) {
+#ifdef OUTPUT_TO_PC
         pcComm.print("Location: ");
-        pcComm.printFloating(gdata.int_lat, gdata.dec_lat);
+        pcComm.print(gdata.flat);
         pcComm.print(", "); 
-        pcComm.printFloating(gdata.int_lon, gdata.dec_lon);
+        pcComm.print(gdata.flon);
         
-        pcComm.print("Speed (knots): "); pcComm.printlnFloating(gdata.int_speed, gdata.dec_speed);
-        pcComm.print("Angle: ");         pcComm.printlnFloating(gdata.int_angle, gdata.dec_angle);
-        pcComm.print("Altitude: ");      pcComm.printlnFloating(gdata.int_altitude, gdata.dec_altitude);
+        pcComm.print("Speed (knots): "); pcComm.println(gdata.fspeed);
+        pcComm.print("Angle: ");         pcComm.println(gdata.fangle);
+        pcComm.print("Altitude: ");      pcComm.println(gdata.faltitude);
         pcComm.print("Satellites: ");    pcComm.println((int)gdata.satellites);
+#endif
       }
     }
      
     // Inicializar archivo Tarjeta Sd
-    /*
-    if (countRows == 0) {
-        pcComm.print("Initializing test...txt");
-        char filename[] = "test...txt";
-        filename[4] = ('0' + (countRows / 10) % 10);
-        filename[5] = ('0' + countRows % 10);
-        myFile.close();
-        myFile = SD.open(filename, FILE_WRITE);
-        if (!myFile) {
-            // if the file didn't open, print an error:
-            pcComm.println("Error opening test...txt");
-        } else {
-            pcComm.println("Abriendo test...txt:");
+    if (rowsCount < 0) {  
+#ifdef OUTPUT_TO_PC
+        pcComm.println("Omitiendo escritura de archivo, dado que hay error previo...");
+#endif    
+    } else {
+        // For new empty files, generate
+        if (rowsCount == 0) {
+            if(!sdWriter.open()) {
+                rowsCount = -1;
+            }
         }
-    }*/
-    
-    // ###### Grabar en la SD ########
-    // -> VOLTAGE, CURRENT, TEMPERATURE, LATITUD, LONGITUD, ALTURA  ######
-      
-    // Voltage 3.3v --> to 12v
-    //myFile.print(voltage); myFile.print(";");
-    //myFile.print(realv);     myFile.print(";");
-    
-    // Voltage 3.3v --> to amps
-    //myFile.print(vcurrent);myFile.print(";");
-    //myFile.print(current);   myFile.print(";");
-    
-    // Temperatura
-    //myFile.print(c);         myFile.print(";");
-    
-    // Latitud
-    //myFile.print(latitud);   myFile.print(";");
+        
+        // Write data to file if no error is present
+        if (rowsCount >= 0) {
+            sdWriter.writeDatetime(rtc_now.year(), rtc_now.month(), rtc_now.day(), rtc_now.hour(), rtc_now.minute(), rtc_now.second());
+            sdWriter.writeChar(';');
 
-    // Longitud
-    //myFile.print(longitud);  myFile.print(";");
-     
-    // Altura
-    //myFile.print(altura);    myFile.print(";");
-     
-    //myFile.println();
-  
-    //countRows++;
-    //if (countRows == MAX_ROWS) {
-    //  countRows = 0;
-    //}
-    
-    // #### Enviar información a Dispositivo Movil en tiempo real ####
-    // #### VOLTAGE, CURRENT, TEMPERATURE #####
-      
-//    // Voltage 3.3v --> to 12v
-//    //Serial.print(voltage); Serial.print(";");
-//    BLEMini.print(realv);    BLEMini.print(";");
-//  
-//    // Voltage 3.3v --> to amps
-//    //Serial.print(vcurrent);Serial.print(";");
-//    BLEMini.print(current);  BLEMini.print(";");
-//    
-//    // Temperatura 
-//    BLEMini.print(c);        BLEMini.print(";");
-//    
-//    // Latitud
-//    BLEMini.print(latitud);  BLEMini.print(";");
-//
-//    // Longitud
-//    BLEMini.print(longitud); BLEMini.print(";");
-//     
-//    // Altura
-//    BLEMini.print(altura);   BLEMini.print(";");
-//    
-//    BLEMini.println();
-    
-    //pcComm.println("############################");
+            sdWriter.writeFloat(c);
+            sdWriter.writeChar(';');
+            
+            sdWriter.writeFloat(current);
+            sdWriter.writeChar(';');
+            
+            sdWriter.writeFloat(realv);
+            sdWriter.writeChar(';');
+
+            // GPS Data
+
+            sdWriter.writeChar(gdata.fix ? '1' : '0');
+            sdWriter.writeChar(';');
+            
+            sdWriter.writeDatetime(gdata.year, gdata.month, gdata.day, gdata.hour, gdata.minute, gdata.day);
+            sdWriter.writeChar(';');
+
+            sdWriter.writeFloat(gdata.flat);
+            sdWriter.writeChar(';');
+            
+            sdWriter.writeFloat(gdata.flon);
+            sdWriter.writeChar(';');
+
+            sdWriter.writeFloat(gdata.fspeed);
+            sdWriter.writeChar(';');
+            
+            sdWriter.writeFloat(gdata.fangle);
+            sdWriter.writeChar(';');
+            
+            sdWriter.writeFloat(gdata.faltitude);
+            sdWriter.writeChar(';');
+            
+            sdWriter.writeInt32(gdata.satellites);
+            sdWriter.writeChar(';');
+            
+            sdWriter.writeNewline();
+            
+            rowsCount++;
+        }
+        
+        // Signal to renew the file in the next iteration.
+        if (rowsCount == MAX_ROWS) {
+            rowsCount = 0;
+        }
+    }
     
     last_t = millis();
   }

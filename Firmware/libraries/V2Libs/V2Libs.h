@@ -8,6 +8,8 @@
 #include <Arduino.h>
 #include <Endpoint.h>
 #include <GpsInput.h>
+#include <RtcInput.h>
+#include <SdData.h>
 
 // Se definen valores para los sensores de corriente y voltaje
 #define MAX_BATT_V 12.6
@@ -15,9 +17,8 @@
 #define R1_R2 12940.0
 #define R2 3210.0
 
-
 #define BUFFER_MAX   100
-#define MAX_ROWS     10
+#define MAX_ROWS     900 // 15min 
 
 class V2Libs {
 private:
@@ -31,10 +32,15 @@ private:
     AnalogInput voltageSensor;
     GpsInput gpsInput;
 
-    // Write to file.
+    // Command recognition
     UnixCmd unixCmd;
-    //File myFile;
-    //int countRows;
+
+    // File writing
+    SdWriter sdWriter;
+    int rowsCount;
+
+    // Real time clock
+    RtcClock rtcClock;
 
 public:
     V2Libs();
@@ -48,7 +54,7 @@ public:
     void sendGpsStruct();
     void sendLatitude();
     void sendLongitude();
-    void sendHeight();
+    void sendAltitude();
 
     void setup();
     void loop();

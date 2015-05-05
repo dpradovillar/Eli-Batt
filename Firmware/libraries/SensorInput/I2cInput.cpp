@@ -1,6 +1,7 @@
 #include <I2cInput.h>
 
 bool Mcp9808Sensor::setup() {
+    Wire.begin();
     return m_ok = m_ada.begin();
 }
 

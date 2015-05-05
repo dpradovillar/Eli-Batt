@@ -80,6 +80,8 @@ public:
     size_t write(char *s, size_t n);
 
     size_t writeInt32(uint32_t id);
+    size_t writeFloat(float f);
+    size_t writeChar(char c);
 
     /**
      * Returns the count of files in the SD.
