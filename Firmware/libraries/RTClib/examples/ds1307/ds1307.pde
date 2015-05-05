@@ -1,21 +1,26 @@
-// Date and time functions using just software, based on millis() & timer
+// Date and time functions using a DS1307 RTC connected via I2C and Wire lib
 
 #include <Wire.h>
-#include "RTClib.h"
+#include <SPI.h>
+#include <RTClib.h>
+#include <RTC_DS1307.h>
 
-RTC_Millis rtc;
+RTC_DS1307 RTC;
 
 void setup () {
     Serial.begin(57600);
+    Wire.begin();
+    RTC.begin();
+
+  if (! RTC.isrunning()) {
+    Serial.println("RTC is NOT running!");
     // following line sets the RTC to the date & time this sketch was compiled
-    rtc.begin(DateTime(F(__DATE__), F(__TIME__)));
-    // This line sets the RTC with an explicit date & time, for example to set
-    // January 21, 2014 at 3am you would call:
-    // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+    RTC.adjust(DateTime(__DATE__, __TIME__));
+  }
 }
 
 void loop () {
-    DateTime now = rtc.now();
+    DateTime now = RTC.now();
     
     Serial.print(now.year(), DEC);
     Serial.print('/');
@@ -30,8 +35,11 @@ void loop () {
     Serial.print(now.second(), DEC);
     Serial.println();
     
-    Serial.print(" seconds since 1970: ");
-    Serial.println(now.unixtime());
+    Serial.print(" since midnight 1/1/1970 = ");
+    Serial.print(now.unixtime());
+    Serial.print("s = ");
+    Serial.print(now.unixtime() / 86400L);
+    Serial.println("d");
     
     // calculate a date which is 7 days and 30 seconds into the future
     DateTime future (now.unixtime() + 7 * 86400L + 30);
@@ -53,3 +61,4 @@ void loop () {
     Serial.println();
     delay(3000);
 }
+// vim:ci:sw=4 sts=4 ft=cpp
