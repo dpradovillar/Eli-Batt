@@ -6,14 +6,16 @@
 #include <ArduinoSoftwareSerial.h>
 #include <Debugger.h>
 #include <I2cInput.h>
-#include <RTC_DS3231.h>
-#include <SPI.h>
-#include <Utils.h>
-#include <Wire.h>
+#include <MemoryFree.h>
+#include <OneWire.h>
+#include <OneWireInput.h>
+#include <RTClib.h>
 #include <RtcInput.h>
 #include <SD.h>
 #include <SdData.h>
-#include <MemoryFree.h>
+#include <SPI.h>
+#include <Utils.h>
+#include <Wire.h>
 
 // ------ Begin of required section for RtcInput ------
 volatile long TOGGLE_COUNT = 0;
@@ -26,12 +28,14 @@ ISR(INT0_vect) {
 
 SerialEndpoint pcComm;
 
-Mcp9808Sensor tempSensor;
+//Mcp9808Sensor tempSensor;
+Ds1820Sensor tempSensor;
 RtcClock rtcClock;
 
-//SdWriter sdWriter;
-
 int fileCount = 0;
+
+const int mosiOneWirePin = 51;
+const int sdChipSelectPin = 38;
 
 void setup() {  
   pcComm.setup(0, 1, 9600);
@@ -42,23 +46,18 @@ void setup() {
   pcComm.println("PC serial connection OK!");
   
   // Setup other stuff
-  if(tempSensor.setup()) { // Uses A4 and A5.
-    pcComm.println("MCP9808 started OK!");
+  if(tempSensor.setup(mosiOneWirePin)) {
+    pcComm.println("DS1820 started OK!");
   } else {
-    pcComm.println("MCP9808 couldn't start!");
+    pcComm.println("DS1820 couldn't start!");
     while(1);
   }
   
-  if (rtcClock.setup(&pcComm)) {
-    pcComm.println("RTC is OK!");
-  } else {
-    pcComm.println("RTC is in bad shape!");
-    while(1);
-  }
+  rtcClock.setup();
   
-  pinMode(53, OUTPUT);
+  pinMode(mosiOneWirePin, OUTPUT);
   
-  if (!SD.begin(38)) {
+  if (!SD.begin(mosiOneWirePin)) {
     pcComm.println("Couldnt initialized SD on pin 38");
     while(1);
   }
@@ -78,8 +77,8 @@ void loop() {
     Serial.print("Free Memory:"); Serial.println(freeMemory());
     Serial.flush();
 
-  float temp_mcp9808 = 6;//tempSensor.readCelsius();
-  float temp_rtc = 7;//rtcClock.getTempAsFloat();
+  float temp_mcp9808 = tempSensor.readCelsius();
+  float temp_rtc = 0;//rtcClock.getTempAsFloat();
   
 
 
