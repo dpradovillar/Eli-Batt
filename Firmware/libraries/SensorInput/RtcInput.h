@@ -5,7 +5,8 @@
 #include <Arduino.h>
 #include <ArduinoSoftwareSerial.h>
 #include <Debugger.h>
-#include <DS3231.h>
+#include <RTClib.h>
+#include <RTC_DS3231.h>
 #include <Endpoint.h>
 #include <SPI.h>
 #include <Utils.h>
@@ -16,15 +17,19 @@
  */
 class RtcClock {
 private:
-    DS3231 m_clock;
+    RTC_DS3231 m_clock;
+    byte m_ok;
+
+    Debugger d;
 public:
-    void setup();
+    bool setup(SerialEndpoint *debugEndpoint=NULL);
 
-//    void adjust(int year, byte month, btye day, byte hour, byte minute, byte second);
+    void adjust(const DateTime &dt);
 
-    void getTime(int &year, byte &month, byte &day, byte &hour, byte &minute, byte &second);
+    DateTime now();
 
     float getTempAsFloat();
+    int16_t getTempAsWord();
 };
 
 #endif // __RTC_INPUT_H_
