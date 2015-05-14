@@ -7,6 +7,8 @@
 
 class Utils {
 public:
+    static uint8_t toHex(char hi, char lo);
+
     /**
      * Copies the first len bytes from src, to the first len positions of dst.
      */
@@ -19,6 +21,7 @@ public:
     static uint32_t toInt32(byte *buff);
     static uint16_t toUInt16(byte *buffer2bytes);
     static void toByte(uint32_t x, byte *buffer4bytes);
+    static uint32_t toInt32FromHex(const char *buffer8bytes);
 
     static bool arrayEquals(byte *src1, byte *src2, size_t len);
     static bool arrayEquals(const char *src1, byte *src2, size_t len);

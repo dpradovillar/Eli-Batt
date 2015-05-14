@@ -2,6 +2,12 @@
 
 #define TO_HEX(c) ((c)<10 ? '0'+(c) : 'A'+((c)-10))
 
+#define FROM_HEX(c) ('A'<=(c) && (c)<='F' ? ((c)-'A'+10) : (c)-'0')
+
+uint8_t Utils::toHex(char hi, char lo) {
+    return 16*FROM_HEX(hi) + FROM_HEX(lo);
+}
+
 void Utils::copyArray(byte *src, byte *dst, size_t len) {
     while(len-- > 0) {
         *dst++ = *src++;
@@ -44,6 +50,15 @@ void Utils::toByte(uint32_t x, byte *buffer4bytes) {
     buffer4bytes[1] = (byte)(x >> 16);
     buffer4bytes[2] = (byte)(x >> 8);
     buffer4bytes[3] = (byte)(x >> 0);
+}
+
+uint32_t Utils::toInt32FromHex(const char *buffer8bytes) {
+    return (uint32_t)(
+    ((uint32_t)toHex(buffer8bytes[0], buffer8bytes[1])) << 24 |
+    ((uint32_t)toHex(buffer8bytes[2], buffer8bytes[3])) << 16 |
+    ((uint32_t)toHex(buffer8bytes[4], buffer8bytes[5])) << 8 |
+    ((uint32_t)toHex(buffer8bytes[6], buffer8bytes[7])) << 0
+    );
 }
 
 bool Utils::arrayEquals(byte *src1, byte *src2, size_t len) {
