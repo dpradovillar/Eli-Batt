@@ -8,6 +8,7 @@
 #include <ArduinoSoftwareSerial.h>
 #include <Endpoint.h>
 #include <GpsInput.h>
+#include <OneWire.h>
 #include <RTC_DS3231.h>
 #include <RtcInput.h>
 #include <SD.h>

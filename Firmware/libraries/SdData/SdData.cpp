@@ -26,9 +26,12 @@ bool SdWriter::setup(int chipSelectPin, SerialEndpoint *debugEndpoint) {
     d.setup(debugEndpoint);
 #if TARGET_BOARD == TARGET_UNO
     pinMode(10, OUTPUT);
+
 #endif
     d.print(F("  begining SD with pin:")).println((int)m_chip_select_pin);
+pinMode(53, OUTPUT);
 
+    pinMode(chipSelectPin, OUTPUT);
     if (!SD.begin(m_chip_select_pin)) {
         d.println(F("Failed initialization of SD card. Check wiring."));
         return (m_ok = false);

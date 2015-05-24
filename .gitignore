@@ -250,5 +250,11 @@ Software/Elibatt-lib/Makefile
 Software/Elibatt-lib/Makefile.Debug
 Software/Elibatt-lib/Makefile.Release
 
+Software/Elibatt-Android/gen/*
+Software/Elibatt-Android/out/*
+
 Software/BLE-Android/Examples/Chat/gen/*
 Software/BLE-Android/Examples/Chat/out/*
+
+Software/Elibatt-Android-Ble-Id/gen/**
+Software/Elibatt-Android-Ble-Id/out/**

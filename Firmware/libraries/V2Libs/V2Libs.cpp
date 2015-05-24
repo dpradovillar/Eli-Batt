@@ -3,12 +3,13 @@
 #define OUTPUT_TO_PC true
 
 // --------- Begins required section for RtcInput.h ---------
+/*
 volatile long TOGGLE_COUNT = 0;
 ISR(TIMER1_COMPA_vect) {
     TOGGLE_COUNT++;
 }
 ISR(INT0_vect) {
-}
+}*/
 // ---------- Ends required section for RtcInput.h ----------
 
 V2Libs::V2Libs() {
@@ -122,28 +123,37 @@ void V2Libs::setup() {
     voltageSensor.setup(A1);
 
     gpsInput.setup(&Serial2, 9600);
-  
+
+/*
     // Setup SD
 #ifdef OUTPUT_TO_PC
     pcComm.print("Initializing SD card...");
-    if (!sdWriter.setup(38, &pcComm)) {
-        pcComm.println("Error conexión SD.");
-        while(1);
-    }
-    pcComm.println("initialization done.");
-#else
-    if (!sdWriter.setup(38, &pcComm)) {
-        while(1);
-    }
 #endif
+    if (!sdWriter.setup(38, &pcComm)) {
+#ifdef OUTPUT_TO_PC
+        pcComm.println("Error conexión SD.");
+#endif
+        while(1);
+    }
+#ifdef OUTPUT_TO_PC
+    pcComm.println("initialization done.");
+#endif
+*/
 
+#ifdef OUTPUT_TO_PC
+    pcComm.println("Initializing RTC!");
+#endif
     // Setup RTC
-    /*
     if (!rtcClock.setup(&pcComm)) {
 #ifdef OUTPUT_TO_PC
         pcComm.println("RTC is in bad shape!");
 #endif
-    }*/
+        while(1);
+    }
+
+#ifdef OUTPUT_TO_PC
+    pcComm.println("RTC Done!");
+#endif
 
     rowsCount = 0;
 }

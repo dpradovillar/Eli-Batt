@@ -6,7 +6,7 @@
 /**
 * A simple program to write a 4-byte id into the arduino eeprom, and to read it back.
 *
-* Load it in Arduino Uno, open  Serial console @ 9600 bauds and input:
+* Load it in Arduino Uno, open  Serial console @ 57600 bauds and input:
 * w1111 -> (will convert '1' '1' '1' '1' into a 32bit integer and write it to eeprom)
 * r     -> (will read back the value)
 *
@@ -21,12 +21,8 @@
 EepromWriter eepromWriter;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(57600);
   while(!Serial);
-  
-  Serial.flush();
-  Serial.println("Command usage: w00-00-00-01, r");
-  Serial.println();
 }
 
 uint32_t id;
