@@ -105,6 +105,6 @@ public class BleWrapper {
         if (name == null) {
             return false;
         }
-        return name.toLowerCase().contains("ble mini");
+        return true;
     }
 }
