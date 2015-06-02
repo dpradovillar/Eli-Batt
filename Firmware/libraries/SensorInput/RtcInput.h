@@ -22,6 +22,8 @@ private:
 
     Debugger d;
 public:
+    RtcClock();
+
     bool setup(SerialEndpoint *debugEndpoint=NULL);
 
     void adjust(const DateTime &dt);
@@ -30,6 +32,8 @@ public:
 
     float getTempAsFloat();
     int16_t getTempAsWord();
+
+    bool isAllSetUp();
 };
 
 #endif // __RTC_INPUT_H_

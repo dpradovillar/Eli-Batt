@@ -3,7 +3,7 @@
 
 #include <DataStream.h>
 #include <Debugger.h>
-#include <SD.h>
+#include <AdafruitSD.h>
 #include <Utils.h>
 
 #include <elibatt_config.h>
@@ -93,5 +93,11 @@ public:
     void writeTuple(uint16_t temp, uint16_t current, uint16_t voltage);
     void writeNewline();
 };
+
+/*class BinarySdWriter {
+private:
+    BinarySdWriter();
+
+};*/
 
 #endif // __SD_DATA_H_

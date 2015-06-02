@@ -1,5 +1,9 @@
 #include <RtcInput.h>
 
+RtcClock::RtcClock() : m_ok(false) {
+
+}
+
 bool RtcClock::setup(SerialEndpoint *debugEndpoint) {
     d.setup(debugEndpoint);
 
@@ -40,4 +44,8 @@ float RtcClock::getTempAsFloat() {
 
 int16_t RtcClock::getTempAsWord() {
     return m_clock.getTempAsWord();
+}
+
+bool RtcClock::isAllSetUp() {
+    return m_ok;
 }

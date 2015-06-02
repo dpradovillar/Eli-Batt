@@ -5,7 +5,7 @@
 
 #include <DataStream.h>
 #include <Debugger.h>
-#include <SD.h>
+#include <AdafruitSD.h>
 #include <SdData.h>
 #include <Utils.h>
 

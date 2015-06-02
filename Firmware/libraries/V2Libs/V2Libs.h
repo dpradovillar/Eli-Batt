@@ -2,7 +2,7 @@
 #define __V2_LIBS_H_
 
 #include <I2cInput.h>
-#include <UnixCmd.h>
+#include <Cmd.h>
 
 #include <AnalogInput.h>
 #include <Arduino.h>
@@ -10,6 +10,7 @@
 #include <GpsInput.h>
 #include <RtcInput.h>
 #include <SdData.h>
+#include <MemoryFree.h>
 
 // Se definen valores para los sensores de corriente y voltaje
 #define MAX_BATT_V 12.6
@@ -20,12 +21,17 @@
 #define BUFFER_MAX   100
 #define MAX_ROWS     900 // 15min 
 
+// Serial
+#define PC_COMM Serial
+
+// Serial2
+#define GPS_COMM Serial2
+
+// Serial3
+#define BLE_COMM Serial
+
 class V2Libs {
 private:
-    // Communications
-    SerialEndpoint ble;
-    SerialEndpoint pcComm;
-
     // Sensors
     Mcp9808Sensor tempSensor;
     AnalogInput currentSensor;
@@ -33,7 +39,7 @@ private:
     GpsInput gpsInput;
 
     // Command recognition
-    UnixCmd unixCmd;
+    Cmd cmd;
 
     // File writing
     SdWriter sdWriter;
@@ -42,19 +48,35 @@ private:
     // Real time clock
     RtcClock rtcClock;
 
+    float toAmps(float vout3v);
+    float toVolts(int reading);
+
+    int sendThrough(GpsStruct &gdata, HardwareSerial *se);
+    int sendAnalogValues(HardwareSerial *se);
+
 public:
     V2Libs();
     ~V2Libs();
 
-    void sendTemperature();
-    void sendCurrent();
-    void sendVoltage();
-    float toAmps(float vout3v);
-    float toVolts(int reading);
-    void sendGpsStruct();
-    void sendLatitude();
-    void sendLongitude();
-    void sendAltitude();
+    void maybeDebug(const char *s);
+
+    void setupPcComm();         bool pcCommEnabled;
+    void setupBleComm();        bool bleCommEnabled;
+    void setupTempSensor();     bool tempSensorEnabled;
+    void setupCurrentSensor();  bool currentSensorEnabled;
+    void setupVoltageSensor();  bool voltageSensorEnabled;
+    void setupGps();            bool gpsEnabled;
+    void setupSdWriter();       bool sdWriterEnabled;
+    void setupRtcClock();       bool rtcClockEnabled;
+
+    float getTemperature();
+    float getCurrent();
+    float getVoltage();
+    GpsStruct getGpsStruct();
+    float getLatitude();
+    float getLongitude();
+    float getAltitude();
+    DateTime getDateTime();
 
     void setup();
     void loop();

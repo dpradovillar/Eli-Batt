@@ -23,7 +23,7 @@ INCLUDEPATH += ./Firmware/libraries/arduino_serial \
     ./Firmware/libraries/pin-mapping.xls \
     ./Firmware/libraries/libraries \
     ./Firmware/libraries/SdData \
-    ./Firmware/libraries/UnixCmd \
+    ./Firmware/libraries/Cmd \
     ./Firmware/libraries/RTClib \
     ./Firmware/libraries/readme.txt \
     ./Firmware/libraries/AltSoftSerial \
@@ -57,7 +57,7 @@ HEADERS += ./Firmware/libraries/AdafruitSD/utility/SdFatmainpage.h \
     ./Firmware/libraries/AdafruitSD/utility/SdFatUtil.h \
     ./Firmware/libraries/V2Libs/V2Libs.h \
     ./Firmware/libraries/arduino_serial/MessageBuilder.h \
-    ./Firmware/libraries/UnixCmd/UnixCmd.h \
+    ./Firmware/libraries/Cmd/Cmd.h \
     ./Firmware/libraries/Elibatt_RBL_BLEMini/examples/BLEFirmataSketch/Boards.h \
     ./Firmware/libraries/Firmware/Firmware.h \
     ./Firmware/libraries/AltSoftSerial/AltSoftSerial.h \
@@ -115,7 +115,7 @@ SOURCES += ./Firmware/libraries/RTClib/RTC_DS3234.cpp \
     ./Firmware/libraries/MCP9808/Adafruit_MCP9808.cpp \
     ./Firmware/libraries/SensorInput/GpsInput.cpp \
     ./Firmware/libraries/V2Libs/V2Libs.cpp \
-    ./Firmware/libraries/UnixCmd/UnixCmd.cpp \
+    ./Firmware/libraries/Cmd/Cmd.cpp \
     ./Firmware/libraries/SdData/SdData.cpp \
     ./Firmware/libraries/AdafruitSD/utility/SdVolume.cpp \
     ./Firmware/libraries/SdData/BankData.cpp \
