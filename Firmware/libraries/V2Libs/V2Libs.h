@@ -21,6 +21,8 @@
 #define BUFFER_MAX   100
 #define MAX_ROWS     900 // 15min 
 
+#define MAX_SLAVES 10
+
 // Serial
 #define PC_COMM Serial
 
@@ -28,7 +30,16 @@
 #define GPS_COMM Serial2
 
 // Serial3
-#define BLE_COMM Serial
+#define BLE_COMM Serial3
+
+
+typedef struct {
+    uint32_t id[MAX_SLAVES];
+    float temperature[MAX_SLAVES];
+    float current[MAX_SLAVES];
+    float voltage[MAX_SLAVES];
+    int n;
+} SlaveStruct;
 
 class V2Libs {
 private:
@@ -47,6 +58,9 @@ private:
 
     // Real time clock
     RtcClock rtcClock;
+
+    // Slave estructure for holding data
+    SlaveStruct slave;
 
     float toAmps(float vout3v);
     float toVolts(int reading);

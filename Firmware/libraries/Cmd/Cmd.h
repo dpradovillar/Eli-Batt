@@ -2,11 +2,11 @@
 #define __UNIX_CMD_H_
 
 #include <Endpoint.h>
-#include <AdafruitSD.h>
 
 #define FILENAME_MAX 32
 
-#define CMD_NONE       -1
+#define CMD_NONE       -1 // A no-op command for doing nothing
+#define CMD_INVALID     0 // For unrecognized commands
 
 #define CMD_TEMPERATURE 1
 #define CMD_CURRENT     2

@@ -24,8 +24,8 @@ int V2Libs::sendThrough(GpsStruct &gdata, HardwareSerial *se) {
 
 int V2Libs::sendAnalogValues(HardwareSerial *se) {
     int size =
-        se->print(getTemperature()) + BLE_COMM.print(";") +
-        se->print(getCurrent()) + BLE_COMM.print(";") +
+        se->print(getTemperature()) + se->print(";") +
+        se->print(getCurrent()) + se->print(";") +
         se->print(getVoltage()) + se->println();
     se->flush();
     return size;

@@ -54,6 +54,6 @@ int Cmd::parseCmd(char *s, int len) {
     if(startsWith(s, len, "S", 1)) {
         return CMD_ANALOG;
     }
-    return CMD_NONE;
+    return CMD_INVALID;
 }
 
