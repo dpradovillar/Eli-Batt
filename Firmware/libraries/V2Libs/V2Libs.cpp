@@ -208,12 +208,15 @@ void V2Libs::loop() {
                     sendThrough(gdata, &BLE_COMM);
                     break;
                 case CMD_LATITUDE:
+                    BLE_COMM.print("LA:");
                     BLE_COMM.println(getLatitude());
                     break;
                 case CMD_LONGITUDE:
+                    BLE_COMM.print("LO:");
                     BLE_COMM.println(getLongitude());
                     break;
                 case CMD_HEIGHT:
+                    BLE_COMM.print("H:");
                     BLE_COMM.println(getAltitude());
                     break;
                 case CMD_ANALOG:
