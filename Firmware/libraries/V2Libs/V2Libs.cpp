@@ -24,6 +24,7 @@ int V2Libs::sendThrough(GpsStruct &gdata, HardwareSerial *se) {
 
 int V2Libs::sendAnalogValues(HardwareSerial *se) {
     int size =
+        se->print("S:")+
         se->print(getTemperature()) + se->print(";") +
         se->print(getCurrent()) + se->print(";") +
         se->print(getVoltage()) + se->println();
@@ -190,13 +191,16 @@ void V2Libs::loop() {
 
                 switch(command) {
                 case CMD_TEMPERATURE:
+                    BLE_COMM.print("T:");
                     BLE_COMM.println(getTemperature());
                     BLE_COMM.flush();
                     break;
                 case CMD_CURRENT:
+                    BLE_COMM.print("C:");
                     BLE_COMM.println(getCurrent());
                     break;
                 case CMD_VOLTAGE:
+                    BLE_COMM.print("V:");
                     BLE_COMM.println(getVoltage());
                     break;
                 case CMD_GPS:
