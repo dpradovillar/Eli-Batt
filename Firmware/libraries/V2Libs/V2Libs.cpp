@@ -78,10 +78,10 @@ void V2Libs::setupEepromWriter() {
     eepromId = eepromWriter.readId();
 }
 void V2Libs::setupTempSensor() {
-    if (!tempSensor.setup()) {
-        maybeDebug("Couldn't find MCP9808!");
+    if (!tempSensor.setup(32)) {
+        maybeDebug("Couldn't find DS1820!");
     }
-    maybeDebug("MCP9808 setup OK!");
+    maybeDebug("DS1820 setup OK!");
     tempSensorEnabled = true;
 }
 void V2Libs::setupCurrentSensor() {
@@ -155,11 +155,11 @@ float V2Libs::getAltitude() {
     return 0;
 }
 
-DateTime V2Libs::getDateTime() {
+MyDate V2Libs::getDateTime() {
     if (rtcClockEnabled && rtcClock.isAllSetUp()) {
         return rtcClock.now();
     }
-    return DateTime();
+    return MyDate();
 }
 
 float V2Libs::getAverageTemperature() {
@@ -250,7 +250,7 @@ void V2Libs::setup() {
     setupVoltageSensor();
 //    setupGps();
 //    setupSdWriter();
-//    setupRtcClock();
+    setupRtcClock();
 
     parserComm.putMasterInfo(eepromId, getTemperature(), getCurrent(), getVoltage());
 }
@@ -410,6 +410,20 @@ void V2Libs::loop() {
             }
         } // endif ble.available()
     } // endif bleCommEnabled
+
+    static long last_t = 0;
+    if (millis() - last_t >= 1000) {
+        Serial.print(getTemperature()); Serial.println("C");
+
+        MyDate aDate = getDateTime();
+        Serial.print(aDate.year); Serial.print("/");
+        Serial.print(aDate.month); Serial.print("/");
+        Serial.print(aDate.day); Serial.print(" ");
+
+        Serial.print(aDate.hour); Serial.print(":");
+        Serial.print(aDate.minute); Serial.print(":");
+        Serial.print(aDate.second); Serial.println();
+    }
 
     // ########################## Sensors Handling ####################
     /*static long last_t = 0;

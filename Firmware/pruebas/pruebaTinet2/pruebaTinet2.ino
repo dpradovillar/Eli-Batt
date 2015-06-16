@@ -3,7 +3,6 @@
 // Note: these includes are necessary for the Arduino IDE to know which libraries to pre-compile.
 #include <Adafruit_GPS.h>
 #include <AdafruitSD.h>
-#include <Adafruit_MCP9808.h>
 #include <AnalogInput.h>
 #include <Arduino.h>
 #include <ArduinoSoftwareSerial.h>
@@ -14,8 +13,8 @@
 #include <GpsInput.h>
 #include <MemoryFree.h>
 #include <OneWire.h>
+#include <OneWireInput.h>
 #include <ParserComm.h>
-#include <RTC_DS3231.h>
 #include <RtcInput.h>
 #include <SdData.h>
 #include <SPI.h>

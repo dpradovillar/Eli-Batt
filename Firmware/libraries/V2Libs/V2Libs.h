@@ -3,7 +3,7 @@
 
 #include <I2cInput.h>
 #include <Cmd.h>
-
+#include <OneWireInput.h>
 #include <AnalogInput.h>
 #include <Arduino.h>
 #include <EEPROM.h>
@@ -45,7 +45,7 @@
 class V2Libs {
 private:
     // Sensors
-    Mcp9808Sensor tempSensor;
+    Ds1820Sensor tempSensor;
     AnalogInput currentSensor;
     AnalogInput voltageSensor;
     GpsInput gpsInput;
@@ -98,7 +98,7 @@ public:
     float getLatitude();
     float getLongitude();
     float getAltitude();
-    DateTime getDateTime();
+    MyDate getDateTime();
 
     // Slave-related methods
     float getAverageTemperature();

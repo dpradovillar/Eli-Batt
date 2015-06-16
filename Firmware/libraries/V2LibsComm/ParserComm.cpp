@@ -55,23 +55,23 @@ void ParserComm::putSlaveInfo(uint32_t id, float temp, float current, float volt
 int toEntire(char *s, int len, int &length) {
     bool seenPoint = false;
     for (int i = 0; i < len; i++) {
-        if (seenPoint) {
+        /*if (seenPoint) {
             s[]
         } else {
 
-        }
+        }*/
     }
 }
 
 float getNumber(char *s, int len) {
     if (len == 0) {
-        return 0f;
+        return 0.0f;
     }
     if (len == 1) {
         if ('0'<=s[0] && s[0]<='9') {
             return (float)(s[0]-'0');
         }
-        return 0f;
+        return 0.0f;
     }
     int sign = +1;
     if (s[0] == '-') {
@@ -84,7 +84,7 @@ float getNumber(char *s, int len) {
     for (int i = 0; i < len; i++) {
 
     }
-
+    return -1.0f;
 }
 
 void ParserComm::processLine(char *s, int len) {
