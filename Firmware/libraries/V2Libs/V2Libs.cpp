@@ -398,6 +398,10 @@ void V2Libs::loop() {
                     break;
                 case CMD_LIST_ID:
                     sendIdList(&BLE_COMM);
+
+                    if (bankCommEnabled) {
+                        BANK_COMM.println("S");
+                    }
                     break;
 
                 default:

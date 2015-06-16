@@ -7,6 +7,8 @@
 
 class Utils {
 public:
+    static uint32_t pot10[];
+
     static uint8_t toHex(char hi, char lo);
 
     /**
@@ -45,6 +47,10 @@ public:
     static void leftPad(uint32_t value, char *buffLenBytes, int len, char toPad = '0');
 
     static void splitFloat(float value, uint32_t &_int, uint32_t &_dec);
+
+    static int processInt(char *s, int len);
+    static float processFloat(char *s, int len);
+    static void processList(char *s, int len, int *firstElement, float *secondAndOn, int size, int *howMany);
 };
 
 #endif // __H_UTILS_

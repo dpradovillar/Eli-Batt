@@ -52,47 +52,35 @@ void ParserComm::putSlaveInfo(uint32_t id, float temp, float current, float volt
     } // else, don't store as there's no more room!
 }
 
-int toEntire(char *s, int len, int &length) {
-    bool seenPoint = false;
-    for (int i = 0; i < len; i++) {
-        if (seenPoint) {
-            s[]
-        } else {
-
-        }
-    }
-}
-
-float getNumber(char *s, int len) {
-    if (len == 0) {
-        return 0f;
-    }
-    if (len == 1) {
-        if ('0'<=s[0] && s[0]<='9') {
-            return (float)(s[0]-'0');
-        }
-        return 0f;
-    }
-    int sign = +1;
-    if (s[0] == '-') {
-        sign = -1;
-        s++;
-        len--;
-    }
-    bool seenDecimal = false;
-    int decimalPlaces = 0;
-    for (int i = 0; i < len; i++) {
-
-    }
-
-}
+//int pCount = 0;
 
 void ParserComm::processLine(char *s, int len) {
-    s[len] = 0;
+    int id;
+    float analog[3];
+    int floatCount;
+    Utils::processList(s, len, &id, analog, 3, &floatCount);
+    putSlaveInfo(id, analog[0], analog[1], analog[2]);
+
+    /*if (pCount%2 == 0) {
+        Serial.print(">>ID:"); Serial.print(slaves.id[0]); Serial.print(" - ");
+        Serial.print(slaves.temperature[0]); Serial.print(",");
+        Serial.print(slaves.current[0]); Serial.print(",");
+        Serial.print(slaves.voltage[0]); Serial.println(".");
+    }
+
+    pCount++;
+
+    Serial.print("ID:"); Serial.print(id); Serial.print(" - ");
+    Serial.print(analog[0]); Serial.print(",");
+    Serial.print(analog[1]); Serial.print(",");
+    Serial.print(analog[2]); Serial.println(".");
+    */
+
+    /*s[len] = 0;
     Serial.print("PROCESSING:[");
     Serial.print(s);
     Serial.print("], length=");
-    Serial.println(len);
+    Serial.println(len);*/
 }
 
 void ParserComm::loop() {

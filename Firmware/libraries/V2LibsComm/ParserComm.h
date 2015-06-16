@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <ArduinoSoftwareSerial.h>
 #include <Cmd.h>
+#include <Utils.h>
 
 #define USE_SOFT 1
 
