@@ -32,12 +32,11 @@ int V2Libs::sendAnalogValues(HardwareSerial *se) {
     return size;
 }
 
-V2Libs::V2Libs() {
+V2Libs::V2Libs() : BANK_COMM(10,11) {
     pcCommEnabled = false;
     bleCommEnabled = false;
+    bankCommEnabled = false;
     tempSensorEnabled = false;
-    currentSensorEnabled = false;
-    voltageSensorEnabled = false;
     gpsEnabled = false;
     sdWriterEnabled = false;
     rtcClockEnabled = false;
@@ -47,8 +46,11 @@ V2Libs::~V2Libs() {
 }
 
 void V2Libs::maybeDebug(const char *s) {
+#if RELEASE_BOARD
+#else
     BLE_COMM.println(s);
     BLE_COMM.flush();
+#endif
 }
 
 void V2Libs::setupPcComm() {
@@ -63,10 +65,21 @@ void V2Libs::setupBleComm() {
     maybeDebug("BLE connected OK!");
     bleCommEnabled = true;
 }
+void V2Libs::setupBankComm() {
+    BANK_COMM.begin(9600);
+    //while(!BANK_COMM);
+    maybeDebug("BANK connected OK!");
+    bankCommEnabled = true;
+}
+void V2Libs::setupParserComm() {
+    parserComm.setup(&m_bank);
+}
+void V2Libs::setupEepromWriter() {
+    eepromId = eepromWriter.readId();
+}
 void V2Libs::setupTempSensor() {
     if (!tempSensor.setup()) {
         maybeDebug("Couldn't find MCP9808!");
-        while (1);
     }
     maybeDebug("MCP9808 setup OK!");
     tempSensorEnabled = true;
@@ -74,12 +87,10 @@ void V2Libs::setupTempSensor() {
 void V2Libs::setupCurrentSensor() {
     currentSensor.setup(A0);
     maybeDebug("Current sensor OK!");
-    currentSensorEnabled = true;
 }
 void V2Libs::setupVoltageSensor() {
     voltageSensor.setup(A1);
     maybeDebug("Voltage divider OK!");
-    voltageSensorEnabled = true;
 }
 void V2Libs::setupGps() {
     gpsInput.setup(&Serial2, 9600);
@@ -151,20 +162,106 @@ DateTime V2Libs::getDateTime() {
     return DateTime();
 }
 
+float V2Libs::getAverageTemperature() {
+    float avg = 0.0f;
+    for (int i = 0; i < parserComm.slaves.n; i++) {
+        avg += parserComm.slaves.temperature[i];
+    }
+    return avg/parserComm.slaves.n;
+}
+float V2Libs::getAverageCurrent() {
+    float avg = 0.0f;
+    for (int i = 0; i < parserComm.slaves.n; i++) {
+        avg += parserComm.slaves.current[i];
+    }
+    return avg/parserComm.slaves.n;
+}
+float V2Libs::getAverageVoltage() {
+    float avg = 0.0f;
+    for (int i = 0; i < parserComm.slaves.n; i++) {
+        avg += parserComm.slaves.voltage[i];
+    }
+    return avg/parserComm.slaves.n;
+}
+int V2Libs::getSlaveCount() {
+    return parserComm.slaves.n;
+}
+
+int V2Libs::sendTemperatureList(HardwareSerial *se) {
+    int size = se->print("TS:");
+    for (int i = 0; i < parserComm.slaves.n; i++) {
+        if (i > 0) {
+            size += se->print(";");
+        }
+        size += se->print(parserComm.slaves.temperature[i]);
+    }
+    size += se->println();
+    se->flush();
+    return size;
+}
+int V2Libs::sendCurrentList(HardwareSerial *se) {
+    int size = se->print("CS:");
+    for (int i = 0; i < parserComm.slaves.n; i++) {
+        if (i > 0) {
+            size += se->print(";");
+        }
+        size += se->print(parserComm.slaves.current[i]);
+    }
+    size += se->println();
+    se->flush();
+    return size;
+}
+int V2Libs::sendVoltageList(HardwareSerial *se) {
+    int size = se->print("VS:");
+    for (int i = 0; i < parserComm.slaves.n; i++) {
+        if (i > 0) {
+            size += se->print(";");
+        }
+        size += se->print(parserComm.slaves.voltage[i]);
+    }
+    size += se->println();
+    se->flush();
+    return size;
+}
+int V2Libs::sendIdList(HardwareSerial *se) {
+    int size = se->print("IDS:");
+    for (int i = 0; i < parserComm.slaves.n; i++) {
+        if (i > 0) {
+            size += se->print(";");
+        }
+        size += se->print(parserComm.slaves.id[i]);
+    }
+    size += se->println();
+    se->flush();
+    return size;
+}
+
 void V2Libs::setup() {
+#if RELEASE_BOARD
+#else
     setupPcComm();
+#endif
     setupBleComm();
+    setupBankComm();
+    setupParserComm();
+    setupEepromWriter();
     setupTempSensor();
     setupCurrentSensor();
     setupVoltageSensor();
 //    setupGps();
 //    setupSdWriter();
 //    setupRtcClock();
+
+    parserComm.putMasterInfo(eepromId, getTemperature(), getCurrent(), getVoltage());
 }
 
 void V2Libs::loop() {
     if (gpsEnabled) {
         gpsInput.loop();
+    }
+
+    if (bankCommEnabled) {
+        parserComm.loop();
     }
 
     static char cmdBuffer[BUFFER_MAX];
@@ -178,50 +275,131 @@ void V2Libs::loop() {
             cmdBuffer[cmdLen++] = c;
 
             if (cmdLen >= BUFFER_MAX || cmdBuffer[cmdLen-1] == '\n') {
-
-                /*ble.print(freeMemory());
-                ble.println(" bytes available");
-                ble.flush();*/
-
                 int command = cmd.parseCmd(cmdBuffer, cmdLen);
 
-                /*BLE_COMM.print("Command: ");
-                BLE_COMM.println(command);
-                BLE_COMM.flush();*/
+                //Serial.print("command:");
+                //Serial.println(command);
+
+                float value;
 
                 switch(command) {
                 case CMD_TEMPERATURE:
                     BLE_COMM.print("T:");
                     BLE_COMM.println(getTemperature());
-                    BLE_COMM.flush();
                     break;
+
                 case CMD_CURRENT:
                     BLE_COMM.print("C:");
                     BLE_COMM.println(getCurrent());
                     break;
+
                 case CMD_VOLTAGE:
                     BLE_COMM.print("V:");
                     BLE_COMM.println(getVoltage());
                     break;
+
                 case CMD_GPS:
                     gdata = getGpsStruct();
                     sendThrough(gdata, &BLE_COMM);
                     break;
+
                 case CMD_LATITUDE:
                     BLE_COMM.print("LA:");
                     BLE_COMM.println(getLatitude());
                     break;
+
                 case CMD_LONGITUDE:
                     BLE_COMM.print("LO:");
                     BLE_COMM.println(getLongitude());
                     break;
+
                 case CMD_HEIGHT:
                     BLE_COMM.print("H:");
                     BLE_COMM.println(getAltitude());
                     break;
-                case CMD_ANALOG:
+
+                case CMD_SENSORS:
                     sendAnalogValues(&BLE_COMM);
                     break;
+
+                case CMD_ID:
+                    BLE_COMM.print("ID:");
+                    BLE_COMM.println(eepromId);
+                    break;
+
+                case CMD_AVG_TEMPERATURE:
+                    BLE_COMM.print("TX:");
+                    BLE_COMM.println(getAverageTemperature());
+
+                    // Update temperatures of all boards
+                    parserComm.slaves.temperature[0] = getTemperature();
+                    if (bankCommEnabled) {
+                        BANK_COMM.println("S");
+                    }
+
+                    break;
+                case CMD_AVG_CURRENT:
+                    BLE_COMM.print("CX:");
+                    BLE_COMM.println(getAverageCurrent());
+
+                    // Update current of all boards
+                    parserComm.slaves.current[0] = getCurrent();
+                    if (bankCommEnabled) {
+                        BANK_COMM.println("S");
+                    }
+
+                    break;
+                case CMD_AVG_VOLTAGE:
+                    BLE_COMM.print("VX:");
+                    BLE_COMM.println(getAverageVoltage());
+
+                    // Update voltage of all boards
+                    parserComm.slaves.voltage[0] = getVoltage();
+                    if (bankCommEnabled) {
+                        BANK_COMM.println("S");
+                    }
+
+                    break;
+
+                case CMD_LIST_SIZE:
+                    BLE_COMM.print("N:");
+                    BLE_COMM.println(getSlaveCount());
+                    break;
+
+                case CMD_LIST_TEMPERATURE:
+                    sendTemperatureList(&BLE_COMM);
+
+                    // Update temperature of all boards
+                    parserComm.slaves.temperature[0] = getTemperature();
+                    if (bankCommEnabled) {
+                        BANK_COMM.println("S");
+                    }
+
+                    break;
+                case CMD_LIST_CURRENT:
+                    sendCurrentList(&BLE_COMM);
+
+                    // Update current of all boards
+                    parserComm.slaves.current[0] = getCurrent();
+                    if (bankCommEnabled) {
+                        BANK_COMM.println("S");
+                    }
+
+                    break;
+                case CMD_LIST_VOLTAGE:
+                    sendVoltageList(&BLE_COMM);
+
+                    // Update voltage of all boards
+                    parserComm.slaves.voltage[0] = getVoltage();
+                    if (bankCommEnabled) {
+                        BANK_COMM.println("S");
+                    }
+
+                    break;
+                case CMD_LIST_ID:
+                    sendIdList(&BLE_COMM);
+                    break;
+
                 default:
                     BLE_COMM.println("Command not found!");
                     maybeDebug("Command not found!");

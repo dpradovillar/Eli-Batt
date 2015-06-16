@@ -66,6 +66,7 @@ HEADERS += ./Firmware/libraries/AdafruitSD/utility/SdFatmainpage.h \
     ./Firmware/libraries/arduino_serial/EngineProtocol.h \
     ./Firmware/libraries/Utils/Utils.h \
     ./Firmware/libraries/SensorInput/OneWireInput.h \
+    ./Firmware/libraries/V2LibsComm/ParserComm.h \
     ./Firmware/libraries/AdafruitSD/AdafruitSD.h \
     ./Firmware/libraries/AltSoftSerial/config/known_timers.h \
     ./Firmware/libraries/DataExchanger/Debugger.h \
@@ -127,6 +128,7 @@ SOURCES += ./Firmware/libraries/RTClib/RTC_DS3234.cpp \
     ./Firmware/libraries/SdData/BankData.cpp \
     ./Firmware/libraries/Firmware/FirmwareMaster.cpp \
     ./Firmware/libraries/DataExchanger/DataExchanger.cpp \
+    ./Firmware/libraries/V2LibsComm/ParserComm.cpp \
     ./Firmware/libraries/AdafruitSD/utility/SdFile.cpp \
     ./Firmware/libraries/SensorInput/OneWireInput.cpp
 

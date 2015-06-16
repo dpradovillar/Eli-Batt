@@ -8,10 +8,13 @@
 #include <Arduino.h>
 #include <ArduinoSoftwareSerial.h>
 #include <Cmd.h>
+#include <EEPROM.h>
+#include <EepromWriter.h>
 #include <Endpoint.h>
 #include <GpsInput.h>
 #include <MemoryFree.h>
 #include <OneWire.h>
+#include <ParserComm.h>
 #include <RTC_DS3231.h>
 #include <RtcInput.h>
 #include <SdData.h>

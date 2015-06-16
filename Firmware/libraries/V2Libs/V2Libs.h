@@ -6,8 +6,11 @@
 
 #include <AnalogInput.h>
 #include <Arduino.h>
+#include <EEPROM.h>
+#include <EepromWriter.h>
 #include <Endpoint.h>
 #include <GpsInput.h>
+#include <ParserComm.h>
 #include <RtcInput.h>
 #include <SdData.h>
 #include <MemoryFree.h>
@@ -21,7 +24,7 @@
 #define BUFFER_MAX   100
 #define MAX_ROWS     900 // 15min 
 
-#define MAX_SLAVES 10
+//#define RELEASE_BOARD 1
 
 // Serial
 #define PC_COMM Serial
@@ -30,16 +33,14 @@
 #define GPS_COMM Serial2
 
 // Serial3
-#define BLE_COMM Serial3
+#if RELEASE_BOARD
+#   define BLE_COMM Serial3
+#else
+#   define BLE_COMM Serial
+#endif
 
-
-typedef struct {
-    uint32_t id[MAX_SLAVES];
-    float temperature[MAX_SLAVES];
-    float current[MAX_SLAVES];
-    float voltage[MAX_SLAVES];
-    int n;
-} SlaveStruct;
+// SoftwareSerial
+#define BANK_COMM m_bank
 
 class V2Libs {
 private:
@@ -59,8 +60,12 @@ private:
     // Real time clock
     RtcClock rtcClock;
 
-    // Slave estructure for holding data
-    SlaveStruct slave;
+    // Bank communication
+    SoftwareSerial BANK_COMM;
+    ParserComm parserComm;
+
+    EepromWriter eepromWriter;
+    uint32_t eepromId;
 
     float toAmps(float vout3v);
     float toVolts(int reading);
@@ -76,9 +81,12 @@ public:
 
     void setupPcComm();         bool pcCommEnabled;
     void setupBleComm();        bool bleCommEnabled;
+    void setupBankComm();       bool bankCommEnabled;
+    void setupParserComm();
+    void setupEepromWriter();
     void setupTempSensor();     bool tempSensorEnabled;
-    void setupCurrentSensor();  bool currentSensorEnabled;
-    void setupVoltageSensor();  bool voltageSensorEnabled;
+    void setupCurrentSensor();
+    void setupVoltageSensor();
     void setupGps();            bool gpsEnabled;
     void setupSdWriter();       bool sdWriterEnabled;
     void setupRtcClock();       bool rtcClockEnabled;
@@ -91,6 +99,16 @@ public:
     float getLongitude();
     float getAltitude();
     DateTime getDateTime();
+
+    // Slave-related methods
+    float getAverageTemperature();
+    float getAverageCurrent();
+    float getAverageVoltage();
+    int getSlaveCount();
+    int sendTemperatureList(HardwareSerial *se);
+    int sendCurrentList(HardwareSerial *se);
+    int sendVoltageList(HardwareSerial *se);
+    int sendIdList(HardwareSerial *se);
 
     void setup();
     void loop();
