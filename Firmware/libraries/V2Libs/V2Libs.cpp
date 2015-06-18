@@ -47,8 +47,8 @@ V2Libs::~V2Libs() {
 }
 
 void V2Libs::maybeDebug(const char *s) {
-    BLE_COMM.println(s);
-    BLE_COMM.flush();
+    //BLE_COMM.println(s);
+    //BLE_COMM.flush();
 }
 
 void V2Libs::setupPcComm() {
