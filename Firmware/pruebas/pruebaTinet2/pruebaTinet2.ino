@@ -13,8 +13,8 @@
 #include <GpsInput.h>
 #include <MemoryFree.h>
 #include <OneWire.h>
-#include <OneWireInput.h>
 #include <ParserComm.h>
+#include <RTC_DS3231.h>
 #include <RtcInput.h>
 #include <SdData.h>
 #include <SPI.h>

@@ -423,6 +423,7 @@ void V2Libs::loop() {
         Serial.print(aDate.hour); Serial.print(":");
         Serial.print(aDate.minute); Serial.print(":");
         Serial.print(aDate.second); Serial.println();
+        last_t = millis();
     }
 
     // ########################## Sensors Handling ####################
