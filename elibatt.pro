@@ -8,6 +8,7 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 INCLUDEPATH += ./Firmware/libraries/arduino_serial \
+    ./Firmware/libraries/DallasTemperature \
     ./Firmware/libraries/AdafruitSD \
     ./Firmware/libraries/V2LibsComm \
     ./Firmware/libraries/Config \
@@ -80,12 +81,14 @@ HEADERS += ./Firmware/libraries/AdafruitSD/utility/SdFatmainpage.h \
     ./Firmware/libraries/DataExchanger/Endpoint.h \
     ./Firmware/libraries/Firmware/FirmwareMaster.h \
     ./Firmware/libraries/arduino_serial/Message.h \
+    ./Firmware/libraries/DallasTemperature/DallasTemperature.h \
     ./Firmware/libraries/DataExchanger/DataExchanger.h \
     ./Firmware/libraries/RTClib/RTC_DS1307.h \
     ./Firmware/libraries/Cmd/Cmd.h \
     ./Firmware/libraries/DataExchanger/DataStream.h
 SOURCES += ./Firmware/libraries/RTClib/RTC_DS3234.cpp \
     ./Firmware/libraries/SensorInput/AnalogInput.cpp \
+    ./Firmware/libraries/V2LibsSlave/V2LibsSlave.cpp \
     ./Firmware/libraries/arduino_serial/MessageBuilder.cpp \
     ./Firmware/libraries/Elibatt_RBL_BLEMini/ble_mini.cpp \
     ./Firmware/libraries/EepromWriter/EepromWriter.cpp \
@@ -117,9 +120,9 @@ SOURCES += ./Firmware/libraries/RTClib/RTC_DS3234.cpp \
     ./Firmware/libraries/SdData/SdData.cpp \
     ./Firmware/libraries/SensorInput/GpsInput.cpp \
     ./Firmware/libraries/V2LibsComm/ParserComm.cpp \
-    ./Firmware/libraries/V2LibsComm/V2LibsComm.cpp \
+    ./Firmware/libraries/DallasTemperature/DallasTemperature.cpp \
     ./Firmware/libraries/AdafruitSD/utility/SdVolume.cpp \
-    ./Firmware/libraries/V2LibsSlave/V2LibsSlave.cpp \
+    ./Firmware/libraries/V2LibsComm/V2LibsComm.cpp \
     ./Firmware/libraries/SdData/BankData.cpp \
     ./Firmware/libraries/Firmware/FirmwareMaster.cpp \
     ./Firmware/libraries/DataExchanger/DataExchanger.cpp \
