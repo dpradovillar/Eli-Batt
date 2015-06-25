@@ -24,7 +24,7 @@
 #define BUFFER_MAX   100
 #define MAX_ROWS     10 // 15min
 
-//#define RELEASE_BOARD 1
+#define RELEASE_BOARD 1
 
 // Serial
 #define PC_COMM Serial
