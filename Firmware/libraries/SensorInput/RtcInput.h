@@ -2,12 +2,7 @@
 #define __RTC_INPUT_H_
 
 #include <Arduino.h>
-#include <ArduinoSoftwareSerial.h>
-#include <Debugger.h>
-#include <Endpoint.h>
 #include <SPI.h>
-#include <Utils.h>
-#include <Wire.h>
 
 class MyDate {
 public:
@@ -19,8 +14,7 @@ public:
     uint8_t minute;
     uint8_t second;
 
-    MyDate() {
-    }
+    MyDate();
 };
 
 /**
@@ -29,19 +23,24 @@ public:
 class RtcClock {
 private:
     byte m_ok;
+    MyDate m_lastDate;
+    int m_pin;
 
-    Debugger d;
+private:
+    void RTC_init();
+    void RTC_setTimeDate(const MyDate &d);
+    void RTC_readTimeDate();
+
 public:
     RtcClock();
 
-    bool setup(SerialEndpoint *debugEndpoint=NULL);
+    bool setup(int pin);
 
     void adjust(const MyDate &dt);
 
-    MyDate now();
+    MyDate readDate();
 
-    float getTempAsFloat();
-    int16_t getTempAsWord();
+    MyDate getLastDate();
 
     bool isAllSetUp();
 };

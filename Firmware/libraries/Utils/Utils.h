@@ -45,6 +45,8 @@ public:
     static void leftPad(uint32_t value, char *buffLenBytes, int len, char toPad = '0');
 
     static void splitFloat(float value, uint32_t &_int, uint32_t &_dec);
+
+    static void dateToIso(uint16_t year, uint8_t month, uint8_t day, char *buff8);
 };
 
 #endif // __H_UTILS_

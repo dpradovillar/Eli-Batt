@@ -107,7 +107,7 @@ void V2Libs::setupSdWriter() {
     sdWriterEnabled = true;
 }
 void V2Libs::setupRtcClock() {
-    if (!rtcClock.setup(NULL)) {
+    if (!rtcClock.setup(34)) {
         maybeDebug("Could not initialize RTC!");
         while(1);
     }
@@ -157,7 +157,7 @@ float V2Libs::getAltitude() {
 
 MyDate V2Libs::getDateTime() {
     if (rtcClockEnabled && rtcClock.isAllSetUp()) {
-        return rtcClock.now();
+        return rtcClock.readDate();
     }
     return MyDate();
 }
@@ -249,7 +249,8 @@ void V2Libs::setup() {
     setupCurrentSensor();
     setupVoltageSensor();
 //    setupGps();
-//    setupSdWriter();
+    SPI.begin();
+    setupSdWriter();
     setupRtcClock();
 
     parserComm.putMasterInfo(eepromId, getTemperature(), getCurrent(), getVoltage());
@@ -411,7 +412,7 @@ void V2Libs::loop() {
         } // endif ble.available()
     } // endif bleCommEnabled
 
-    static long last_t = 0;
+    /*static long last_t = 0;
     if (millis() - last_t >= 1000) {
         Serial.print(getTemperature()); Serial.println("C");
 
@@ -424,51 +425,20 @@ void V2Libs::loop() {
         Serial.print(aDate.minute); Serial.print(":");
         Serial.print(aDate.second); Serial.println();
         last_t = millis();
-    }
+    }*/
 
     // ########################## Sensors Handling ####################
-    /*static long last_t = 0;
+    static long last_t = 0;
     if (millis() - last_t >= 1000) {
-        DateTime rtc_now = getDateTime();
+        MyDate rtc_now = getDateTime();
 
         float c = getTemperature();
         float current = getCurrent();
         float realv = getVoltage();
 
-    #ifdef OUTPUT_TO_PC
-        pcComm.print("Temp: "); pcComm.print(c); pcComm.print("*C\t");
-        pcComm.print(f); pcComm.println("*F");
-        pcComm.print("Corriente: "); pcComm.print(current); pcComm.println("[A]");
-        pcComm.print("Voltaje: "); pcComm.print(realv); pcComm.println("[V]");
-    #endif
+        // ########################## GPS Handling ####################
 
-    // ########################## GPS Handling ####################
-
-    GpsStruct gdata = getGpsStruct();
-
-    #ifdef OUTPUT_TO_PC
-
-        pcComm.print("Time: ");
-        pcComm.printlnSimpleTime(gdata.hour, gdata.minute, gdata.second);
-
-        pcComm.print("Date: ");
-        pcComm.printlnSimpleDate(gdata.day, gdata.month, gdata.year);
-
-        pcComm.print("Fix: "); pcComm.print((int)gdata.fix);
-        pcComm.print(" quality: "); pcComm.println((int)gdata.quality);
-
-        if (gdata.fix) {
-            pcComm.print("Location: ");
-            pcComm.print(gdata.flat);
-            pcComm.print(", ");
-            pcComm.print(gdata.flon);
-
-            pcComm.print("Speed (knots): "); pcComm.println(gdata.fspeed);
-            pcComm.print("Angle: ");         pcComm.println(gdata.fangle);
-            pcComm.print("Altitude: ");      pcComm.println(gdata.faltitude);
-            pcComm.print("Satellites: ");    pcComm.println((int)gdata.satellites);
-        }
-    #endif
+        GpsStruct gdata = getGpsStruct();
 
         if (sdWriterEnabled) {
             // Inicializar archivo Tarjeta Sd
@@ -477,14 +447,18 @@ void V2Libs::loop() {
             } else {
                 // For new empty files, generate
                 if (rowsCount == 0) {
-                    if(!sdWriter.open()) {
+                    static char buffer_filename[13] = "yyyyMMdd.CSV";
+                    Utils::dateToIso(rtc_now.year, rtc_now.month, rtc_now.day, buffer_filename);
+
+                    if (!sdWriter.open(buffer_filename)) {
+                        maybeDebug("No se puede abrir archivo!");
                         rowsCount = -1;
                     }
                 }
 
                 // Write data to file if no error is present
                 if (rowsCount >= 0) {
-                    sdWriter.writeDatetime(rtc_now.year(), rtc_now.month(), rtc_now.day(), rtc_now.hour(), rtc_now.minute(), rtc_now.second());
+                    sdWriter.writeDatetime(rtc_now.year, rtc_now.month, rtc_now.day, rtc_now.hour, rtc_now.minute, rtc_now.second);
                     sdWriter.writeChar(';');
 
                     sdWriter.writeFloat(c);
@@ -535,6 +509,6 @@ void V2Libs::loop() {
         }
 
         last_t = millis();
-    }*/
+    }
 }
 

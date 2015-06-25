@@ -23,26 +23,27 @@
 #include <SimpleCrc.h>
 #include <OneWireInput.h>
 
-Ds1820Sensor sensor;
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
-void setup() {
+Ds1820Sensor input;
+
+void setup(void){
   Serial.begin(9600);
-  while(!Serial);
 
-  sensor.setup(32);
+  input.setup(32);
 }
 
-void loop() {
-  static int last_t = 0;
-  
-  if (millis() - last_t > 2000) {
-    
-    float c = sensor.readCelsius();
-    Serial.print("Temp=");
-    Serial.println(c);
-    
-    last_t = millis();
-  }
+void printTemperature() {
+  float tempC = input.readCelsius();
+  Serial.print("C: ");
+  Serial.print(tempC);
+  Serial.println();
 }
 
+void loop(void) {   
+  printTemperature();
+
+  delay(1000);  
+}
 

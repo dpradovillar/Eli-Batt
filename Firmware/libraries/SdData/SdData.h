@@ -9,30 +9,6 @@
 #include <elibatt_config.h>
 
 /**
- * Builds a filename using a numeric sequence. Given that the filename format is pretty limited, it
- * only guarantees about 2^16 different combinations, before start recycling old filenames.
- */
-class SdNameSequencer {
-private:
-    uint16_t m_next;
-
-public:
-    SdNameSequencer();
-
-    /**
-     * Puts the next filename generated in the buffer. Consecutive calls to this method are
-     * guaranteed to return different names, following the numeric sequence. When the sequence is
-     * consumed completely, after the 'FFFF' filename, will overflow to the '0000' filename.
-     */
-    void next(char *buff12bytes);
-
-    /**
-     * Sets the index of the next name in the sequence.
-     */
-    void setStart(uint16_t start);
-};
-
-/**
  * Wrapper for the built-in SD card library. It performs some application specific logic as dumping
  * messages as binary data, data compression, checksum verification and specific file handling.
  */
@@ -41,7 +17,6 @@ private:
     byte m_chip_select_pin;
     bool m_open;
     File m_file;
-    SdNameSequencer m_sequence;
     Debugger d;
 
     bool m_ok;
@@ -63,7 +38,7 @@ public:
      * closed if any was already open) or false if it couldn't close the previously open file or it
      * couldn't open the new file.
      */
-    bool open();
+    bool open(char *filename_buff13);
 
     bool isOpen();
 

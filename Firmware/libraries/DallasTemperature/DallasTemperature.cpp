@@ -17,11 +17,22 @@ extern "C" {
 }
 #endif
 
+DallasTemperature::DallasTemperature()
+#if REQUIRESALARMS
+: _AlarmHandler(&defaultAlarmHandler)
+#endif
+{
+}
+
 DallasTemperature::DallasTemperature(OneWire* _oneWire)
   #if REQUIRESALARMS
   : _AlarmHandler(&defaultAlarmHandler)
   #endif
 {
+    setup(_oneWire);
+}
+
+void DallasTemperature::setup(OneWire* _oneWire) {
   _wire = _oneWire;
   devices = 0;
   parasite = false;

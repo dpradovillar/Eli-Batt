@@ -40,9 +40,9 @@ uint32_t Utils::toInt32(byte *buffer4bytes) {
 }
 
 uint16_t Utils::toUInt16(byte *buffer2bytes) {
-	return (uint16_t)(
-	((uint16_t)buffer2bytes[0]) << 8 |
-	((uint16_t)buffer2bytes[1]) << 0);
+    return (uint16_t)(
+    ((uint16_t)buffer2bytes[0]) << 8 |
+    ((uint16_t)buffer2bytes[1]) << 0);
 }
 
 void Utils::toByte(uint32_t x, byte *buffer4bytes) {
@@ -133,22 +133,27 @@ void Utils::onFailure(int dbg_pin, const __FlashStringHelper *err, bool doLog) {
 }
 
 void Utils::leftPad(uint32_t value, char *buffLenBytes, int len, char toPad) {
-	int last = len-1;
-	while(value > 0 && len > 0) {
-		char lastDig = value%10 + '0';
-		value /= 10;
-		buffLenBytes[len-1] = lastDig;
-		--len;
-	}
-	while(len > 0) {
-		buffLenBytes[len-1] = toPad;
-		--len;
-	}
+    while(value > 0 && len > 0) {
+        char lastDig = value%10 + '0';
+        value /= 10;
+        buffLenBytes[len-1] = lastDig;
+        --len;
+    }
+    while(len > 0) {
+        buffLenBytes[len-1] = toPad;
+        --len;
+    }
 }
 
 void Utils::splitFloat(float value, uint32_t &_int, uint32_t &_dec) {
     _int = (uint32_t)value;
     _dec = FLOAT_TO_INT_FACTOR*(value - _int);
+}
+
+void Utils::dateToIso(uint16_t year, uint8_t month, uint8_t day, char *buff8) {
+    leftPad(year, buff8, 4);
+    leftPad(month, buff8+4, 2);
+    leftPad(day, buff8+6, 2);
 }
 
 

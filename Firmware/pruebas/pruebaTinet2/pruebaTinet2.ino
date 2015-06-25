@@ -7,6 +7,7 @@
 #include <Arduino.h>
 #include <ArduinoSoftwareSerial.h>
 #include <Cmd.h>
+#include <DallasTemperature.h>
 #include <EEPROM.h>
 #include <EepromWriter.h>
 #include <Endpoint.h>

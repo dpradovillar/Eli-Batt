@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <OneWire.h>
+#include <DallasTemperature.h>
 
 /**
  * MCP9808 sensor, using internally Adafruit's library.
@@ -10,16 +11,16 @@
 class Ds1820Sensor {
 private:
     byte m_ok;
-    OneWire m_sensor;
-    float m_celsius;
-    //float m_fahrenheit;
-    
-    bool readInternalTemperature();
+
+    byte m_addr[9];
+
+    OneWire m_one;
+    DallasTemperature m_sensors;
+    DeviceAddress m_deviceAddress;
 
 public:
     bool setup(int pin);
     float readCelsius();
-    //float readFahrenheit();
 };
 
 #endif // __ONEWIRE_INPUT_H_
