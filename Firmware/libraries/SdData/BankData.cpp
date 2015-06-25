@@ -1,8 +1,9 @@
 #include <BankData.h>
 
-void BankData::forceFlush() {
+void BankData::forceFlush(char *buff13) {
     if (!m_sd_writer.isOpen()) {
-        m_sd_writer.open();
+        buff13[12] = 0;
+        m_sd_writer.open(buff13);
         d.println(F("Writing header into blank file!"));
         m_sd_writer.writeHeader(m_registered_ids, m_count_ids);
     }
@@ -147,7 +148,8 @@ int BankData::addData(uint32_t id, uint16_t temp, uint16_t current, uint16_t vol
     }
 	int readyCount = ready();
     if (readyCount == m_count_ids) {
-        forceFlush();
+        static char buff_filename[] = "xxxxxxxx.CSV";
+        forceFlush(buff_filename);
     }
     return (m_count_ids - readyCount);
 }

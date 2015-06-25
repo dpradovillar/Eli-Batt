@@ -8,7 +8,7 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 INCLUDEPATH += ./Firmware/libraries/arduino_serial \
-    ./Firmware/libraries/MCP9808 \
+    ./Firmware/libraries/DallasTemperature \
     ./Firmware/libraries/AdafruitSD \
     ./Firmware/libraries/V2LibsComm \
     ./Firmware/libraries/Config \
@@ -18,7 +18,6 @@ INCLUDEPATH += ./Firmware/libraries/arduino_serial \
     ./Firmware/libraries/DataExchanger \
     ./Firmware/libraries/Elibatt_RBL_BLEMini \
     ./Firmware/libraries/pin-mapping.pdf \
-    ./Firmware/libraries/DS3231 \
     ./Firmware/libraries/V2Libs \
     ./Firmware/libraries/Adafruit_GPS \
     ./Firmware/libraries/ArduinoSoftwareSerial \
@@ -35,7 +34,6 @@ INCLUDEPATH += ./Firmware/libraries/arduino_serial \
     ./Firmware/libraries/.DS_Store \
     ./Firmware/libraries/Firmware
 HEADERS += ./Firmware/libraries/AdafruitSD/utility/SdFatmainpage.h \
-    ./Firmware/libraries/DS3231/DS3231.h \
     ./Firmware/libraries/V2LibsComm/V2LibsComm.h \
     ./Firmware/libraries/AltSoftSerial/config/known_boards.h \
     ./Firmware/libraries/OneWire/OneWire.h \
@@ -57,6 +55,7 @@ HEADERS += ./Firmware/libraries/AdafruitSD/utility/SdFatmainpage.h \
     ./Firmware/libraries/SensorInput/AnalogInput.h \
     ./Firmware/libraries/SensorInput/I2cInput.h \
     ./Firmware/libraries/SensorInput/RtcInput.h \
+    ./Firmware/libraries/V2LibsComm/ParserComm.h \
     ./Firmware/libraries/AdafruitSD/utility/SdFatUtil.h \
     ./Firmware/libraries/V2Libs/V2Libs.h \
     ./Firmware/libraries/arduino_serial/MessageBuilder.h \
@@ -74,7 +73,6 @@ HEADERS += ./Firmware/libraries/AdafruitSD/utility/SdFatmainpage.h \
     ./Firmware/libraries/MemoryFree/MemoryFree.h \
     ./Firmware/libraries/AltSoftSerial/config/AltSoftSerial_Timers.h \
     ./Firmware/libraries/RTClib/RTC_DS3234.h \
-    ./Firmware/libraries/MCP9808/Adafruit_MCP9808.h \
     ./Firmware/libraries/AdafruitSD/utility/Sd2PinMap.h \
     ./Firmware/libraries/AdafruitSD/utility/Sd2Card.h \
     ./Firmware/libraries/SensorInput/GpsInput.h \
@@ -83,12 +81,14 @@ HEADERS += ./Firmware/libraries/AdafruitSD/utility/SdFatmainpage.h \
     ./Firmware/libraries/DataExchanger/Endpoint.h \
     ./Firmware/libraries/Firmware/FirmwareMaster.h \
     ./Firmware/libraries/arduino_serial/Message.h \
+    ./Firmware/libraries/DallasTemperature/DallasTemperature.h \
     ./Firmware/libraries/DataExchanger/DataExchanger.h \
     ./Firmware/libraries/RTClib/RTC_DS1307.h \
     ./Firmware/libraries/Cmd/Cmd.h \
     ./Firmware/libraries/DataExchanger/DataStream.h
 SOURCES += ./Firmware/libraries/RTClib/RTC_DS3234.cpp \
     ./Firmware/libraries/SensorInput/AnalogInput.cpp \
+    ./Firmware/libraries/V2LibsSlave/V2LibsSlave.cpp \
     ./Firmware/libraries/arduino_serial/MessageBuilder.cpp \
     ./Firmware/libraries/Elibatt_RBL_BLEMini/ble_mini.cpp \
     ./Firmware/libraries/EepromWriter/EepromWriter.cpp \
@@ -109,21 +109,20 @@ SOURCES += ./Firmware/libraries/RTClib/RTC_DS3234.cpp \
     ./Firmware/libraries/Elibatt_RBL_BLEMini/examples/BLEFirmataSketch/BLEFirmata.cpp \
     ./Firmware/libraries/ArduinoSoftwareSerial/ArduinoSoftwareSerial.cpp \
     ./Firmware/libraries/Utils/SimpleCrc.cpp \
-    ./Firmware/libraries/Utils/Utils.cpp \
+    ./Firmware/libraries/V2Libs/V2Libs.cpp \
     ./Firmware/libraries/Firmware/FirmwareSlave.cpp \
-    ./Firmware/libraries/DS3231/DS3231.cpp \
+    ./Firmware/libraries/Utils/Utils.cpp \
     ./Firmware/libraries/DataExchanger/Debugger.cpp \
     ./Firmware/libraries/Adafruit_GPS/Adafruit_GPS.cpp \
     ./Firmware/libraries/SensorInput/RtcInput.cpp \
     ./Firmware/libraries/AdafruitSD/AdafruitSD.cpp \
     ./Firmware/libraries/SensorInput/SampleCollector.cpp \
-    ./Firmware/libraries/MCP9808/Adafruit_MCP9808.cpp \
-    ./Firmware/libraries/SensorInput/GpsInput.cpp \
-    ./Firmware/libraries/V2Libs/V2Libs.cpp \
     ./Firmware/libraries/SdData/SdData.cpp \
-    ./Firmware/libraries/V2LibsComm/V2LibsComm.cpp \
+    ./Firmware/libraries/SensorInput/GpsInput.cpp \
+    ./Firmware/libraries/V2LibsComm/ParserComm.cpp \
+    ./Firmware/libraries/DallasTemperature/DallasTemperature.cpp \
     ./Firmware/libraries/AdafruitSD/utility/SdVolume.cpp \
-    ./Firmware/libraries/V2LibsSlave/V2LibsSlave.cpp \
+    ./Firmware/libraries/V2LibsComm/V2LibsComm.cpp \
     ./Firmware/libraries/SdData/BankData.cpp \
     ./Firmware/libraries/Firmware/FirmwareMaster.cpp \
     ./Firmware/libraries/DataExchanger/DataExchanger.cpp \

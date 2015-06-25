@@ -40,9 +40,9 @@ uint32_t Utils::toInt32(byte *buffer4bytes) {
 }
 
 uint16_t Utils::toUInt16(byte *buffer2bytes) {
-	return (uint16_t)(
-	((uint16_t)buffer2bytes[0]) << 8 |
-	((uint16_t)buffer2bytes[1]) << 0);
+    return (uint16_t)(
+    ((uint16_t)buffer2bytes[0]) << 8 |
+    ((uint16_t)buffer2bytes[1]) << 0);
 }
 
 void Utils::toByte(uint32_t x, byte *buffer4bytes) {
@@ -133,17 +133,16 @@ void Utils::onFailure(int dbg_pin, const __FlashStringHelper *err, bool doLog) {
 }
 
 void Utils::leftPad(uint32_t value, char *buffLenBytes, int len, char toPad) {
-	int last = len-1;
-	while(value > 0 && len > 0) {
-		char lastDig = value%10 + '0';
-		value /= 10;
-		buffLenBytes[len-1] = lastDig;
-		--len;
-	}
-	while(len > 0) {
-		buffLenBytes[len-1] = toPad;
-		--len;
-	}
+    while(value > 0 && len > 0) {
+        char lastDig = value%10 + '0';
+        value /= 10;
+        buffLenBytes[len-1] = lastDig;
+        --len;
+    }
+    while(len > 0) {
+        buffLenBytes[len-1] = toPad;
+        --len;
+    }
 }
 
 void Utils::splitFloat(float value, uint32_t &_int, uint32_t &_dec) {
@@ -151,4 +150,102 @@ void Utils::splitFloat(float value, uint32_t &_int, uint32_t &_dec) {
     _dec = FLOAT_TO_INT_FACTOR*(value - _int);
 }
 
+void Utils::dateToIso(uint16_t year, uint8_t month, uint8_t day, char *buff8) {
+    leftPad(year, buff8, 4);
+    leftPad(month, buff8+4, 2);
+    leftPad(day, buff8+6, 2);
+}
 
+uint32_t Utils::pot10[] = {
+    1,
+    10,
+    100,
+    1000,
+    10000,
+    100000,
+    1000000,
+    10000000,
+    100000000,
+    1000000000
+};
+
+int Utils::processInt(char *s, int len) {
+    if (len==0) {
+        return 0;
+    }
+    if (len==1) {
+        if ('0'<=*s && *s<='9') {
+            return (int)(*s-'0');
+        }
+        return 0;
+    }
+    int sign = +1;
+    if (s[0]=='-') {
+        sign = -1;
+        s++;
+        len--;
+    } else if (s[0] == '+') {
+        sign = +1;
+        s++;
+        len--;
+    }
+    int result = 0;
+    for (int i = 0; i < len; i++) {
+        result += (pot10[len-i-1]*(s[i] - '0'));
+    }
+    return sign*result;
+}
+
+float Utils::processFloat(char *s, int len) {
+    if (len == 0) {
+        return 0.0f;
+    }
+    char *t = s;
+    char newLen = len;
+    int sign = +1;
+    if (t[0] == '-') {
+        sign = -1;
+        t++;
+        newLen--;
+    } else if (t[0] == '+') {
+        sign = +1;
+        t++;
+        newLen--;
+    }
+    for (int i = 0; i < newLen; i++) {
+        if (t[i] == '.') {
+            return sign * (processInt(t, i) + processInt(t+i+1, newLen-i-1) / (1.0f * pot10[newLen-i-1]));
+        }
+    }
+    return (float)processInt(t,newLen);
+}
+
+void Utils::processList(char *s, int len, int *firstElement, float *secondAndOn, int size, int *howMany) {
+    bool first = true;
+    int a = 0;
+    int written = 0;
+    if (howMany) {
+        *howMany = 0;
+    }
+    for (int i = 0; i < len; i++) {
+        if (s[i] == ';' || i==len-1) {
+            char *sn = s+a;
+            int slen = i-a + (i==len-1 ? 1 : 0);
+            if (first) {
+                if (firstElement) {
+                    *firstElement = processInt(sn, slen);
+                }
+                first = false;
+            } else {
+                if (written < size) {
+                    *secondAndOn = processFloat(sn, slen);
+                    secondAndOn++;
+                    if (howMany) {
+                        (*howMany)++;
+                    }
+                }
+            }
+            a = i+1;
+        }
+    }
+}

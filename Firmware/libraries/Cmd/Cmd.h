@@ -15,7 +15,20 @@
 #define CMD_LATITUDE    5
 #define CMD_LONGITUDE   6
 #define CMD_HEIGHT      7
-#define CMD_ANALOG      8
+#define CMD_SENSORS     8
+
+#define CMD_AVG_TEMPERATURE   9
+#define CMD_AVG_CURRENT      10
+#define CMD_AVG_VOLTAGE      11
+
+#define CMD_LIST_SIZE        12
+
+#define CMD_LIST_TEMPERATURE 13
+#define CMD_LIST_CURRENT     14
+#define CMD_LIST_VOLTAGE     15
+
+#define CMD_ID               16
+#define CMD_LIST_ID          17
 
 class Cmd {
 private:

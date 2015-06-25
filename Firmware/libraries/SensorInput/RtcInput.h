@@ -1,37 +1,46 @@
 #ifndef __RTC_INPUT_H_
 #define __RTC_INPUT_H_
 
-#include <Adafruit_MCP9808.h>
 #include <Arduino.h>
-#include <ArduinoSoftwareSerial.h>
-#include <Debugger.h>
-#include <RTClib.h>
-#include <RTC_DS3231.h>
-#include <Endpoint.h>
 #include <SPI.h>
-#include <Utils.h>
-#include <Wire.h>
+
+class MyDate {
+public:
+    uint16_t year;
+    uint8_t month;
+    uint8_t day;
+
+    uint8_t hour;
+    uint8_t minute;
+    uint8_t second;
+
+    MyDate();
+};
 
 /**
  * Wrapper for the RTC ChronoDot library.
  */
 class RtcClock {
 private:
-    RTC_DS3231 m_clock;
     byte m_ok;
+    MyDate m_lastDate;
+    int m_pin;
 
-    Debugger d;
+private:
+    void RTC_init();
+    void RTC_setTimeDate(const MyDate &d);
+    void RTC_readTimeDate();
+
 public:
     RtcClock();
 
-    bool setup(SerialEndpoint *debugEndpoint=NULL);
+    bool setup(int pin);
 
-    void adjust(const DateTime &dt);
+    void adjust(const MyDate &dt);
 
-    DateTime now();
+    MyDate readDate();
 
-    float getTempAsFloat();
-    int16_t getTempAsWord();
+    MyDate getLastDate();
 
     bool isAllSetUp();
 };

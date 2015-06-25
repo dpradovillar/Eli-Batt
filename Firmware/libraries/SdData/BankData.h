@@ -54,7 +54,7 @@ public:
 	 * Writes a new line in the CSV file, even if it hasn't received data from all the registered
 	 * devices.
 	 */
-	void forceFlush();
+    void forceFlush(char *buff13);
 
 	bool setup(int chipSelectPin, uint32_t fileDuration, SerialEndpoint *dbgEndpoint);
 
