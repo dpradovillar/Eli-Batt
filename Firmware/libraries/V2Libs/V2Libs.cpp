@@ -100,11 +100,12 @@ void V2Libs::setupGps() {
 void V2Libs::setupSdWriter() {
     if (!sdWriter.setup(38, NULL)) {
         maybeDebug("Error while connecting to SD.");
-        while(1);
+        sdWriterEnabled = false;
+    } else {
+        rowsCount = 0;
+        maybeDebug("SD setup OK");
+        sdWriterEnabled = true;
     }
-    rowsCount = 0;
-    maybeDebug("SD setup OK");
-    sdWriterEnabled = true;
 }
 void V2Libs::setupRtcClock() {
     if (!rtcClock.setup(34)) {
@@ -237,6 +238,8 @@ int V2Libs::sendIdList(HardwareSerial *se) {
 }
 
 void V2Libs::setup() {
+    pinMode(RELAY_DIGITAL_PIN1, OUTPUT);
+    pinMode(RELAY_DIGITAL_PIN2, OUTPUT);
 #if RELEASE_BOARD
 #else
     setupPcComm();
@@ -280,8 +283,7 @@ void V2Libs::loop() {
 
                 //Serial.print("command:");
                 //Serial.println(command);
-
-                float value;
+                //float value;
 
                 switch(command) {
                 case CMD_TEMPERATURE:
@@ -403,6 +405,18 @@ void V2Libs::loop() {
                     if (bankCommEnabled) {
                         BANK_COMM.println("S");
                     }
+                    break;
+
+                case CMD_RELAY_OFF:
+                    digitalWrite(RELAY_DIGITAL_PIN1, LOW);
+                    digitalWrite(RELAY_DIGITAL_PIN2, LOW);
+                    BLE_COMM.println("R0:OK");
+                    break;
+
+                case CMD_RELAY_ON:
+                    digitalWrite(RELAY_DIGITAL_PIN1, HIGH);
+                    digitalWrite(RELAY_DIGITAL_PIN2, HIGH);
+                    BLE_COMM.println("R1:OK");
                     break;
 
                 default:

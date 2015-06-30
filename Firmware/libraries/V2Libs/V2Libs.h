@@ -24,6 +24,9 @@
 #define BUFFER_MAX   100
 #define MAX_ROWS     10 // 15min
 
+#define RELAY_DIGITAL_PIN1 13
+#define RELAY_DIGITAL_PIN2 36
+
 #define RELEASE_BOARD 1
 
 // Serial

@@ -84,6 +84,12 @@ int Cmd::parseCmd(char *s, int len) {
     if(startsWith(s, len, "N", 1)) {
         return CMD_LIST_SIZE;
     }
+    if(startsWith(s, len, "R0", 2)) {
+        return CMD_RELAY_OFF;
+    }
+    if(startsWith(s, len, "R1", 2)) {
+        return CMD_RELAY_ON;
+    }
 
     // IDS,ID
     if(startsWith(s, len, "IDS", 3)) {

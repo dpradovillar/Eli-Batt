@@ -30,6 +30,9 @@
 #define CMD_ID               16
 #define CMD_LIST_ID          17
 
+#define CMD_RELAY_ON         18
+#define CMD_RELAY_OFF        19
+
 class Cmd {
 private:
     SerialEndpoint *out;
