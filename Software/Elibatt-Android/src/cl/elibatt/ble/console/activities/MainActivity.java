@@ -13,9 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.*;
 import cl.elibatt.ble.console.BleWrapper;
 import cl.elibatt.ble.console.R;
 
@@ -31,6 +29,10 @@ public class MainActivity extends Activity {
     private Spinner mSpinner;
 
     private BleWrapper bleWrapper;
+
+    private Button mRefresh;
+    private ArrayAdapter<String> mAdapter;
+    private Spinner mPreferredSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +57,19 @@ public class MainActivity extends Activity {
 
         mSpinner = (Spinner) findViewById(R.id.enter_mode);
 
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        mPreferredSpinner = (Spinner) findViewById(R.id.ble_connection_name);
+        mPreferredSpinner.setAdapter(mAdapter);
+
         connect = (Button) findViewById(R.id.btn);
+        connect.setEnabled(false);
         connect.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                bleWrapper.startScan(MainActivity.this);
-                showRoundProcessDialog(MainActivity.this, R.layout.loading_process_dialog_anim);
+                String bleConnectionName = String.valueOf(mPreferredSpinner.getSelectedItem());
+                bleWrapper.setPreferredConnectionName(bleConnectionName);
+                bleWrapper.startScanAndAccept(MainActivity.this);
+                showRoundProcessDialog(MainActivity.this, "Conectando ...", R.layout.loading_process_dialog_anim);
                 Timer mTimer = new Timer();
                 mTimer.schedule(new TimerTask() {
                     @Override
@@ -86,9 +95,32 @@ public class MainActivity extends Activity {
                 }, BleWrapper.SCAN_PERIOD);
             }
         });
+        mRefresh = (Button) findViewById(R.id.refresh);
+        mRefresh.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRoundProcessDialog(MainActivity.this, "Buscando ...", R.layout.loading_process_dialog_anim);
+                bleWrapper.scannDevices(MainActivity.this, mAdapter);
+                Timer mTimer = new Timer();
+                mTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (!mAdapter.isEmpty()) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    connect.setEnabled(true);
+                                    mDialog.dismiss();
+                                }
+                            });
+                        }
+                    }
+                }, BleWrapper.SCAN_PERIOD);
+            }
+        });
     }
 
-    public void showRoundProcessDialog(Context mContext, int layout) {
+    public void showRoundProcessDialog(Context mContext, String title, int layout) {
         mDialog = new AlertDialog.Builder(mContext).create();
         mDialog.setOnKeyListener(new OnKeyListener() {
             @Override
@@ -101,6 +133,7 @@ public class MainActivity extends Activity {
         });
         mDialog.show();
         mDialog.setContentView(layout);
+        ((TextView)mDialog.findViewById(R.id.title)).setText(title);
     }
 
     @Override
