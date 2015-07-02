@@ -12,7 +12,7 @@ def getBinaryDate():
     print t
     return ''.join([struct.pack('!B',v) for v in t])
 
-ser = serial.Serial('/dev/tty.usbserial-AM024ZHG', 57600)
+ser = serial.Serial('/dev/tty.usbserial-AH02F1CR', 57600)
 
 time.sleep(2) # pause for 1 sec
 

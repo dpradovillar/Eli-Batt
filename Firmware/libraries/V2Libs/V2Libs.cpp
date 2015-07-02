@@ -98,13 +98,14 @@ void V2Libs::setupGps() {
     gpsEnabled = true;
 }
 void V2Libs::setupSdWriter() {
-    if (!sdWriter.setup(38, NULL)) {
-        maybeDebug("Error while connecting to SD.");
-        sdWriterEnabled = false;
-    } else {
+    if (sdWriter.setup(38, NULL)) {
         rowsCount = 0;
-        maybeDebug("SD setup OK");
         sdWriterEnabled = true;
+        maybeDebug("SD setup OK");
+    } else {
+        rowsCount = -1;
+        sdWriterEnabled = false;
+        maybeDebug("Error while connecting to SD.");
     }
 }
 void V2Libs::setupRtcClock() {
@@ -430,8 +431,8 @@ void V2Libs::loop() {
         } // endif ble.available()
     } // endif bleCommEnabled
 
-    /*static long last_t = 0;
-    if (millis() - last_t >= 1000) {
+    static long last_t = 0;
+    /*if (millis() - last_t >= 1000) {
         Serial.print(getTemperature()); Serial.println("C");
 
         MyDate aDate = getDateTime();
@@ -446,7 +447,6 @@ void V2Libs::loop() {
     }*/
 
     // ########################## Sensors Handling ####################
-    static long last_t = 0;
     if (millis() - last_t >= 1000) {
         MyDate rtc_now = getDateTime();
 
