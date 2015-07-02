@@ -3,6 +3,7 @@
 
 #include <elibatt_config.h>
 
+#include <Arduino.h>
 #include <DataStream.h>
 #include <Debugger.h>
 #include <AdafruitSD.h>

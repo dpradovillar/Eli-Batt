@@ -1,6 +1,7 @@
 #ifndef __SD_DATA_H_
 #define __SD_DATA_H_
 
+#include <Arduino.h>
 #include <DataStream.h>
 #include <Debugger.h>
 #include <AdafruitSD.h>

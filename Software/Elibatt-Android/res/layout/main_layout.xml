@@ -1,29 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:gravity="center"
-              android:orientation="vertical">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:orientation="vertical">
 
     <TextView
-            android:id="@+id/tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="E-Libatt Demo"
-            android:textSize="30sp"/>
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="E-Libatt Demo"
+        android:textSize="30sp"/>
 
     <Spinner
-            android:id="@+id/enter_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/options"/>
+        android:id="@+id/enter_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/options"/>
 
     <Button
-            android:id="@+id/btn"
-            style="@style/button_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Conectar"/>
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Conectar"
+        style="@style/button_text"/>
+
+    <Button
+        android:id="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Refrescar"
+        style="@style/button_text"/>
+
+    <Spinner
+        android:id="@+id/ble_connection_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

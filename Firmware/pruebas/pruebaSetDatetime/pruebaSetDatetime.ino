@@ -45,7 +45,7 @@ void setup() {
 void loop() {
   MyDate d = rtc.readDate();
   
-  Serial.print(2000 + d.year); Serial.print("/");
+  Serial.print(d.year); Serial.print("/");
   Serial.print(d.month); Serial.print("/");
   Serial.print(d.day); Serial.print(" ");
   Serial.print(d.hour); Serial.print(":");

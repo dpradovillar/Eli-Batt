@@ -60,29 +60,84 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GraphActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/activities/GraphActivity.java">
+      <file leaf-file-name="main_layout.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/main_layout.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3327645">
-              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-              <folding>
-                <element signature="method#Graph#0;class#Graph#0;class#GraphActivity#0" expanded="false" />
-                <element signature="class#4147:4820" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="graph_layout.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/graph_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.448276">
-              <caret line="19" column="46" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="46" />
+            <state vertical-scroll-proportion="-6.6896553">
+              <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
               <folding />
             </state>
           </provider>
           <provider editor-type-id="android-designer">
             <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/activities/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.9446903">
+              <caret line="130" column="29" selection-start-line="130" selection-start-column="29" selection-end-line="130" selection-end-column="29" />
+              <folding>
+                <element signature="e#2039#3668#0" expanded="true" />
+                <element signature="e#2554#3618#0" expanded="true" />
+                <element signature="e#3617#3618#0" expanded="true" />
+                <element signature="e#3667#3668#0" expanded="true" />
+                <element signature="e#3763#4700#0" expanded="true" />
+                <element signature="e#4110#4650#0" expanded="true" />
+                <element signature="e#4291#4582#0" expanded="true" />
+                <element signature="e#4581#4582#0" expanded="true" />
+                <element signature="e#4649#4650#0" expanded="true" />
+                <element signature="e#4699#4700#0" expanded="true" />
+                <element signature="e#4890#5220#0" expanded="true" />
+                <element signature="e#5219#5220#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="loading_process_dialog_anim.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/loading_process_dialog_anim.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-13.724138">
+              <caret line="31" column="42" selection-start-line="31" selection-start-column="42" selection-end-line="31" selection-end-column="42" />
+              <folding>
+                <element signature="e#1370#1389#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BleWrapper.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/BleWrapper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="97" column="56" selection-start-line="97" selection-start-column="56" selection-end-line="97" selection-end-column="56" />
+              <folding>
+                <element signature="e#1033#1034#0" expanded="true" />
+                <element signature="e#1116#1117#0" expanded="true" />
+                <element signature="e#1347#1348#0" expanded="true" />
+                <element signature="e#1377#1378#0" expanded="true" />
+                <element signature="e#2059#2060#0" expanded="true" />
+                <element signature="e#2116#2117#0" expanded="true" />
+                <element signature="e#2219#3818#0" expanded="true" />
+                <element signature="e#2327#2494#0" expanded="true" />
+                <element signature="e#2493#2494#0" expanded="true" />
+                <element signature="e#2617#2625#0" expanded="true" />
+                <element signature="e#2692#3452#0" expanded="true" />
+                <element signature="e#2929#3402#0" expanded="true" />
+                <element signature="e#3401#3402#0" expanded="true" />
+                <element signature="e#3451#3452#0" expanded="true" />
+                <element signature="e#3817#3818#0" expanded="true" />
+                <element signature="e#3905#5134#0" expanded="true" />
+                <element signature="e#4086#4768#0" expanded="true" />
+                <element signature="e#4767#4768#0" expanded="true" />
+                <element signature="e#5133#5134#0" expanded="true" />
+              </folding>
+            </state>
           </provider>
         </entry>
       </file>
@@ -103,8 +158,10 @@
       <list>
         <option value="$PROJECT_DIR$/src/cl/elibatt/ble/console/RBLUtils.java" />
         <option value="$PROJECT_DIR$/src/cl/elibatt/ble/console/RBLService.java" />
+        <option value="$PROJECT_DIR$/res/layout/main_layout.xml" />
         <option value="$PROJECT_DIR$/src/cl/elibatt/ble/console/BleWrapper.java" />
-        <option value="$PROJECT_DIR$/src/cl/elibatt/ble/console/activities/GraphActivity.java" />
+        <option value="$PROJECT_DIR$/res/layout/loading_process_dialog_anim.xml" />
+        <option value="$PROJECT_DIR$/src/cl/elibatt/ble/console/activities/MainActivity.java" />
       </list>
     </option>
   </component>
@@ -150,17 +207,19 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Chat" />
+              <option name="myItemId" value="Console" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Chat" />
+              <option name="myItemId" value="Console" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -170,7 +229,7 @@
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Chat" />
+              <option name="myItemId" value="Console" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -188,7 +247,7 @@
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Chat" />
+              <option name="myItemId" value="Console" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -210,7 +269,7 @@
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Chat" />
+              <option name="myItemId" value="Console" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -224,7 +283,7 @@
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Chat" />
+              <option name="myItemId" value="Console" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -242,8 +301,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -258,6 +315,9 @@
     <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -465,26 +525,26 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952693" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4117647" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1801676" sideWeight="0.23891273" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14005603" sideWeight="0.76108724" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3277311" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23669468" sideWeight="0.76108724" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24924472" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20457797" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35854343" sideWeight="0.49713877" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35854343" sideWeight="0.49713877" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4229692" sideWeight="0.49427754" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4117647" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277311" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28291318" sideWeight="0.49427754" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -536,7 +596,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/cl/elibatt/ble/console/activities/GraphActivity.java</url>
-          <line>251</line>
+          <line>252</line>
           <properties />
           <option name="timeStamp" value="8" />
         </line-breakpoint>
@@ -548,7 +608,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/cl/elibatt/ble/console/BleWrapper.java</url>
-          <line>100</line>
+          <line>153</line>
           <properties />
           <option name="timeStamp" value="12" />
         </line-breakpoint>
@@ -566,6 +626,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="109" column="29" selection-start-line="109" selection-start-column="29" selection-end-line="109" selection-end-column="29" />
+          <folding>
+            <element signature="e#2039#3668#0" expanded="true" />
+            <element signature="e#2554#3618#0" expanded="true" />
+            <element signature="e#3617#3618#0" expanded="true" />
+            <element signature="e#3667#3668#0" expanded="true" />
+            <element signature="e#3763#4700#0" expanded="true" />
+            <element signature="e#4110#4650#0" expanded="true" />
+            <element signature="e#4291#4582#0" expanded="true" />
+            <element signature="e#4581#4582#0" expanded="true" />
+            <element signature="e#4649#4650#0" expanded="true" />
+            <element signature="e#4699#4700#0" expanded="true" />
+            <element signature="e#4890#5220#0" expanded="true" />
+            <element signature="e#5219#5220#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -575,7 +649,7 @@
           <caret line="187" column="19" selection-start-line="187" selection-start-column="19" selection-end-line="187" selection-end-column="19" />
           <folding>
             <element signature="method#Graph#0;class#Graph#0;class#GraphActivity#0" expanded="false" />
-            <element signature="class#4147:4820" expanded="false" />
+            <element signature="class#4148:4821" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -599,7 +673,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -616,7 +690,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="225" column="2" selection-start-line="225" selection-start-column="2" selection-end-line="225" selection-end-column="2" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -625,6 +699,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="36" column="37" selection-start-line="36" selection-start-column="37" selection-end-line="36" selection-end-column="37" />
+          <folding>
+            <element signature="e#2039#3668#0" expanded="true" />
+            <element signature="e#2554#3618#0" expanded="true" />
+            <element signature="e#3617#3618#0" expanded="true" />
+            <element signature="e#3667#3668#0" expanded="true" />
+            <element signature="e#3763#4700#0" expanded="true" />
+            <element signature="e#4110#4650#0" expanded="true" />
+            <element signature="e#4291#4582#0" expanded="true" />
+            <element signature="e#4581#4582#0" expanded="true" />
+            <element signature="e#4649#4650#0" expanded="true" />
+            <element signature="e#4699#4700#0" expanded="true" />
+            <element signature="e#4890#5220#0" expanded="true" />
+            <element signature="e#5219#5220#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -670,7 +758,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="44" column="35" selection-start-line="44" selection-start-column="31" selection-end-line="44" selection-end-column="35" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -679,6 +767,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="128" column="35" selection-start-line="128" selection-start-column="35" selection-end-line="128" selection-end-column="35" />
+          <folding>
+            <element signature="e#2039#3668#0" expanded="true" />
+            <element signature="e#2554#3618#0" expanded="true" />
+            <element signature="e#3617#3618#0" expanded="true" />
+            <element signature="e#3667#3668#0" expanded="true" />
+            <element signature="e#3763#4700#0" expanded="true" />
+            <element signature="e#4110#4650#0" expanded="true" />
+            <element signature="e#4291#4582#0" expanded="true" />
+            <element signature="e#4581#4582#0" expanded="true" />
+            <element signature="e#4649#4650#0" expanded="true" />
+            <element signature="e#4699#4700#0" expanded="true" />
+            <element signature="e#4890#5220#0" expanded="true" />
+            <element signature="e#5219#5220#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -706,7 +808,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="288" column="45" selection-start-line="288" selection-start-column="41" selection-end-line="288" selection-end-column="45" />
-          <folding />
+          <folding>
+            <element signature="e#0#11637#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#5246#5247#0" expanded="false" />
+            <element signature="e#5292#5293#0" expanded="false" />
+            <element signature="e#5356#5357#0" expanded="false" />
+            <element signature="e#5386#5387#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -715,7 +824,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="44" column="35" selection-start-line="44" selection-start-column="31" selection-end-line="44" selection-end-column="35" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -724,6 +833,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="128" column="35" selection-start-line="128" selection-start-column="35" selection-end-line="128" selection-end-column="35" />
+          <folding>
+            <element signature="e#2039#3668#0" expanded="true" />
+            <element signature="e#2554#3618#0" expanded="true" />
+            <element signature="e#3617#3618#0" expanded="true" />
+            <element signature="e#3667#3668#0" expanded="true" />
+            <element signature="e#3763#4700#0" expanded="true" />
+            <element signature="e#4110#4650#0" expanded="true" />
+            <element signature="e#4291#4582#0" expanded="true" />
+            <element signature="e#4581#4582#0" expanded="true" />
+            <element signature="e#4649#4650#0" expanded="true" />
+            <element signature="e#4699#4700#0" expanded="true" />
+            <element signature="e#4890#5220#0" expanded="true" />
+            <element signature="e#5219#5220#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -751,7 +874,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="288" column="45" selection-start-line="288" selection-start-column="41" selection-end-line="288" selection-end-column="45" />
-          <folding />
+          <folding>
+            <element signature="e#0#11637#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#5246#5247#0" expanded="false" />
+            <element signature="e#5292#5293#0" expanded="false" />
+            <element signature="e#5356#5357#0" expanded="false" />
+            <element signature="e#5386#5387#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -760,7 +890,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="95" column="31" selection-start-line="95" selection-start-column="31" selection-end-line="95" selection-end-column="31" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -776,6 +906,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="133" column="17" selection-start-line="133" selection-start-column="17" selection-end-line="133" selection-end-column="17" />
+          <folding>
+            <element signature="e#2039#3668#0" expanded="true" />
+            <element signature="e#2554#3618#0" expanded="true" />
+            <element signature="e#3617#3618#0" expanded="true" />
+            <element signature="e#3667#3668#0" expanded="true" />
+            <element signature="e#3763#4700#0" expanded="true" />
+            <element signature="e#4110#4650#0" expanded="true" />
+            <element signature="e#4291#4582#0" expanded="true" />
+            <element signature="e#4581#4582#0" expanded="true" />
+            <element signature="e#4649#4650#0" expanded="true" />
+            <element signature="e#4699#4700#0" expanded="true" />
+            <element signature="e#4890#5220#0" expanded="true" />
+            <element signature="e#5219#5220#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -803,7 +947,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="44" column="47" selection-start-line="44" selection-start-column="47" selection-end-line="44" selection-end-column="47" />
-          <folding />
+          <folding>
+            <element signature="e#0#11637#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#5246#5247#0" expanded="false" />
+            <element signature="e#5292#5293#0" expanded="false" />
+            <element signature="e#5356#5357#0" expanded="false" />
+            <element signature="e#5386#5387#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -812,7 +963,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="95" column="31" selection-start-line="95" selection-start-column="31" selection-end-line="95" selection-end-column="31" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -828,6 +979,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="133" column="17" selection-start-line="133" selection-start-column="17" selection-end-line="133" selection-end-column="17" />
+          <folding>
+            <element signature="e#2039#3668#0" expanded="true" />
+            <element signature="e#2554#3618#0" expanded="true" />
+            <element signature="e#3617#3618#0" expanded="true" />
+            <element signature="e#3667#3668#0" expanded="true" />
+            <element signature="e#3763#4700#0" expanded="true" />
+            <element signature="e#4110#4650#0" expanded="true" />
+            <element signature="e#4291#4582#0" expanded="true" />
+            <element signature="e#4581#4582#0" expanded="true" />
+            <element signature="e#4649#4650#0" expanded="true" />
+            <element signature="e#4699#4700#0" expanded="true" />
+            <element signature="e#4890#5220#0" expanded="true" />
+            <element signature="e#5219#5220#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -855,7 +1020,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="44" column="47" selection-start-line="44" selection-start-column="47" selection-end-line="44" selection-end-column="47" />
-          <folding />
+          <folding>
+            <element signature="e#0#11637#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#5246#5247#0" expanded="false" />
+            <element signature="e#5292#5293#0" expanded="false" />
+            <element signature="e#5356#5357#0" expanded="false" />
+            <element signature="e#5386#5387#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -880,6 +1052,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/graph_layout.xml">
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="31" selection-start-line="40" selection-start-column="31" selection-end-line="40" selection-end-column="31" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -892,26 +1074,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/loading_process_dialog_anim.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/main_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.148148">
-          <caret line="15" column="24" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/console_layout.xml">
@@ -938,51 +1100,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/activities/ConsoleActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/RBLService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="48" column="73" selection-start-line="48" selection-start-column="68" selection-end-line="48" selection-end-column="73" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="57" column="44" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#11637#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#5246#5247#0" expanded="false" />
+            <element signature="e#5292#5293#0" expanded="false" />
+            <element signature="e#5356#5357#0" expanded="false" />
+            <element signature="e#5386#5387#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/RBLUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="72" selection-start-line="14" selection-start-column="72" selection-end-line="14" selection-end-column="72" />
           <folding>
             <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/BleWrapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.70419425">
-          <caret line="89" column="37" selection-start-line="89" selection-start-column="37" selection-end-line="89" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/RBLUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0066225166">
-          <caret line="14" column="72" selection-start-line="14" selection-start-column="72" selection-end-line="14" selection-end-column="72" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/RBLService.java">
+    <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/activities/GraphActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="57" column="44" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="44" />
-          <folding />
+          <caret line="183" column="22" selection-start-line="183" selection-start-column="22" selection-end-line="183" selection-end-column="22" />
+          <folding>
+            <element signature="method#Graph#0;class#Graph#0;class#GraphActivity#0" expanded="false" />
+            <element signature="class#4148:4821" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/activities/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/activities/ConsoleActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="61" column="33" selection-start-line="61" selection-start-column="27" selection-end-line="61" selection-end-column="33" />
+          <caret line="48" column="73" selection-start-line="48" selection-start-column="68" selection-end-line="48" selection-end-column="73" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/graph_layout.xml">
+    <entry file="file://$PROJECT_DIR$/res/layout/main_layout.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.448276">
-          <caret line="19" column="46" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="46" />
+        <state vertical-scroll-proportion="-6.6896553">
+          <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
           <folding />
         </state>
       </provider>
@@ -990,16 +1157,155 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/activities/GraphActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/BleWrapper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3327645">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="97" column="56" selection-start-line="97" selection-start-column="56" selection-end-line="97" selection-end-column="56" />
           <folding>
-            <element signature="method#Graph#0;class#Graph#0;class#GraphActivity#0" expanded="false" />
-            <element signature="class#4147:4820" expanded="false" />
+            <element signature="e#1033#1034#0" expanded="true" />
+            <element signature="e#1116#1117#0" expanded="true" />
+            <element signature="e#1347#1348#0" expanded="true" />
+            <element signature="e#1377#1378#0" expanded="true" />
+            <element signature="e#2059#2060#0" expanded="true" />
+            <element signature="e#2116#2117#0" expanded="true" />
+            <element signature="e#2219#3818#0" expanded="true" />
+            <element signature="e#2327#2494#0" expanded="true" />
+            <element signature="e#2493#2494#0" expanded="true" />
+            <element signature="e#2617#2625#0" expanded="true" />
+            <element signature="e#2692#3452#0" expanded="true" />
+            <element signature="e#2929#3402#0" expanded="true" />
+            <element signature="e#3401#3402#0" expanded="true" />
+            <element signature="e#3451#3452#0" expanded="true" />
+            <element signature="e#3817#3818#0" expanded="true" />
+            <element signature="e#3905#5134#0" expanded="true" />
+            <element signature="e#4086#4768#0" expanded="true" />
+            <element signature="e#4767#4768#0" expanded="true" />
+            <element signature="e#5133#5134#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/loading_process_dialog_anim.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.724138">
+          <caret line="31" column="42" selection-start-line="31" selection-start-column="42" selection-end-line="31" selection-end-column="42" />
+          <folding>
+            <element signature="e#1370#1389#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cl/elibatt/ble/console/activities/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9446903">
+          <caret line="130" column="29" selection-start-line="130" selection-start-column="29" selection-end-line="130" selection-end-column="29" />
+          <folding>
+            <element signature="e#2039#3668#0" expanded="true" />
+            <element signature="e#2554#3618#0" expanded="true" />
+            <element signature="e#3617#3618#0" expanded="true" />
+            <element signature="e#3667#3668#0" expanded="true" />
+            <element signature="e#3763#4700#0" expanded="true" />
+            <element signature="e#4110#4650#0" expanded="true" />
+            <element signature="e#4291#4582#0" expanded="true" />
+            <element signature="e#4581#4582#0" expanded="true" />
+            <element signature="e#4649#4650#0" expanded="true" />
+            <element signature="e#4699#4700#0" expanded="true" />
+            <element signature="e#4890#5220#0" expanded="true" />
+            <element signature="e#5219#5220#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Android</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Python 2.7.6 (/usr/bin/python) interpreter library</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>Console</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>achartengine-1.1.0</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

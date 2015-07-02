@@ -105,13 +105,15 @@ void V2Libs::setupGps() {
     gpsEnabled = true;
 }
 void V2Libs::setupSdWriter() {
-    if (!sdWriter.setup(38, NULL)) {
+    if (sdWriter.setup(38, NULL)) {
+        rowsCount = 0;
+        sdWriterEnabled = true;
+        maybeDebug("SD setup OK");
+    } else {
+        rowsCount = -1;
+        sdWriterEnabled = false;
         maybeDebug("Error while connecting to SD.");
-        while(1);
     }
-    rowsCount = 0;
-    maybeDebug("SD setup OK");
-    sdWriterEnabled = true;
 }
 void V2Libs::setupRtcClock() {
     if (!rtcClock.setup(34)) {
@@ -270,6 +272,8 @@ int V2Libs::sendIdList(HardwareSerial *se) {
 }
 
 void V2Libs::setup() {
+    pinMode(RELAY_DIGITAL_PIN1, OUTPUT);
+    pinMode(RELAY_DIGITAL_PIN2, OUTPUT);
 #if RELEASE_BOARD
 #else
     setupPcComm();
@@ -313,8 +317,7 @@ void V2Libs::loop() {
 
                 //Serial.print("command:");
                 //Serial.println(command);
-
-                float value;
+                //float value;
 
                 switch(command) {
                 case CMD_TEMPERATURE:
@@ -445,6 +448,18 @@ void V2Libs::loop() {
                     }
                     break;
 
+                case CMD_RELAY_OFF:
+                    digitalWrite(RELAY_DIGITAL_PIN1, LOW);
+                    digitalWrite(RELAY_DIGITAL_PIN2, LOW);
+                    BLE_COMM.println("R0:OK");
+                    break;
+
+                case CMD_RELAY_ON:
+                    digitalWrite(RELAY_DIGITAL_PIN1, HIGH);
+                    digitalWrite(RELAY_DIGITAL_PIN2, HIGH);
+                    BLE_COMM.println("R1:OK");
+                    break;
+
                 default:
                     BLE_COMM.println("Command not found!");
                     maybeDebug("Command not found!");
@@ -456,8 +471,8 @@ void V2Libs::loop() {
         } // endif ble.available()
     } // endif bleCommEnabled
 
-    /*static long last_t = 0;
-    if (millis() - last_t >= 1000) {
+    static long last_t = 0;
+    /*if (millis() - last_t >= 1000) {
         Serial.print(getTemperature()); Serial.println("C");
 
         MyDate aDate = getDateTime();
@@ -472,7 +487,6 @@ void V2Libs::loop() {
     }*/
 
     // ########################## Sensors Handling ####################
-    static long last_t = 0;
     if (millis() - last_t >= 1000) {
         MyDate rtc_now = getDateTime();
 

@@ -6,6 +6,9 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.ArrayAdapter;
+
+import java.util.ArrayList;
 
 /**
  * Created by rene on 18-10-14.
@@ -21,6 +24,8 @@ public class BleWrapper {
 
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothDevice mDevice;
+
+    private String mPreferredConnectionName;
 
     public BleWrapper(Context context) {
         this(context, (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE));
@@ -66,7 +71,53 @@ public class BleWrapper {
         return true;
     }
 
-    public void startScan(final Activity activity) {
+    public void setPreferredConnectionName(String connectionName) {
+        mPreferredConnectionName = connectionName;
+    }
+
+    public void scannDevices(final Activity activity, final ArrayAdapter<String> adapter) {
+        new Thread() {
+            @Override
+            public void run() {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.clear();
+                    }
+                });
+                if (mBluetoothAdapter != null) {
+                    final ArrayList<String> seenDevices = new ArrayList<String>();
+                    BluetoothAdapter.LeScanCallback callback = new BluetoothAdapter.LeScanCallback() {
+                        @Override
+                        public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String name = device.getName();
+                                    if (!seenDevices.contains(name)) {
+                                        adapter.add(name);
+                                        seenDevices.add(name);
+                                    }
+                                }
+                            });
+                        }
+                    };
+
+                    mBluetoothAdapter.startLeScan(callback);
+
+                    try {
+                        Thread.sleep(SCAN_PERIOD);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    mBluetoothAdapter.stopLeScan(callback);
+                }
+            }
+        }.start();
+    }
+
+    public void startScanAndAccept(final Activity activity) {
         new Thread() {
             @Override
             public void run() {
@@ -77,7 +128,9 @@ public class BleWrapper {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    acceptDevice(device);
+                                    if (device != null && device.getName().equalsIgnoreCase(mPreferredConnectionName)) {
+                                        acceptDevice(device);
+                                    }
                                 }
                             });
                         }
