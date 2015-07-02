@@ -17,6 +17,7 @@ typedef struct {
     float temperature[MAX_SLAVES];
     float current[MAX_SLAVES];
     float voltage[MAX_SLAVES];
+    bool enabled[MAX_SLAVES];
     int n;
 } SlaveStruct;
 

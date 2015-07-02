@@ -17,9 +17,9 @@
 
 // Se definen valores para los sensores de corriente y voltaje
 #define MAX_BATT_V 12.6
-#define MAX_VOLTS 3.31
-#define R1_R2 12940.0
-#define R2 3210.0
+#define MAX_VOLTS 5.00 // ? V entre GND y VCC?
+#define R1_R2 335.1
+#define R2 118.3
 
 #define BUFFER_MAX   100
 #define MAX_ROWS     10 // 15min
@@ -72,6 +72,8 @@ private:
 
     int sendThrough(GpsStruct &gdata, HardwareSerial *se);
     int sendAnalogValues(HardwareSerial *se);
+
+    void clearSlaveFlags();
 
 public:
     V2Libs();

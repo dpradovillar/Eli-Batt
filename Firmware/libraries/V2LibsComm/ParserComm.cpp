@@ -34,6 +34,7 @@ void ParserComm::putMasterInfo(uint32_t id, float temp, float current, float vol
     slaves.temperature[0] = temp;
     slaves.current[0] = current;
     slaves.voltage[0] = voltage;
+    slaves.enabled[0] = true;
 }
 
 void ParserComm::putSlaveInfo(uint32_t id, float temp, float current, float voltage) {
@@ -42,12 +43,14 @@ void ParserComm::putSlaveInfo(uint32_t id, float temp, float current, float volt
         slaves.temperature[pos] = temp;
         slaves.current[pos] = current;
         slaves.voltage[pos] = voltage;
+        slaves.enabled[pos] = true;
     } else if (slaves.n < MAX_SLAVES) {
         pos = slaves.n;
         slaves.id[pos] = id;
         slaves.temperature[pos] = temp;
         slaves.current[pos] = current;
         slaves.voltage[pos] = voltage;
+        slaves.enabled[pos] = true;
         slaves.n++;
     } // else, don't store as there's no more room!
 }

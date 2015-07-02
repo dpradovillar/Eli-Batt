@@ -32,6 +32,13 @@ int V2Libs::sendAnalogValues(HardwareSerial *se) {
     return size;
 }
 
+void V2Libs::clearSlaveFlags() {
+    // Clear all the flags, but the one from master!
+    for (int i = 1; i < parserComm.slaves.n; i++) {
+        parserComm.slaves.enabled[i] = false;
+    }
+}
+
 V2Libs::V2Libs() : BANK_COMM(10,11) {
     pcCommEnabled = false;
     bleCommEnabled = false;
@@ -164,27 +171,45 @@ MyDate V2Libs::getDateTime() {
 
 float V2Libs::getAverageTemperature() {
     float avg = 0.0f;
+    int n = 0;
     for (int i = 0; i < parserComm.slaves.n; i++) {
-        avg += parserComm.slaves.temperature[i];
+        if (parserComm.slaves.enabled[i]) {
+            ++n;
+            avg += parserComm.slaves.temperature[i];
+        }
     }
-    return avg/parserComm.slaves.n;
+    return avg/n;
 }
 float V2Libs::getAverageCurrent() {
     float avg = 0.0f;
+    int n = 0;
     for (int i = 0; i < parserComm.slaves.n; i++) {
-        avg += parserComm.slaves.current[i];
+        if (parserComm.slaves.enabled[i]) {
+            ++n;
+            avg += parserComm.slaves.current[i];
+        }
     }
-    return avg/parserComm.slaves.n;
+    return avg/n;
 }
 float V2Libs::getAverageVoltage() {
     float avg = 0.0f;
+    int n = 0;
     for (int i = 0; i < parserComm.slaves.n; i++) {
-        avg += parserComm.slaves.voltage[i];
+        if (parserComm.slaves.enabled[i]) {
+            n++;
+            avg += parserComm.slaves.voltage[i];
+        }
     }
-    return avg/parserComm.slaves.n;
+    return avg/n;
 }
 int V2Libs::getSlaveCount() {
-    return parserComm.slaves.n;
+    int n = 0;
+    for (int i = 0; i < parserComm.slaves.n; i++) {
+        if (parserComm.slaves.enabled[i]) {
+            n++;
+        }
+    }
+    return n;
 }
 
 int V2Libs::sendTemperatureList(HardwareSerial *se) {
@@ -193,7 +218,9 @@ int V2Libs::sendTemperatureList(HardwareSerial *se) {
         if (i > 0) {
             size += se->print(";");
         }
-        size += se->print(parserComm.slaves.temperature[i]);
+        if (parserComm.slaves.enabled[i]) {
+            size += se->print(parserComm.slaves.temperature[i]);
+        }
     }
     size += se->println();
     se->flush();
@@ -205,7 +232,9 @@ int V2Libs::sendCurrentList(HardwareSerial *se) {
         if (i > 0) {
             size += se->print(";");
         }
-        size += se->print(parserComm.slaves.current[i]);
+        if (parserComm.slaves.enabled[i]) {
+            size += se->print(parserComm.slaves.current[i]);
+        }
     }
     size += se->println();
     se->flush();
@@ -217,7 +246,9 @@ int V2Libs::sendVoltageList(HardwareSerial *se) {
         if (i > 0) {
             size += se->print(";");
         }
-        size += se->print(parserComm.slaves.voltage[i]);
+        if (parserComm.slaves.enabled[i]) {
+            size += se->print(parserComm.slaves.voltage[i]);
+        }
     }
     size += se->println();
     se->flush();
@@ -229,7 +260,9 @@ int V2Libs::sendIdList(HardwareSerial *se) {
         if (i > 0) {
             size += se->print(";");
         }
-        size += se->print(parserComm.slaves.id[i]);
+        if (parserComm.slaves.enabled[i]) {
+            size += se->print(parserComm.slaves.id[i]);
+        }
     }
     size += se->println();
     se->flush();
@@ -335,6 +368,7 @@ void V2Libs::loop() {
                     // Update temperatures of all boards
                     parserComm.slaves.temperature[0] = getTemperature();
                     if (bankCommEnabled) {
+                        clearSlaveFlags();
                         BANK_COMM.println("S");
                     }
 
@@ -346,6 +380,7 @@ void V2Libs::loop() {
                     // Update current of all boards
                     parserComm.slaves.current[0] = getCurrent();
                     if (bankCommEnabled) {
+                        clearSlaveFlags();
                         BANK_COMM.println("S");
                     }
 
@@ -357,6 +392,7 @@ void V2Libs::loop() {
                     // Update voltage of all boards
                     parserComm.slaves.voltage[0] = getVoltage();
                     if (bankCommEnabled) {
+                        clearSlaveFlags();
                         BANK_COMM.println("S");
                     }
 
@@ -373,6 +409,7 @@ void V2Libs::loop() {
                     // Update temperature of all boards
                     parserComm.slaves.temperature[0] = getTemperature();
                     if (bankCommEnabled) {
+                        clearSlaveFlags();
                         BANK_COMM.println("S");
                     }
 
@@ -383,6 +420,7 @@ void V2Libs::loop() {
                     // Update current of all boards
                     parserComm.slaves.current[0] = getCurrent();
                     if (bankCommEnabled) {
+                        clearSlaveFlags();
                         BANK_COMM.println("S");
                     }
 
@@ -393,6 +431,7 @@ void V2Libs::loop() {
                     // Update voltage of all boards
                     parserComm.slaves.voltage[0] = getVoltage();
                     if (bankCommEnabled) {
+                        clearSlaveFlags();
                         BANK_COMM.println("S");
                     }
 
@@ -401,6 +440,7 @@ void V2Libs::loop() {
                     sendIdList(&BLE_COMM);
 
                     if (bankCommEnabled) {
+                        clearSlaveFlags();
                         BANK_COMM.println("S");
                     }
                     break;

@@ -25,9 +25,9 @@ void RtcClock::RTC_init(){
       delay(10);
 }
 
-void RtcClock::RTC_setTimeDate(const MyDate &d){
+void RtcClock::RTC_setTimeDate(const MyDate &d) {
     //day(1-31), month(1-12), year(0-99), hour(0-23), minute(0-59), second(0-59)
-    int TimeDate [7]={d.second,d.minute,d.hour,0,d.day,d.month,d.year};
+    int TimeDate [7]={d.second,d.minute,d.hour,0,d.day,d.month,d.year >= 2000 ? d.year-2000 : d.year};
     for(int i=0; i<=6;i++){
         if(i==3)
             i++;
