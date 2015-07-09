@@ -171,6 +171,16 @@ MyDate V2Libs::getDateTime() {
     return MyDate();
 }
 
+void V2Libs::dateTimeToIso(MyDate *md, char *buff15bytes) {
+    Utils::dateToIso(md->year, md->month, md->day, buff15bytes);
+    buff15bytes[8] = 'T';
+    Utils::timeToIso(md->hour, md->minute, md->second, buff15bytes + 9);
+}
+
+void V2Libs::isoToDateTime(char *buff15bytes, MyDate *md) {
+    Utils::parseIsoDate(buff15bytes, md->year, md->month, md->day, md->hour, md->minute, md->second);
+}
+
 float V2Libs::getAverageTemperature() {
     float avg = 0.0f;
     int n = 0;
@@ -308,6 +318,9 @@ void V2Libs::loop() {
 
     static char cmdBuffer[BUFFER_MAX];
     static int cmdLen = 0;
+
+    static char dateBuffer[16];
+    MyDate dateTemporal;
 
     GpsStruct gdata;
 
@@ -468,6 +481,26 @@ void V2Libs::loop() {
 
                 case CMD_RELAY_STATUS:
                     BLE_COMM.println(lastDigitalWrite == HIGH ? "R?:1" : "R?:0");
+                    break;
+
+                case CMD_GET_DATE:
+                    dateTemporal = getDateTime();
+                    dateTimeToIso(&dateTemporal, dateBuffer);
+                    dateBuffer[15] = 0;
+                    BLE_COMM.print("GDATE:");
+                    BLE_COMM.println(dateBuffer);
+                    break;
+
+                case CMD_SET_DATE:
+                    isoToDateTime(cmdBuffer+5, &dateTemporal);
+                    rtcClock.adjust(dateTemporal);
+
+                    // Send ACK
+                    dateTemporal = getDateTime();
+                    dateTimeToIso(&dateTemporal, dateBuffer);
+                    dateBuffer[15] = 0;
+                    BLE_COMM.print("SDATE:");
+                    BLE_COMM.println(dateBuffer);
                     break;
 
                 default:

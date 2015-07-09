@@ -30,6 +30,14 @@ bool Cmd::startsWith(char *s, int len_s, char *t, int len_t){
 }
 
 int Cmd::parseCmd(char *s, int len) {
+    // RTC related operations
+    if(startsWith(s, len, "SDATE", 5) && len >= 20) {
+        return CMD_SET_DATE;
+    }
+    if(startsWith(s, len, "GDATE", 5)) {
+        return CMD_GET_DATE;
+    }
+
     // GPS
     if(startsWith(s, len, "GPS", 3)){
         return CMD_GPS;

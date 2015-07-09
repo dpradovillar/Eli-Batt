@@ -156,6 +156,12 @@ void Utils::dateToIso(uint16_t year, uint8_t month, uint8_t day, char *buff8) {
     leftPad(day, buff8+6, 2);
 }
 
+void Utils::timeToIso(uint8_t hour, uint8_t minute, uint8_t second, char *buff6) {
+    leftPad(hour, buff6, 2);
+    leftPad(minute, buff6+2, 2);
+    leftPad(second, buff6+4, 2);
+}
+
 uint32_t Utils::pot10[] = {
     1,
     10,
@@ -249,3 +255,16 @@ void Utils::processList(char *s, int len, int *firstElement, float *secondAndOn,
         }
     }
 }
+
+void Utils::parseIsoDate(char *buffer15bytes,
+        uint16_t &year, uint8_t &month, uint8_t &day,
+        uint8_t &hour, uint8_t &minute, uint8_t &second) {
+    year = processInt(buffer15bytes, 4);
+    month = processInt(buffer15bytes + 4, 2);
+    day = processInt(buffer15bytes + 6, 2);
+
+    hour = processInt(buffer15bytes + 9, 2);
+    minute = processInt(buffer15bytes + 11, 2);
+    second = processInt(buffer15bytes + 13, 2);
+}
+

@@ -27,7 +27,7 @@
 #define RELAY_DIGITAL_PIN1 13
 #define RELAY_DIGITAL_PIN2 36
 
-#define RELEASE_BOARD 1
+//#define RELEASE_BOARD 1
 
 // Serial
 #define PC_COMM Serial
@@ -106,6 +106,9 @@ public:
     float getLongitude();
     float getAltitude();
     MyDate getDateTime();
+
+    void dateTimeToIso(MyDate *md, char *buff15bytes);
+    void isoToDateTime(char *buff15bytes, MyDate *md);
 
     // Slave-related methods
     float getAverageTemperature();

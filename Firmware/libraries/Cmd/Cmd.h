@@ -34,6 +34,9 @@
 #define CMD_RELAY_OFF        19
 #define CMD_RELAY_STATUS     20
 
+#define CMD_SET_DATE         21
+#define CMD_GET_DATE         22
+
 class Cmd {
 private:
     SerialEndpoint *out;

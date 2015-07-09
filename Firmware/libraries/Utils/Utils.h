@@ -49,11 +49,16 @@ public:
     static void splitFloat(float value, uint32_t &_int, uint32_t &_dec);
 
     static void dateToIso(uint16_t year, uint8_t month, uint8_t day, char *buff8);
+    static void timeToIso(uint8_t hour, uint8_t minute, uint8_t second, char *buff6);
 
     static int processInt(char *s, int len);
     static float processFloat(char *s, int len);
     static void processList(char *s, int len, int *firstElement, float *secondAndOn, int size, int *howMany);
 
+    // buffer15bytes should be in the format yyyyMMddThhmmss
+    static void parseIsoDate(char *buffer15bytes,
+            uint16_t &year, uint8_t &month, uint8_t &day,
+            uint8_t &hour, uint8_t &minute, uint8_t &second);
 };
 
 #endif // __H_UTILS_
