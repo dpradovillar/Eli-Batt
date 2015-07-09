@@ -86,10 +86,10 @@ public class ConsoleActivity extends Activity {
             renderer = new XYMultipleSeriesRenderer();
             renderer.addSeriesRenderer(currentRenderer);
 
-            //float textSize = 24;
+            float textSize = 24;
 
-            //renderer.setLegendTextSize(textSize);
-            //renderer.setAxisTitleTextSize(textSize);
+            renderer.setLegendTextSize(textSize);
+            renderer.setAxisTitleTextSize(textSize);
 
             currentRenderer.setColor(color);
             currentRenderer.setPointStyle(PointStyle.DIAMOND);
@@ -142,13 +142,14 @@ public class ConsoleActivity extends Activity {
     private TextView view3;
 
     private void initChart(LinearLayout layout1, LinearLayout layout2, LinearLayout layout3) {
-        graph1 = new Graph(this, Color.rgb(153, 0, 0), layout1, "[V] vs [t]", "Tiempo", "Voltaje [V]");
+        graph1 = new Graph(this, Color.rgb(153, 0, 0), layout1, "[V] vs [t]", "Tiempo", "Temperatura [C]");
         graph2 = new Graph(this, Color.rgb(0, 153, 0), layout2, "[A] vs [t]", "Tiempo", "Corriente [A]");
-        graph3 = new Graph(this, Color.rgb(0, 0, 153), layout3, "[C] vs [t]", "Tiempo", "Temperatura [C]");
+        graph3 = new Graph(this, Color.rgb(0, 0, 153), layout3, "[C] vs [t]", "Tiempo", "Voltaje [V]");
     }
 
     private void sendText(String text) {
         BluetoothGattCharacteristic characteristic = map.get(RBLService.UUID_BLE_SHIELD_TX);
+        //Log.d(TAG, "Writing:" + text.trim() + ", characteristic:" + characteristic);
         if (characteristic != null) {
             characteristic.setValue(text.getBytes());
             mBluetoothLeService.writeCharacteristic(characteristic);
@@ -189,6 +190,7 @@ public class ConsoleActivity extends Activity {
 
         initChart(layout1, layout2, layout3);
 
+        // Schedule a fixed-rate sensor data polling
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -200,12 +202,27 @@ public class ConsoleActivity extends Activity {
                     }
                 });
             }
-        }, 5000, 2000);
+        }, 3000, 2000);
+
+        // Retrieve the current state for the relay
+        Timer timer2 = new Timer();
+        timer2.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        sendText("R?\n");
+                    }
+                });
+            }
+        }, 1000);
 
         findViewById(R.id.status_container).setVisibility(View.INVISIBLE);
         findViewById(R.id.status_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                findViewById(R.id.status_button).setEnabled(false);
                 if (mLastLightIndicator) {
                     sendText("R0\n");
                 } else {
@@ -213,7 +230,6 @@ public class ConsoleActivity extends Activity {
                 }
             }
         });
-        sendText("R?\n");
     }
 
     @Override
@@ -277,19 +293,17 @@ public class ConsoleActivity extends Activity {
         findViewById(R.id.status_container).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.status_current)).setText(isOn ? "Encendido" : "Apagado");
         ((ImageView) findViewById(R.id.status_icon)).setImageResource(isOn ? R.drawable.bulb_on : R.drawable.bulb_off);
-        ((Button) findViewById(R.id.status_button)).setText(isOn ? "Apagar" : "Encender");
-
+        Button btn = (Button)findViewById(R.id.status_button);
+        btn.setEnabled(true);
+        btn.setText(isOn ? "Apagar" : "Encender");
         mLastLightIndicator = isOn;
     }
 
     private void processLine(String _response) {
-        System.out.println("Processing line: (" + _response + ")");
-
         String response = _response.trim();
         if (response.startsWith("S:")) {
             String cleaned = response.substring(2);
             String []parts = cleaned.split(";");
-
             if (parts.length == 3) {
                 try {
                     double t = Double.parseDouble(parts[0]);
@@ -301,13 +315,19 @@ public class ConsoleActivity extends Activity {
                     nfe.printStackTrace();
                 }
             }
-        } else if (response.startsWith("R?")) {
-            String cleaned = response.substring(2);
+        } else if (response.startsWith("R?:")) {
+            String cleaned = response.substring(3);
             if ("0".equals(cleaned)) {
                 setLightIndicator(false);
             } else {
-                setLightIndicator(false);
+                setLightIndicator(true);
             }
+        } else if (response.startsWith("R1:")) {
+            String cleaned = response.substring(3);
+            setLightIndicator("OK".equals(cleaned));
+        } else if (response.startsWith("R0:")) {
+            String cleaned = response.substring(3);
+            setLightIndicator(!"OK".equals(cleaned));
         }
     }
 

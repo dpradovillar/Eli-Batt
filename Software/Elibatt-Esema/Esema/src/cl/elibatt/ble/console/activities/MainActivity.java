@@ -1,6 +1,5 @@
 package cl.elibatt.ble.console.activities;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,11 +16,6 @@ import android.view.Window;
 import android.widget.*;
 import cl.elibatt.ble.R;
 import cl.elibatt.ble.console.BleWrapper;
-import org.achartengine.GraphicalView;
-import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.model.XYSeries;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.renderer.XYSeriesRenderer;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -87,14 +80,26 @@ public class MainActivity extends Activity {
                 }, BleWrapper.SCAN_PERIOD);
             }
         });
-        mRefresh = (Button) findViewById(R.id.refresh);
-        mRefresh.setOnClickListener(new OnClickListener() {
+        OnClickListener listener = new OnClickListener() {
             @Override
             public void onClick(View v) {
                 showRoundProcessDialog(MainActivity.this, "Buscando ...", R.layout.loading_process_dialog_anim);
                 bleWrapper.scannDevices(MainActivity.this, mAdapter, connect);
+
+                Timer mTimer = new Timer();
+                mTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        mDialog.dismiss();
+                    }
+                }, BleWrapper.SCAN_PERIOD);
             }
-        });
+        };
+
+        mRefresh = (Button) findViewById(R.id.refresh);
+        mRefresh.setOnClickListener(listener);
+
+        listener.onClick(null);
     }
 
     public void showRoundProcessDialog(Context mContext, String title, int layout) {

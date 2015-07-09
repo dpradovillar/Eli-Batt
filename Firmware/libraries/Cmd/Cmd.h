@@ -32,6 +32,7 @@
 
 #define CMD_RELAY_ON         18
 #define CMD_RELAY_OFF        19
+#define CMD_RELAY_STATUS     20
 
 class Cmd {
 private:

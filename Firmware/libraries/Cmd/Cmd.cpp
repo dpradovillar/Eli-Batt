@@ -90,6 +90,9 @@ int Cmd::parseCmd(char *s, int len) {
     if(startsWith(s, len, "R1", 2)) {
         return CMD_RELAY_ON;
     }
+    if(startsWith(s, len, "R?", 2)) {
+        return CMD_RELAY_STATUS;
+    }
 
     // IDS,ID
     if(startsWith(s, len, "IDS", 3)) {

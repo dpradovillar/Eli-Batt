@@ -274,6 +274,10 @@ int V2Libs::sendIdList(HardwareSerial *se) {
 void V2Libs::setup() {
     pinMode(RELAY_DIGITAL_PIN1, OUTPUT);
     pinMode(RELAY_DIGITAL_PIN2, OUTPUT);
+    digitalWrite(RELAY_DIGITAL_PIN1, LOW);
+    digitalWrite(RELAY_DIGITAL_PIN2, LOW);
+    lastDigitalWrite = LOW;
+
 #if RELEASE_BOARD
 #else
     setupPcComm();
@@ -451,13 +455,19 @@ void V2Libs::loop() {
                 case CMD_RELAY_OFF:
                     digitalWrite(RELAY_DIGITAL_PIN1, LOW);
                     digitalWrite(RELAY_DIGITAL_PIN2, LOW);
+                    lastDigitalWrite = LOW;
                     BLE_COMM.println("R0:OK");
                     break;
 
                 case CMD_RELAY_ON:
                     digitalWrite(RELAY_DIGITAL_PIN1, HIGH);
                     digitalWrite(RELAY_DIGITAL_PIN2, HIGH);
+                    lastDigitalWrite = HIGH;
                     BLE_COMM.println("R1:OK");
+                    break;
+
+                case CMD_RELAY_STATUS:
+                    BLE_COMM.println(lastDigitalWrite == HIGH ? "R?:1" : "R?:0");
                     break;
 
                 default:

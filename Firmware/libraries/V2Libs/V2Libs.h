@@ -22,7 +22,7 @@
 #define R2 118.3
 
 #define BUFFER_MAX   100
-#define MAX_ROWS     10 // 15min
+#define MAX_ROWS     60 // 15min
 
 #define RELAY_DIGITAL_PIN1 13
 #define RELAY_DIGITAL_PIN2 36
@@ -69,6 +69,8 @@ private:
 
     EepromWriter eepromWriter;
     uint32_t eepromId;
+
+    int lastDigitalWrite;
 
     float toAmps(float vout3v);
     float toVolts(int reading);
