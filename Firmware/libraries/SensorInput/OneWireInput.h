@@ -15,7 +15,7 @@ private:
     byte m_addr[9];
 
     OneWire m_one;
-    DallasTemperature m_sensors;
+    DallasTemperature m_dallasTemperature;
     DeviceAddress m_deviceAddress;
 
 public:

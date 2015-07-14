@@ -284,9 +284,9 @@ int V2Libs::sendIdList(HardwareSerial *se) {
 void V2Libs::setup() {
     pinMode(RELAY_DIGITAL_PIN1, OUTPUT);
     pinMode(RELAY_DIGITAL_PIN2, OUTPUT);
-    digitalWrite(RELAY_DIGITAL_PIN1, LOW);
-    digitalWrite(RELAY_DIGITAL_PIN2, LOW);
-    lastDigitalWrite = LOW;
+    lastDigitalWrite = HIGH;
+    digitalWrite(RELAY_DIGITAL_PIN1, lastDigitalWrite);
+    digitalWrite(RELAY_DIGITAL_PIN2, lastDigitalWrite);
 
 #if RELEASE_BOARD
 #else
@@ -466,21 +466,21 @@ void V2Libs::loop() {
                     break;
 
                 case CMD_RELAY_OFF:
-                    digitalWrite(RELAY_DIGITAL_PIN1, LOW);
-                    digitalWrite(RELAY_DIGITAL_PIN2, LOW);
-                    lastDigitalWrite = LOW;
+                    lastDigitalWrite = HIGH;
+                    digitalWrite(RELAY_DIGITAL_PIN1, lastDigitalWrite);
+                    digitalWrite(RELAY_DIGITAL_PIN2, lastDigitalWrite);
                     BLE_COMM.println("R0:OK");
                     break;
 
                 case CMD_RELAY_ON:
-                    digitalWrite(RELAY_DIGITAL_PIN1, HIGH);
-                    digitalWrite(RELAY_DIGITAL_PIN2, HIGH);
-                    lastDigitalWrite = HIGH;
+                    lastDigitalWrite = LOW;
+                    digitalWrite(RELAY_DIGITAL_PIN1, lastDigitalWrite);
+                    digitalWrite(RELAY_DIGITAL_PIN2, lastDigitalWrite);
                     BLE_COMM.println("R1:OK");
                     break;
 
                 case CMD_RELAY_STATUS:
-                    BLE_COMM.println(lastDigitalWrite == HIGH ? "R?:1" : "R?:0");
+                    BLE_COMM.println(lastDigitalWrite == LOW ? "R?:1" : "R?:0");
                     break;
 
                 case CMD_GET_DATE:
@@ -514,7 +514,8 @@ void V2Libs::loop() {
         } // endif ble.available()
     } // endif bleCommEnabled
 
-    static long last_t = 0;
+    static unsigned long last_t = 0;
+    unsigned long current_t = millis();
     /*if (millis() - last_t >= 1000) {
         Serial.print(getTemperature()); Serial.println("C");
 
@@ -530,7 +531,8 @@ void V2Libs::loop() {
     }*/
 
     // ########################## Sensors Handling ####################
-    if (millis() - last_t >= 1000) {
+    static unsigned long delayPeriod = 1000;
+    if ((unsigned long)(current_t - last_t) >= delayPeriod) {
         MyDate rtc_now = getDateTime();
 
         float c = getTemperature();
@@ -609,7 +611,7 @@ void V2Libs::loop() {
             }
         }
 
-        last_t = millis();
+        last_t = current_t;
     }
 }
 

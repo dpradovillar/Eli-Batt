@@ -27,7 +27,7 @@
 #define RELAY_DIGITAL_PIN1 13
 #define RELAY_DIGITAL_PIN2 36
 
-//#define RELEASE_BOARD 1
+#define RELEASE_BOARD 1
 
 // Serial
 #define PC_COMM Serial
