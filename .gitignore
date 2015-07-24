@@ -246,6 +246,14 @@ Software/Elibatt-Qt/Makefile.Debug
 Software/Elibatt-Qt/Makefile.Release
 Software/Elibatt-Qt/ui_uidialog.h
 
+Software/Elibatt-Viewer/Makefile
+Software/Elibatt-Viewer/Makefile.Debug
+Software/Elibatt-Viewer/Makefile.Release
+Software/Elibatt-Viewer/ui_*.h
+Software/Elibatt-Viewer/moc_*.cpp
+Software/Elibatt-Viewer/*.o
+Software/Elibatt-Viewer/elibatt-viewer.app/**
+
 Software/Elibatt-lib/Makefile
 Software/Elibatt-lib/Makefile.Debug
 Software/Elibatt-lib/Makefile.Release
@@ -261,3 +269,5 @@ Software/BLE-Android/Examples/Chat/out/*
 
 Software/Elibatt-Android-Ble-Id/gen/**
 Software/Elibatt-Android-Ble-Id/out/**
+
+
