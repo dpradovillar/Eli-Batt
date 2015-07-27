@@ -19,6 +19,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
     connect(ui->process, SIGNAL(clicked()), this, SLOT(onProcessButtonClicked()));
+
+#ifdef TEMPORARY_FILE
+#ifdef TEMPORARY_PDF
+    onActionSelectFolder();
+#endif
+#endif
 }
 
 MainWindow::~MainWindow() {
@@ -33,7 +39,13 @@ void MainWindow::onActionAboutTriggered() {
 }
 
 void MainWindow::onActionSelectFolder() {
-    QString filename = "/Users/rene/Desktop/CSV/"; //QFileDialog::getExistingDirectory(this, "Seleccionar una carpeta", QString(), QFileDialog::ShowDirsOnly);
+    QString filename =
+#ifdef TEST_FOLDER
+        TEST_FOLDER
+#else
+        QFileDialog::getExistingDirectory(this, "Seleccionar una carpeta", "", QFileDialog::ShowDirsOnly)
+#endif
+    ;
     if (!filename.isEmpty()) {
         ui->folder->setText(filename);
 
@@ -56,7 +68,11 @@ void MainWindow::onActionSelectFolder() {
             ui->from_date->setSelectedDate(f);
             ui->to_date->setSelectedDate(t);
 
+#ifdef TEST_FOLDER
+#ifdef TEST_OUTPUT_PDF
             onProcessButtonClicked();
+#endif
+#endif
         }
     }
 }
@@ -69,7 +85,13 @@ void MainWindow::onProcessButtonClicked() {
     if (msg.isEmpty()) {
         ReportGenerator rg(TEMPORARY_FILE, TEMPORARY_PDF);
 
-        QString outputFilename = "/Users/rene/Desktop/CSV/doc.pdf";//QFileDialog::getSaveFileName(0, "Archivo PDF de salida");
+        QString outputFilename =
+#ifdef TEST_OUTPUT_PDF
+            TEST_OUTPUT_PDF
+#else
+            QFileDialog::getSaveFileName(0, "Archivo PDF de salida")
+#endif
+        ;
         if (outputFilename.isNull()) {
             QMessageBox::warning(0, "Error", "Procesamiento cancelado.");
             return;
@@ -77,8 +99,6 @@ void MainWindow::onProcessButtonClicked() {
         if (!outputFilename.toLower().endsWith(".pdf")) {
             outputFilename += ".pdf";
         }
-
-        qDebug() << "outputFilename:" << outputFilename;
 
         msg = rg.create();
 
@@ -118,6 +138,7 @@ QString MainWindow::processDates(const QDate &from, const QDate &to) {
     QDir path(ui->folder->text());
     QStringList files = path.entryList();
     QFile temporary(TEMPORARY_FILE);
+    temporary.remove();
     if (!temporary.open(QIODevice::WriteOnly)) {
         return "No se puede crear archivo temporal.";
     }

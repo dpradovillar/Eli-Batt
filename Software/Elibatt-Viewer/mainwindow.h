@@ -6,6 +6,9 @@
 
 #include "ui_mainwindow.h"
 
+#define TEST_FOLDER     "C:/Users/rene/Desktop/Archive/work/GPFramework/E-liBatt/Software/Elibatt-Viewer/data"
+#define TEST_OUTPUT_PDF "C:/Users/rene/Desktop/Archive/work/GPFramework/E-liBatt/Software/Elibatt-Viewer/data/doc.pdf"
+
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
