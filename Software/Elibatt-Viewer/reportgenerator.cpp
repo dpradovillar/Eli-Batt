@@ -158,6 +158,8 @@ QString ReportGenerator::create() {
     }
     inputFile.close();
 
+    inputFile.remove();
+
     p.end();
 
     return "";

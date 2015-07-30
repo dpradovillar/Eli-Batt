@@ -7,8 +7,7 @@
 #include "ui_aboutdialog.h"
 
 #define DATE_REGEXP_FILENAME "(\\d\\d\\d\\d)(\\d\\d)(\\d\\d).*"
-#define TEMPORARY_FILE "temp.dat"
-#define TEMPORARY_PDF "temp.pdf"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -20,8 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->process, SIGNAL(clicked()), this, SLOT(onProcessButtonClicked()));
 
-#ifdef TEMPORARY_FILE
-#ifdef TEMPORARY_PDF
+#ifdef TEST_FOLDER
+#ifdef TEST_OUTPUT_PDF
     onActionSelectFolder();
 #endif
 #endif
@@ -156,14 +155,21 @@ QString MainWindow::processDates(const QDate &from, const QDate &to) {
             }
             QTextStream in(&inputFile);
             QString temp;
+            qint64 last_t = -1;
             while(!(temp = in.readLine()).isNull()) {
                 QStringList parts = temp.split(";");
-                out <<
-                    parts[0] << ';' <<
-                    parts[1] << ';' <<
-                    parts[2] << ';' <<
-                    parts[3] <<
-                endl;
+                QDateTime dt = QDateTime::fromString(parts[0], "yyyyMMdd'T'hhmmss");
+                // Save only one datum every 5 minutes
+                qint64 slot = dt.toMSecsSinceEpoch() / 300000;
+                if (slot != last_t) {
+                    out <<
+                        parts[0] << ';' <<
+                        parts[1] << ';' <<
+                        parts[2] << ';' <<
+                        parts[3] <<
+                    endl;
+                    last_t = slot;
+                }
             }
             inputFile.close();
         }
