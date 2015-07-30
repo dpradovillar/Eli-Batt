@@ -1,5 +1,7 @@
 #include "reportgenerator.h"
 
+#include "filescanner.h"
+
 #include <QPainter>
 #include <QApplication>
 #include <QTextDocument>
@@ -10,6 +12,13 @@ ReportGenerator::ReportGenerator(const QString &inputFilename, const QString &ou
 }
 
 QString ReportGenerator::create() {
+
+    FileScanner fs(m_inputFilename);
+    QString status = fs.scan();
+    if (!status.isEmpty()) {
+        return status;
+    }
+
     QPdfWriter w(m_outputFilename);
     w.setPageSize(QPdfWriter::Letter);
     w.setPageMargins(QMarginsF(0, 0, 0, 0));
@@ -29,34 +38,128 @@ QString ReportGenerator::create() {
     _setFont(36);
     _drawText(hRect, "Reporte E-LiBatt", Qt::AlignCenter);
 
+    qreal plot_width = 165.9;
+    qreal plot_height = 50.0;
+
     // Body
     _setPen(0x000000);
     _setFont(12);
-    QVector<QStringList> d = QVector<QStringList>()
-        << (QStringList() << "Período"                << ":" << "dd/mm/yy a dd/mm/yy")
-        << (QStringList() << "Número de muestras"     << ":" << "86400")
-        << (QStringList() << "Variables monitoreadas" << ":" << "T (°C), C (A), V (V)")
-    ;
-
-    _drawTable(25, 50,
+    _drawTable(25, 45,
         QList<double>() << 50 << 6 << 80,
-        8,
-        d
+        5,
+        QVector<QStringList>()
+           << (QStringList() << "Período"                << ":" << QString("%1 a %2")
+               .arg(fs.m_minDateTime.date().toString("yyyy-MM-dd"))
+               .arg(fs.m_maxDateTime.date().toString("yyyy-MM-dd")))
+           << (QStringList() << "Número de muestras"     << ":" << QString::number(fs.m_count))
+           << (QStringList() << "Variables monitoreadas" << ":" << "T (°C), C (A), V (V) Medias")
     );
 
     _setPen(0x000000);
+
+    qreal temperatureStep = 5.0;
+    qreal currentStep = 2.0;
+    qreal voltageStep = 3.0;
+
+    qreal temperatureLowBound, temperatureHighBound;
+    qreal currentLowBound, currentHighBound;
+    qreal voltageLowBound, voltageHighBound;
+
+    // Temperatura
+    _setFont(14);
+    _drawText(QRectF(25, 60, 165.9, 10), "Temperatura (C°)", Qt::AlignCenter);
     _setFont(10);
-    _drawFrameGraph(QRectF(25, 90, 165.9, 50),
-        QList<double>() << 0.0 << 10.0 << 20.0 << 30.0 << 40,
-        QList<QDateTime>() <<
-            QDateTime::fromMSecsSinceEpoch(86400*1000) <<
-            QDateTime::fromMSecsSinceEpoch(86400*2000) <<
-            QDateTime::fromMSecsSinceEpoch(86400*3000) <<
-            QDateTime::fromMSecsSinceEpoch(86400*4000) <<
-            QDateTime::fromMSecsSinceEpoch(86400*5000)
+    _drawFrameGraph(QRectF(25, 70, plot_width, plot_height),
+        splitSpan(
+            temperatureLowBound = makeLowerBound(fs.m_minTemperature, temperatureStep),
+            temperatureHighBound = makeUpperBound(fs.m_maxTemperature, temperatureStep),
+            6
+        ),
+        splitSpan(fs.m_minDateTime, fs.m_maxDateTime, 6)
     );
 
+    // Corriente
+    _setFont(14);
+    _drawText(QRectF(25, 130, 165.9, 10), "Corriente (A)", Qt::AlignCenter);
+    _setFont(10);
+    _drawFrameGraph(QRectF(25, 140, plot_width, plot_height),
+        splitSpan(
+            currentLowBound = makeLowerBound(fs.m_minCurrent, currentStep),
+            currentHighBound = makeUpperBound(fs.m_maxCurrent, currentStep),
+            6
+        ),
+        splitSpan(fs.m_minDateTime, fs.m_maxDateTime, 6)
+    );
+
+    // Corriente
+    _setFont(14);
+    _drawText(QRectF(25, 200, 165.9, 10), "Voltaje (V)", Qt::AlignCenter);
+    _setFont(10);
+    _drawFrameGraph(QRectF(25, 210, plot_width, plot_height),
+        splitSpan(
+            voltageLowBound = makeLowerBound(fs.m_minVoltage, voltageStep),
+            voltageHighBound = makeUpperBound(fs.m_maxVoltage, voltageStep),
+            6
+        ),
+        splitSpan(fs.m_minDateTime, fs.m_maxDateTime, 6)
+    );
+
+    // Draw the actual graph plots
+    QFile inputFile(m_inputFilename);
+    if (!inputFile.open(QIODevice::ReadOnly)) {
+        return "No se puede abrir " + m_inputFilename;
+    }
+
+    qint64 time_min = fs.m_minDateTime.toMSecsSinceEpoch();
+    qint64 time_delta = fs.m_minDateTime.msecsTo(fs.m_maxDateTime);
+
+    qreal temperature_delta = temperatureHighBound - temperatureLowBound;
+    qreal current_delta = currentHighBound - currentLowBound;
+    qreal voltage_delta = voltageHighBound - voltageLowBound;
+
+    bool first = true;
+    QPointF last_p_t, last_p_c, last_p_v;
+
+    QTextStream in(&inputFile);
+    QString temp;
+    while(!(temp = in.readLine()).isNull()) {
+        QStringList parts = temp.split(';');
+        QDateTime dt = QDateTime::fromString(parts[0], "yyyyMMdd'T'hhmmss");
+        qreal t = parts[1].toDouble();
+        qreal c = parts[2].toDouble();
+        qreal v = parts[3].toDouble();
+
+        qreal x = plot_width * (dt.toMSecsSinceEpoch() - time_min) / time_delta;
+
+        qreal y_t = plot_height * (t - temperatureLowBound) / temperature_delta;
+        qreal y_c = plot_height * (c - currentLowBound) / current_delta;
+        qreal y_v = plot_height * (v - voltageLowBound) / voltage_delta;
+
+        QPointF p_t(x + 25, 70  + plot_height - y_t);
+        QPointF p_c(x + 25, 140 + plot_height - y_c);
+        QPointF p_v(x + 25, 210 + plot_height - y_v);
+
+        if (first) {
+            first = false;
+        } else {
+            _setPen(0xFF0000);
+            _drawLine(last_p_t.x(), last_p_t.y(), p_t.x(), p_t.y());
+
+            _setPen(0x00FF00);
+            _drawLine(last_p_c.x(), last_p_c.y(), p_c.x(), p_c.y());
+
+            _setPen(0x0000FF);
+            _drawLine(last_p_v.x(), last_p_v.y(), p_v.x(), p_v.y());
+        }
+
+        last_p_t = p_t;
+        last_p_c = p_c;
+        last_p_v = p_v;
+    }
+    inputFile.close();
+
     p.end();
+
     return "";
 }
 
@@ -138,12 +241,12 @@ void ReportGenerator::_drawTable(double x_mm, double y_mm, const QList<double> &
 }
 
 void ReportGenerator::_drawFrameGraph(const QRectF &bounds_mm, const QList<double> &yLabels, const QList<QDateTime> &xLabels) {
-    qDebug() << "Invalid QRectF values:"
-        << bounds_mm.x() << "," << bounds_mm.y()
-        << " - "
-        << bounds_mm.width() << "x" << bounds_mm.height()
-    ;
     if (bounds_mm.x() < 0 || bounds_mm.y() < 0 || bounds_mm.width() == 0 || bounds_mm.height() == 0) {
+        qDebug() << "Invalid QRectF values:"
+            << bounds_mm.x() << "," << bounds_mm.y()
+            << " - "
+            << bounds_mm.width() << "x" << bounds_mm.height()
+        ;
         return;
     }
     _drawRect(bounds_mm);
@@ -187,6 +290,31 @@ void ReportGenerator::_drawFrameGraph(const QRectF &bounds_mm, const QList<doubl
         }
     }
 }
-void ReportGenerator::_drawPlotGraph(const QRectF &bounds_mm, const QList<double> &yValues, const QList<QDateTime> &xValues) {
 
+qreal ReportGenerator::makeUpperBound(qreal value, qreal step) {
+    int sign = (value < 0 ? -1 : +1);
+    qreal fvalue = qAbs(value);
+    return sign * ceil(fvalue/step) * step;
+}
+qreal ReportGenerator::makeLowerBound(qreal value, qreal step) {
+    int sign = (value < 0 ? -1 : +1);
+    qreal fvalue = qAbs(value);
+    return sign * floor(fvalue/step) * step;
+}
+QList<qreal> ReportGenerator::splitSpan(qreal _min, qreal _max, int n) {
+    qreal delta = _max - _min;
+    QList<qreal> r;
+    for (int i = 0; i <= n; i++) {
+        r.append(_min + (delta * i) / n);
+    }
+    return r;
+}
+QList<QDateTime> ReportGenerator::splitSpan(const QDateTime &_min, const QDateTime &_max, int n) {
+    qint64 delta = _min.msecsTo(_max);
+    qint64 min_msecs = _min.toMSecsSinceEpoch();
+    QList<QDateTime> r;
+    for (int i = 0; i <= n; i++) {
+        r.append(QDateTime::fromMSecsSinceEpoch(min_msecs + delta / n * i));
+    }
+    return r;
 }

@@ -38,7 +38,12 @@ public:
 
     void _drawTable(double x_mm, double y_mm, const QList<double> &colWidths, double cellHeight, const QVector<QStringList> &rows);
     void _drawFrameGraph(const QRectF &bounds_mm, const QList<double> &yLabels, const QList<QDateTime> &xLabels);
-    void _drawPlotGraph(const QRectF &bounds_mm, const QList<double> &yValues, const QList<QDateTime> &xValues);
+
+    qreal makeUpperBound(qreal value, qreal step);
+    qreal makeLowerBound(qreal value, qreal step);
+
+    QList<qreal> splitSpan(qreal _min, qreal _max, int n);
+    QList<QDateTime> splitSpan(const QDateTime &_min, const QDateTime &_max, int n);
 };
 
 #endif // REPORT_GENERATOR_H

@@ -149,7 +149,6 @@ QString MainWindow::processDates(const QDate &from, const QDate &to) {
         QDate aDate = scanDate(s, ok);
         if (ok && from <= aDate && aDate <= to) {
             QString w = path.absoluteFilePath(s);
-            qDebug() << "w:" << w;
             QFile inputFile(w);
             if (!inputFile.open(QIODevice::ReadOnly)) {
                 temporary.close();
@@ -158,7 +157,13 @@ QString MainWindow::processDates(const QDate &from, const QDate &to) {
             QTextStream in(&inputFile);
             QString temp;
             while(!(temp = in.readLine()).isNull()) {
-                out << temp << endl;
+                QStringList parts = temp.split(";");
+                out <<
+                    parts[0] << ';' <<
+                    parts[1] << ';' <<
+                    parts[2] << ';' <<
+                    parts[3] <<
+                endl;
             }
             inputFile.close();
         }
