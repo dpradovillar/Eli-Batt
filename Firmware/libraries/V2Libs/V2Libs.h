@@ -119,6 +119,7 @@ public:
     int sendCurrentList(HardwareSerial *se);
     int sendVoltageList(HardwareSerial *se);
     int sendIdList(HardwareSerial *se);
+    void sendFileRange(char *buffer10bytes);
 
     void setup();
     void loop();

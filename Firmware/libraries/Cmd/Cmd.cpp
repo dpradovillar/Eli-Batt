@@ -106,8 +106,13 @@ int Cmd::parseCmd(char *s, int len) {
     if(startsWith(s, len, "IDS", 3)) {
         return CMD_LIST_ID;
     }
+    // In this order, or this command will intercept the IDS command as well
     if(startsWith(s, len, "ID", 2)) {
         return CMD_ID;
+    }
+
+    if(startsWith(s, len, "F", 1) && len >= 11) {
+        return CMD_FILE_TRANSFER;
     }
 
     return CMD_INVALID;

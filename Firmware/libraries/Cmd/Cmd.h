@@ -37,6 +37,8 @@
 #define CMD_SET_DATE         21
 #define CMD_GET_DATE         22
 
+#define CMD_FILE_TRANSFER    23
+
 class Cmd {
 private:
     SerialEndpoint *out;

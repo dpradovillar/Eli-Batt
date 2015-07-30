@@ -281,6 +281,29 @@ int V2Libs::sendIdList(HardwareSerial *se) {
     return size;
 }
 
+void V2Libs::sendFileRange(char *buffer10bytes) {
+    int year = Utils::processInt(buffer10bytes, 4);
+    int month = Utils::processInt(buffer10bytes+2, 2);
+    int day1 = Utils::processInt(buffer10bytes+6, 2);
+    int day2 = Utils::processInt(buffer10bytes+8, 2);
+
+    char filename[13] = "YYYYMMDD.CSV";
+    filename[12] = '\0';
+
+    Utils::leftPad(year, filename, 4);
+    Utils::leftPad(month, filename + 4, 2);
+    for (int d = day1; d <= day2; d++) {
+        Utils::leftPad(d, filename + 6, 2);
+
+        // TODO: open file from SD using the filename pointer
+
+        // Read everything and put it out to the BLE_COMM connection
+
+        BLE_COMM.println(filename);
+        BLE_COMM.flush();
+    }
+}
+
 void V2Libs::setup() {
     pinMode(RELAY_DIGITAL_PIN1, OUTPUT);
     pinMode(RELAY_DIGITAL_PIN2, OUTPUT);
@@ -501,6 +524,10 @@ void V2Libs::loop() {
                     dateBuffer[15] = 0;
                     BLE_COMM.print("SDATE:");
                     BLE_COMM.println(dateBuffer);
+                    break;
+
+                case CMD_FILE_TRANSFER:
+                    sendFileRange(cmdBuffer+1);
                     break;
 
                 default:
