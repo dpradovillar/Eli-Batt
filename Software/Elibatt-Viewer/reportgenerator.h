@@ -5,6 +5,8 @@
 #include <QPrinter>
 #include <QPdfWriter>
 
+#include "utils.h"
+
 class ReportGenerator {
 private:
     QString m_inputFilename;
@@ -12,11 +14,12 @@ private:
 
     QPdfWriter *m_pdfWriter;
     QPainter *m_printer;
+    UiHandler *m_handler;
 
 public:
-    ReportGenerator(const QString &inputFilename, const QString &outputFilename);
+    ReportGenerator(const QString &inputFilename, const QString &outputFilename, UiHandler *handler);
 
-    QString create();
+    QString create(qint64 totalLines);
 
     int convertX(qreal x_mm);
     int convertY(qreal y_mm);

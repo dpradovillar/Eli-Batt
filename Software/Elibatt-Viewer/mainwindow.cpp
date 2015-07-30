@@ -7,6 +7,8 @@
 #include "ui_aboutdialog.h"
 
 #define DATE_REGEXP_FILENAME "(\\d\\d\\d\\d)(\\d\\d)(\\d\\d).*"
+#define SETTINGS_FILE "settings.ini"
+#define DATA_FOLDER_KEY "data_folder"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -18,6 +20,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
     connect(ui->process, SIGNAL(clicked()), this, SLOT(onProcessButtonClicked()));
+
+    QSettings settings(SETTINGS_FILE, QSettings::IniFormat);
+    ui->folder->setText(settings.value(DATA_FOLDER_KEY, "").toString());
+    setupInitialDirectory();
 
 #ifdef TEST_FOLDER
 #ifdef TEST_OUTPUT_PDF
@@ -45,8 +51,14 @@ void MainWindow::onActionSelectFolder() {
         QFileDialog::getExistingDirectory(this, "Seleccionar una carpeta", "", QFileDialog::ShowDirsOnly)
 #endif
     ;
+    ui->folder->setText(filename);
+    setupInitialDirectory();
+}
+void MainWindow::setupInitialDirectory() {
+    QString filename = ui->folder->text();
     if (!filename.isEmpty()) {
-        ui->folder->setText(filename);
+        QSettings settings(SETTINGS_FILE, QSettings::IniFormat);
+        settings.setValue(DATA_FOLDER_KEY, filename);
 
         QDir dir(filename);
         dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
@@ -77,12 +89,14 @@ void MainWindow::onActionSelectFolder() {
 }
 
 void MainWindow::onProcessButtonClicked() {
+    lastPercent = -1;
+    onProgressUpdate(0.0);
     QString msg = processDates(
         qMin(ui->from_date->selectedDate(), ui->to_date->selectedDate()),
         qMax(ui->from_date->selectedDate(), ui->to_date->selectedDate())
     );
     if (msg.isEmpty()) {
-        ReportGenerator rg(TEMPORARY_FILE, TEMPORARY_PDF);
+        ReportGenerator rg(TEMPORARY_FILE, TEMPORARY_PDF, this);
 
         QString outputFilename =
 #ifdef TEST_OUTPUT_PDF
@@ -99,7 +113,7 @@ void MainWindow::onProcessButtonClicked() {
             outputFilename += ".pdf";
         }
 
-        msg = rg.create();
+        msg = rg.create(lastTotalLines);
 
         if (QFile(TEMPORARY_PDF).rename(outputFilename)) {
             QMessageBox::information(0, "Informacion", "Procesamiento OK\n" + outputFilename + ".");
@@ -142,37 +156,47 @@ QString MainWindow::processDates(const QDate &from, const QDate &to) {
         return "No se puede crear archivo temporal.";
     }
     QTextStream out(&temporary);
+    QStringList cleanedFilenames;
 
     foreach(QString s, files) {
         bool ok = false;
         QDate aDate = scanDate(s, ok);
         if (ok && from <= aDate && aDate <= to) {
             QString w = path.absoluteFilePath(s);
-            QFile inputFile(w);
-            if (!inputFile.open(QIODevice::ReadOnly)) {
-                temporary.close();
-                return "El archivo " + s + " no puede ser leido.";
-            }
-            QTextStream in(&inputFile);
-            QString temp;
-            qint64 last_t = -1;
-            while(!(temp = in.readLine()).isNull()) {
-                QStringList parts = temp.split(";");
-                QDateTime dt = QDateTime::fromString(parts[0], "yyyyMMdd'T'hhmmss");
-                // Save only one datum every 5 minutes
-                qint64 slot = dt.toMSecsSinceEpoch() / 300000;
-                if (slot != last_t) {
-                    out <<
-                        parts[0] << ';' <<
-                        parts[1] << ';' <<
-                        parts[2] << ';' <<
-                        parts[3] <<
-                    endl;
-                    last_t = slot;
-                }
-            }
-            inputFile.close();
+            cleanedFilenames.append(w);
         }
+    }
+
+    lastTotalLines = countLines(cleanedFilenames);
+    qint64 currentLines = 0;
+
+    foreach(QString w, cleanedFilenames) {
+        QFile inputFile(w);
+        if (!inputFile.open(QIODevice::ReadOnly)) {
+            temporary.close();
+            return "El archivo " + w + " no puede ser leido.";
+        }
+        QTextStream in(&inputFile);
+        QString temp;
+        qint64 last_t = -1;
+        while(!(temp = in.readLine()).isNull()) {
+            currentLines++;
+            onProgressUpdate(((double)currentLines) / lastTotalLines);
+            QStringList parts = temp.split(";");
+            QDateTime dt = QDateTime::fromString(parts[0], "yyyyMMdd'T'hhmmss");
+            // Save only one datum every 5 minutes
+            qint64 slot = dt.toMSecsSinceEpoch() / 300000;
+            if (slot != last_t) {
+                out <<
+                    parts[0] << ';' <<
+                    parts[1] << ';' <<
+                    parts[2] << ';' <<
+                    parts[3] <<
+                endl;
+                last_t = slot;
+            }
+        }
+        inputFile.close();
     }
 
     temporary.close();
@@ -203,4 +227,29 @@ QDate MainWindow::scanDate(const QString &filename, bool &ok) {
     }
     ok = false;
     return QDate();
+}
+
+qint64 MainWindow::countLines(const QStringList &l) {
+    qint64 t = 0;
+    foreach(QString s, l) {
+        QFile f(s);
+        if(!f.open(QIODevice::ReadOnly)) {
+            return -1;
+        }
+        QTextStream in(&f);
+        QString temp;
+        while(!(temp = in.readLine()).isNull()) {
+            t++;
+        }
+        f.close();
+    }
+    return t;
+}
+
+void MainWindow::onProgressUpdate(qreal percent) {
+    int p = (int)(100*percent);
+    if (p != lastPercent) {
+        ui->progressBar->setValue(p);
+    }
+    qApp->processEvents();
 }

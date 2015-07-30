@@ -1,8 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include "reportgenerator.h"
+#include "utils.h"
+
+#include <QtCore>
+#include <QMainWindow>
 
 #include "ui_mainwindow.h"
 
@@ -11,7 +14,7 @@
 #define TEMPORARY_FILE "temp.dat"
 #define TEMPORARY_PDF "temp.pdf"
 
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow, UiHandler {
     Q_OBJECT
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -19,16 +22,23 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    int lastPercent;
+    qint64 lastTotalLines;
 
 public slots:
     void onActionAboutTriggered();
     void onActionSelectFolder();
+    void setupInitialDirectory();
     void onProcessButtonClicked();
 
     void processDirectoryContent(QDate &from, QDate &to);
     QString processDates(const QDate &from, const QDate &to);
 
     QDate scanDate(const QString &filename, bool &ok);
+
+    qint64 countLines(const QStringList &l);
+
+    virtual void onProgressUpdate(qreal percent);
 };
 
 #endif // MAINWINDOW_H

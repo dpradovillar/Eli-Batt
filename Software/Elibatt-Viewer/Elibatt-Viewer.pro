@@ -11,12 +11,14 @@ FORMS += mainwindow.ui \
 HEADERS += \
     mainwindow.h \
     reportgenerator.h \
-    filescanner.h
+    filescanner.h \
+    utils.h
 
 SOURCES += \
     mainwindow.cpp \
     reportgenerator.cpp \
     filescanner.cpp \
+    utils.cpp \
     main.cpp
 
 OTHER_FILES += \

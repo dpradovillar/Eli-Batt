@@ -6,12 +6,13 @@
 #include <QApplication>
 #include <QTextDocument>
 
-ReportGenerator::ReportGenerator(const QString &inputFilename, const QString &outputFilename) {
+ReportGenerator::ReportGenerator(const QString &inputFilename, const QString &outputFilename, UiHandler *handler) {
     m_inputFilename = inputFilename;
     m_outputFilename = outputFilename;
+    m_handler = handler;
 }
 
-QString ReportGenerator::create() {
+QString ReportGenerator::create(qint64 totalLines) {
 
     FileScanner fs(m_inputFilename);
     QString status = fs.scan();
@@ -120,10 +121,15 @@ QString ReportGenerator::create() {
     bool first = true;
     QPointF last_p_t, last_p_c, last_p_v;
 
+    qint64 currentLines = 0;
+
     QTextStream in(&inputFile);
     QString temp;
     while(!(temp = in.readLine()).isNull()) {
+        currentLines++;
+
         QStringList parts = temp.split(';');
+
         QDateTime dt = QDateTime::fromString(parts[0], "yyyyMMdd'T'hhmmss");
         qreal t = parts[1].toDouble();
         qreal c = parts[2].toDouble();
@@ -151,6 +157,8 @@ QString ReportGenerator::create() {
             _setPen(0x0000FF);
             _drawLine(last_p_v.x(), last_p_v.y(), p_v.x(), p_v.y());
         }
+
+        m_handler->onProgressUpdate(((double)currentLines) / totalLines);
 
         last_p_t = p_t;
         last_p_c = p_c;
