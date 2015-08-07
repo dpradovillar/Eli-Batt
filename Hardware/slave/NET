@@ -1,0 +1,114 @@
+Netlist
+
+Exported from Slave-v12.brd at 3/28/2015 12:45:52 AM
+
+EAGLE Version 7.1.0 Copyright (c) 1988-2014 CadSoft
+
+Net            Part     Pad
+
+3.3V           ACS711   8
+               C7       1
+               ISP      2
+               R10      1
+               R13      1
+               R16      1
+               R3       2
+               R8       2
+               TEMP     8
+               U1       18
+               U1       4
+               U1       6
+
+COMM_RX        BANCO    2
+               U1       30
+
+COMM_TX        BANCO    1
+               U1       31
+
+GND            ACS711   5
+               AP1117   1
+               BANCO    4
+               C1       2
+               C4       2
+               C7       2
+               DBG_L    C
+               ISP      6
+               J1       1
+               OSC      2
+               PWR      C
+               R15      1
+               S1       P$1
+               TEMP     4
+               TEMP     4
+               TEMP     5
+               TEMP     6
+               TEMP     7
+               U1       21
+               U1       3
+               U1       5
+
+IP+            ACS711   1
+               ACS711   2
+               V_IN     B4,5
+
+IP-            ACS711   3
+               ACS711   4
+               V_OUT    B4,5
+
+MISO           ISP      1
+               U1       16
+
+MOSI           ISP      4
+               U1       15
+
+N$2            OSC      1
+               R2       1
+               U1       7
+
+N$3            DBG_L    A
+               R1       2
+
+N$5            PWR      A
+               R3       1
+
+N$14           OSC      3
+               R2       2
+               U1       8
+
+N$69           ACS711   6
+               R13      2
+
+RAW            AP1117   3
+               BANCO    3
+               C4       1
+               J1       2
+               R14      1
+
+RST            ISP      5
+               R8       1
+               S1       P$2
+               U1       29
+
+SCK            ISP      3
+               R1       1
+               U1       17
+
+SCL            R10      2
+               TEMP     2
+               U1       28
+
+SDA            R16      2
+               TEMP     1
+               U1       27
+
+SENSOR_CURRENT ACS711   7
+               U1       23
+
+SENSOR_VOLT    R14      2
+               R15      2
+               U1       24
+
+VCC            AP1117   2
+               AP1117   4
+               C1       1
+

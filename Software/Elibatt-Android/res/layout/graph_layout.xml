@@ -1,0 +1,71 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rightLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#ffffff">
+    <LinearLayout
+            android:id="@+id/stuff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:orientation="horizontal">
+
+        <TextView android:id="@+id/view_voltage"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="#990000"
+                android:textSize="25dp"
+                android:text="*"/>
+
+        <TextView android:id="@+id/view_amps"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="#009900"
+                android:textSize="25dp"
+                android:text="*"/>
+
+        <TextView android:id="@+id/view_temperature"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="#000099"
+                android:textSize="25dp"
+                android:text="*"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/chart1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:orientation="vertical">
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/chart2"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:orientation="vertical">
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/chart3"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:orientation="vertical">
+    </LinearLayout>
+</LinearLayout>

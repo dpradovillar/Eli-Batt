@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jssc (2)">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/servo-control/jSSC-2.6.0-Release/jssc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

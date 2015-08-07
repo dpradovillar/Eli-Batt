@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+        >
+    <TextView
+            android:id="@+id/title1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Position of motor 1: -"
+            />
+
+    <SeekBar
+            android:id="@+id/position1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/title1"
+            android:layout_marginTop="26dp"
+            android:max="179">
+    </SeekBar>
+
+    <TextView
+            android:id="@+id/title2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Position of motor 2: -"
+            android:layout_below="@+id/position1"
+            />
+
+    <SeekBar
+            android:id="@+id/position2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/title2"
+            android:layout_marginTop="26dp"
+            android:max="179">
+    </SeekBar>
+
+    <Button android:id="@+id/bluetooth_turn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/position2"/>
+
+    <Button android:id="@+id/bluetooth_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bluetooth_turn"
+            android:text="List paired devices"/>
+
+    <Button android:id="@+id/bluetooth_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bluetooth_list"
+            android:text="Search new devices"/>
+
+    <Button android:id="@+id/bluetooth_connect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bluetooth_search"
+            android:text="Connect to 20:14:05:14:10:55"/>
+
+    <ListView
+            android:id="@+id/discovered"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/bluetooth_connect"/>
+
+
+</LinearLayout>
+

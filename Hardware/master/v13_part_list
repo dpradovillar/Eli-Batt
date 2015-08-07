@@ -1,0 +1,59 @@
+Partlist
+
+Exported from master-v13.sch at 8/5/2015 1:38:24 PM
+
+EAGLE Version 7.1.0 Copyright (c) 1988-2014 CadSoft
+
+Assembly variant: 
+
+Part       Value                         Device                        Package               Library                    Sheet
+
+ACS711     ACS711                        ACS711                        SOIC8                 ACS711                     1
+AP1117     AP1117E                       AP1117E                       SOT223                v-reg                      1
+ATMEGA2560 ATMEGA640/1280/2560-A         ATMEGA640/1280/2560-A         TQFP100A              atmel-avr                  1
+AUX                                      PINHD-1X3                     1X03                  pinhead                    1
+BANCO                                    PINHD-1X4                     1X04                  pinhead                    1
+BAT        CR1220                        CR1220                        CR1220                battery                    1
+BLE                                      PINHD-1X4                     1X04                  pinhead                    1
+C1         10uF                          C-EUC0805K                    C0805K                rcl                        1
+C2         0.1uF                         C-EUC0805K                    C0805K                rcl                        1
+C3         0.1uF                         CAP0402-CAP                   0402-CAP              SparkFun                   1
+C4         10uF                          C-EUC0805K                    C0805K                rcl                        1
+C5         22pF                          CAP0402-CAP                   0402-CAP              SparkFun                   1
+C6         10uF/10V                      CPOL-USA/3216-18R             A/3216-18R            adafruit                   1
+C7         0.1uF                         C-EUC0805K                    C0805K                rcl                        1
+C8         0.1uF                         C-USC0805K                    C0805K                adafruit                   1
+C10        10uF/10V                      CPOL-USA/3216-18R             A/3216-18R            adafruit                   1
+C11        0.1uF                         CAP0402-CAP                   0402-CAP              SparkFun                   1
+DBG_L      BLUE                          LEDCHIPLED_0805               CHIPLED_0805          adafruit                   1
+DS3231     DS3234                        DS3234                        SO-20DW               0-ds3234                   1
+FT232RL    FT232RL-BASICSSOP             FT232RL-BASICSSOP             SSOP28DB              SparkFun-DigitalIC         1
+GPS                                      PINHD-1X4                     1X04                  pinhead                    1
+IC1        4050D                         4050D                         SO16                  40xx                       1
+IC2        LP298XS                       LP298XS                       SOT23-5L              adafruit                   1
+ISP        AVR_SPI_PRG_6PTH              AVR_SPI_PRG_6PTH              2X3                   SparkFun-Connectors        1
+J1         RAW                           22-05-7028-02                 7395-02               con-molex                  1
+OSC        16.00MHZ SMD                  RESONATOR-SMD                 RESONATOR-SMD         resonador                  1
+PWR        RED                           LEDCHIPLED_0805               CHIPLED_0805          adafruit                   1
+R1         1K                            R-EU_R0805                    R0805                 rcl                        1
+R2         1k                            R-EU_R0805                    R0805                 rcl                        1
+R3         1K                            R-EU_R0805                    R0805                 rcl                        1
+R4         10K                           R-EU_R0805                    R0805                 rcl                        1
+R5         1k                            R-EU_R0805                    R0805                 rcl                        1
+R6         1K                            R-EU_R0805                    R0805                 rcl                        1
+R7         1K                            R-EU_R0805                    R0805                 rcl                        1
+R8         10k                           R-EU_R0805                    R0805                 rcl                        1
+R9         4.7K                          R-EU_R0805                    R0805                 rcl                        1
+R10        1K                            R-US_R0805                    R0805                 adafruit                   1
+R13        10k                           R-EU_R0805                    R0805                 rcl                        1
+R14        10k                           R-EU_R0805                    R0805                 rcl                        1
+R15        4.7k                          R-EU_R0805                    R0805                 rcl                        1
+RX         GREEN                         LEDCHIPLED_0805               CHIPLED_0805          adafruit                   1
+S1         SWITCH-MOMENTARY-2-SMD-1101NE SWITCH-MOMENTARY-2-SMD-1101NE TACTILE-SWITCH-1101NE SparkFun-Electromechanical 1
+SD         RED                           LEDCHIP-LED0805               CHIP-LED0805          adafruit                   1
+TEMP       DS1820                        DS1820                        TO-92                 DS1820                     1
+TX         RED                           LEDCHIPLED_0805               CHIPLED_0805          adafruit                   1
+V_IN       MOUNT-PAD-ROUND4.5            MOUNT-PAD-ROUND4.5            4,5-PAD               holes                      1
+V_OUT      MOUNT-PAD-ROUND4.5            MOUNT-PAD-ROUND4.5            4,5-PAD               holes                      1
+X1         USB-MB-H                      USB-MB-H                      USB-MB-H              SparkFun                   1
+X2         MICROSD                       MICROSD                       MICROSD               adafruit                   1
