@@ -311,6 +311,8 @@ void V2Libs::setup() {
     digitalWrite(RELAY_DIGITAL_PIN1, lastDigitalWrite);
     digitalWrite(RELAY_DIGITAL_PIN2, lastDigitalWrite);
 
+    previousAnalogValue = -1;
+
 #if RELEASE_BOARD
 #else
     setupPcComm();
@@ -346,6 +348,36 @@ void V2Libs::loop() {
     MyDate dateTemporal;
 
     GpsStruct gdata;
+
+    // Logic for switching the relay ON/OFF by looking at an analog input state change
+    int currentAnalog = analogRead(A2);
+    // First value ever read!
+    if (previousAnalogValue < 0) {
+        previousAnalogValue = currentAnalog;
+    }
+    // For the second value read and on
+    else {
+        // We have the previous state LOW/HIGH
+        int previousState = (previousAnalogValue < MAX_ANALOG_INPUT ? LOW : HIGH);
+
+        // And the current ONE
+        int currentState = (currentAnalog < MAX_ANALOG_INPUT ? LOW : HIGH);
+
+        // From LOW(previous) to HIGH(current) => RELAY_OFF
+        if (previousState == LOW && currentState == HIGH) {
+            lastDigitalWrite = HIGH; // The relay needs a logic 1 for turning it off
+            digitalWrite(RELAY_DIGITAL_PIN1, lastDigitalWrite);
+            digitalWrite(RELAY_DIGITAL_PIN2, lastDigitalWrite);
+            BLE_COMM.println("R0:OK");
+        }
+        // From HIGH(previous) to LOW(current) => RELAY_ON
+        else if (previousState == HIGH && currentState == LOW) {
+            lastDigitalWrite = LOW;
+            digitalWrite(RELAY_DIGITAL_PIN1, lastDigitalWrite);
+            digitalWrite(RELAY_DIGITAL_PIN2, lastDigitalWrite);
+            BLE_COMM.println("R1:OK");
+        }
+    }
 
     if (bleCommEnabled) {
         if (BLE_COMM.available()) {

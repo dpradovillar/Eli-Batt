@@ -45,6 +45,11 @@
 // SoftwareSerial
 #define BANK_COMM m_bank
 
+/** For values < MAX_ANALOG_INPUT, the input is considered LOW
+  * For values >=s MAX_ANALOG_INPUT, the input is considered HIGH
+  */
+#define MAX_ANALOG_INPUT 512
+
 class V2Libs {
 private:
     // Sensors
@@ -71,6 +76,8 @@ private:
     uint32_t eepromId;
 
     int lastDigitalWrite;
+
+    int previousAnalogValue;
 
     float toAmps(float vout3v);
     float toVolts(int reading);
